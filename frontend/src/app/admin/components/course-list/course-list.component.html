@@ -1,0 +1,54 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <div class="container-fluid mt-3 px-3">
+    <div class="text-center">
+      <h2 class="title-heading">
+        Danh sách Hoc phan
+      </h2>
+    </div>
+  </div> 
+  <div class="row">
+
+    <button class="btn btn-info me-2" style="width: 150px;" (click)="toggleSearch()">
+      <i class="fa fa-search me-1"></i> Tìm kiếm
+    </button>
+    <div *ngIf="isSearchVisible" class="col-md-12 mt-3">
+      <div class="col-md-3">
+        <div class="mb-2">
+          <div class="input-group">
+            <input id="maHocPhanInput" type="text" class="form-control" placeholder="Nhập ma hoc phan" [(ngModel)]="mahocphanSearch">
+            <button class="btn btn-primary" (click)="searchCourse()">
+              <i class="fa fa-search"></i> Tìm
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  
+    <div class="row">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-info text-center">
+        <tr>
+          <th>Mã học phần</th>
+          <th>Tên môn học</th>
+          <th>Số tín chỉ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses | paginate: { itemsPerPage: 10, currentPage: p }">
+          <td>{{ course.maHocPhan }}</td>
+          <td>{{ course.tenMonHoc }}</td>
+          <td>{{ course.soTinChi }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <pagination-controls
+        (pageChange)="p = $event"
+        previousLabel="«"
+        nextLabel="»"
+        class="d-flex justify-content-center mt-3">
+      </pagination-controls>
+  </div>
+  </div>
+  

@@ -1,0 +1,208 @@
+/* Cải thiện bảng để không có dòng xen kẽ đen trắng */
+.table {
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse; /* Sử dụng border-collapse để không có khoảng cách giữa các ô */
+    margin-top: 30px;
+}
+
+/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd; /* Đường viền nhẹ */
+    white-space: nowrap;
+}
+
+/* Cắt bớt chữ trong các ô nếu nó dài quá */
+.table td, .table th {
+    overflow: hidden;
+    white-space: nowrap; /* Đảm bảo nội dung không xuống dòng */
+    text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+}
+
+/* Cải thiện tiêu đề với màu nhẹ hơn */
+.title-heading {
+    font-size: 2.5rem; /* Giảm kích thước font */
+    background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
+    color: #2c3e50;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 15px;
+    padding: 15px 25px;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng hover cho tiêu đề */
+.title-heading:hover {
+    transform: scale(1.05);
+}
+/* Modal */
+.modal.show {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    z-index: 1050;
+}
+
+/* Modal Dialog */
+.modal-dialog {
+    width: 60%;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần đầu modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+/* Nút đóng modal */
+.modal-header .close {
+    font-size: 1.5rem;
+    color: #000;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Body của modal */
+.modal-body {
+    padding: 20px;
+}
+
+/* Form trong modal */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Nút trong modal */
+.modal-body .btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Đảm bảo không bị tràn khi sử dụng trong modal */
+input, select, button {
+    width: 100%;
+}
+
+/* Nút "Hủy" */
+.btn-secondary {
+    margin-left: 10px;
+}
+
+/* Cải thiện form các trường dữ liệu */
+.container-fluid {
+    padding: 0 20px;
+}
+
+/* Hiệu ứng fadeIn cho modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Điều chỉnh bảng phân trang */
+.pagination-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-container .input-group {
+    width: 50%;
+}
+
+.search-container button {
+    margin-left: 5px;
+}
+/* Modal */
+.modal.show {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    z-index: 1050;
+}
+
+/* Modal Dialog */
+/* Modal Dialog */
+.modal-dialog {
+    width: 70%;
+    max-width: 1000px;
+    margin: auto;
+    max-height: 110vh;
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần đầu modal */
+.modal-header {
+    display: flex;
+    justify-content: center;  /* Căn giữa nội dung */
+    align-items: center;
+    padding: 15px;
+    position: relative;
+    width: 100%;
+}
+
+/* Tiêu đề modal */
+.modal-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;  /* Căn giữa chữ */
+    flex-grow: 1;  /* Đảm bảo h5 chiếm không gian còn lại để căn giữa */
+}
+
+/* Nút đóng modal */
+.modal-header .close {
+    position: absolute;
+    top: 0px;  /* Khoảng cách từ trên, bạn có thể điều chỉnh lại nếu cần */
+    right:0px;  /* Khoảng cách từ bên phải */
+    font-size: 1.5rem;
+    color: #000;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;  /* Đảm bảo nút không bị che khuất bởi các phần tử khác */
+}

@@ -1,0 +1,52 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <!-- 🌈 Tiêu đề đẹp -->
+ 
+<!-- Biểu mẫu phân công -->
+<!-- Biểu mẫu phân công -->
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <form>
+      <div class="card shadow-sm" style="background-color: #2c718d;">
+        <!-- Tiêu đề form -->
+        <div class="card-header text-center" style="background-color: #2c718d; border-bottom: none;">
+          <h5 class="mb-0 text-white">Phân Công Giảng Dạy</h5>
+        </div>
+
+        <div class="card-body">
+          <!-- Mã giáo viên -->
+          <div class="mb-3">
+            <label for="maGv" class="form-label" style="color: white;">Mã giáo viên</label>
+            <select class="form-control" [(ngModel)]="assignMaGv" name="maGv" id="maGv">
+              <option value="" disabled selected>Chọn hoặc nhập mã GV</option>
+              <option *ngFor="let teacher of teacherList" [value]="teacher">{{ teacher }}</option>
+            </select>
+          </div>
+
+          <!-- Mã lớp -->
+          <div class="mb-3">
+            <label for="maLop" class="form-label" style="color: white;">Mã lớp</label>
+            <select class="form-control" [(ngModel)]="assignMaLop" name="maLop" id="maLop">
+              <option value="" disabled selected>Chọn hoặc nhập mã lớp</option>
+              <option *ngFor="let classId of classList" [value]="classId">{{ classId }}</option>
+            </select>
+          </div>
+
+          <!-- Học kỳ -->
+          <div class="mb-3">
+            <label for="hocKi" class="form-label" style="color: white;">Học kỳ</label>
+            <select class="form-control" [(ngModel)]="assignHocKi" name="hocKi" id="hocKi">
+              <option value="" disabled selected>Chọn hoặc nhập học kỳ</option>
+              <option *ngFor="let semester of semesterList" [value]="semester">{{ semester }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card-footer text-center" style="background-color: #2c718d; border-top: none;">
+          <button type="submit" class="btn btn-danger" (click)="assignTeacher()">Lưu phân công</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+

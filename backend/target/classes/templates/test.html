@@ -1,0 +1,95 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Table, Button, Form, Modal } from "react-bootstrap";
+
+const AttendancePage = () => {
+const [attendances, setAttendances] = useState([]);
+const [showModal, setShowModal] = useState(false);
+const [newAttendance, setNewAttendance] = useState({ clazzId: "", studentId: "", date: "", status: "" });
+
+useEffect(() => {
+fetchAttendances();
+}, []);
+
+const fetchAttendances = async () => {
+const response = await axios.get("/attendance");
+setAttendances(response.data);
+};
+
+const handleDelete = async (id) => {
+await axios.delete(`/attendance/${id}`);
+fetchAttendances();
+};
+
+const handleSubmit = async (e) => {
+e.preventDefault();
+await axios.post("/attendance", newAttendance);
+setShowModal(false);
+fetchAttendances();
+};
+
+return (
+<div className="container mt-4">
+    <h2>Danh sách điểm danh</h2>
+    <Button variant="primary" onClick={() => setShowModal(true)}>Thêm điểm danh</Button>
+    <Table striped bordered hover className="mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Lớp</th>
+            <th>Học sinh</th>
+            <th>Ngày</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        {attendances.map((att) => (
+        <tr key={att.id}>
+            <td>{att.id}</td>
+            <td>{att.clazzId}</td>
+            <td>{att.studentId}</td>
+            <td>{att.date}</td>
+            <td>{att.status}</td>
+            <td>
+                <Button variant="danger" onClick={() => handleDelete(att.id)}>Xóa</Button>
+            </td>
+        </tr>
+        ))}
+        </tbody>
+    </Table>
+
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+    <Modal.Header closeButton>
+        <Modal.Title>Thêm điểm danh</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group>
+                <Form.Label>ID Lớp</Form.Label>
+                <Form.Control type="text" onChange={(e) => setNewAttendance({ ...newAttendance, clazzId: e.target.value })} required />
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>ID Học sinh</Form.Label>
+                <Form.Control type="text" onChange={(e) => setNewAttendance({ ...newAttendance, studentId: e.target.value })} required />
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Ngày</Form.Label>
+                <Form.Control type="date" onChange={(e) => setNewAttendance({ ...newAttendance, date: e.target.value })} required />
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Trạng thái</Form.Label>
+                <Form.Control as="select" onChange={(e) => setNewAttendance({ ...newAttendance, status: e.target.value })} required>
+                <option value="Present">Có mặt</option>
+                <option value="Absent">Vắng</option>
+                </Form.Control>
+            </Form.Group>
+            <Button variant="primary" type="submit" className="mt-2">Lưu</Button>
+        </Form>
+    </Modal.Body>
+    </Modal>
+</div>
+);
+};
+
+export default AttendancePage;

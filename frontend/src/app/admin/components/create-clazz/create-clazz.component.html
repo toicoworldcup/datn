@@ -1,0 +1,52 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <!-- 🌈 Tiêu đề đẹp -->
+    
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form>
+        <div class="card shadow-sm" style="background-color: #2c718d;">
+          <!-- Tiêu đề form -->
+          <div class="card-header text-center" style="background-color: #2c718d; border-bottom: none;">
+            <h5 class="mb-0 text-white">Tạo Lớp Học</h5>
+          </div>
+  
+          <div class="card-body">
+            <!-- Mã học phần -->
+            <div class="mb-3">
+              <label for="maHocPhan" class="form-label" style="color: white;">Mã học phần</label>
+              <select class="form-control" [(ngModel)]="maHocPhan" name="maHocPhan" id="maHocPhan">
+                <option value="" disabled selected>Chọn hoặc nhập mã học phần</option>
+                <option *ngFor="let course of courseList" [value]="course">{{ course }}</option>
+              </select>
+            </div>
+  
+            <!-- Học kỳ -->
+            <div class="mb-3">
+              <label for="hocki" class="form-label" style="color: white;">Học kỳ</label>
+              <select class="form-control" [(ngModel)]="hocki" name="hocki" id="hocki">
+                <option value="" disabled selected>Nhập học kỳ</option>
+                <option *ngFor="let semester of semesterList" [value]="semester">{{ semester }}</option>
+              </select>
+            </div>
+          </div>
+  
+          <!-- Nút Tạo lớp -->
+          <div class="card-footer text-center" style="background-color: #2c718d; border-top: none;">
+            <button type="submit" class="btn btn-success" (click)="generateClazz()">
+              <i class="fa fa-save me-2"></i> Tạo
+            </button>
+          </div>
+        </div>
+      </form>
+  
+      <!-- Hiển thị thông báo -->
+      <div *ngIf="message" class="alert alert-success mt-3">
+        {{ message }}
+      </div>
+      <div *ngIf="error" class="alert alert-danger mt-3">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+  
+</div>

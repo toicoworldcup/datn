@@ -1,0 +1,23 @@
+package org.example.doantn.Repository;
+
+import org.example.doantn.Entity.Dangkihocphan;
+import org.example.doantn.Entity.Grade;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface GradeRepo extends JpaRepository<Grade, Integer> {
+    @Query("SELECT g FROM Grade g WHERE g.student.id = :studentId AND g.clazz.id = :clazzId")
+    Optional<Grade> findByClazzIdAndStudentId(@Param("clazzId") Integer clazzId, @Param("studentId") Integer studentId);
+    @Query("SELECT g FROM Grade g " +
+            "JOIN g.clazz c " +
+            "JOIN c.semester s " +
+            "JOIN g.student st " +
+            "WHERE st.mssv = :mssv AND s.name = :semesterName")
+    List<Grade> findByMssvAndSemester(@Param("mssv") String mssv, @Param("semesterName") String semesterName);
+}

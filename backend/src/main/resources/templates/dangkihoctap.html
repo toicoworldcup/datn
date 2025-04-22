@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Đăng ký học phần</title>
+  <style>
+    /* CSS cơ bản để hiển thị giống hình ảnh */
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .register-form {
+      margin-bottom: 20px;
+    }
+    .register-form label {
+      margin-right: 10px;
+    }
+    .register-form input[type="text"] {
+      padding: 5px;
+      width: 100px;
+    }
+    .register-form button {
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>ĐĂNG KÝ HỌC PHẦN</h2>
+
+<div class="register-form">
+  <label for="term">Học kỳ:</label>
+  <select id="term">
+    <option value="20251">20251</option>
+  </select>
+  <label>Học chương trình: Công nghệ thông tin Việt-Nhật 2021</label>
+  <br><br>
+  <label for="courseId">Mã HP đăng ký:</label>
+  <input type="text" id="courseId">
+  <button>Đăng ký</button>
+</div>
+
+<table>
+  <caption>Bảng đăng ký học phần kỳ 20251 của sinh viên 20215052</caption>
+  <thead>
+  <tr>
+    <th>Mã HP</th>
+    <th>Tên lớp</th>
+    <th>Ngày đăng ký</th>
+    <th>TT đăng ký</th>
+    <th>Số TC</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td colspan="6" style="text-align: center;">Sinh viên chưa đăng ký HP nào trong kỳ này</td>
+  </tr>
+  <tr>
+    <td colspan="5" style="text-align: right;">Tổng số TC đăng ký = 0</td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+
+<br>
+<button>Xóa các HP chọn</button>
+<button>Gửi đăng ký</button>
+
+</body>
+</html>

@@ -1,0 +1,970 @@
+.header {
+    height: 120px;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+}
+
+.serviceTitle {
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    color: #aa261b;
+    border-bottom: 3px solid #e8e8e8;
+    text-transform: uppercase;
+}
+
+.header .w-left {
+    margin-top: 10px;
+}
+
+    .header .w-left img, .slide {
+        width: 100%;
+    }
+
+    .header .w-left .university {
+        margin-top: 0;
+        margin-left: 10px;
+        font-weight: bold;
+    }
+
+.header .w-right {
+    position: relative;
+    display: flex;
+    margin-top: 30px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+
+
+    .header .w-right .search {
+        position: absolute;
+        left: 0;
+    }
+
+        .header .w-right .search input {
+            width: 250px;
+            height: 40px;
+            border-radius: 6px;
+            border: solid 1px #d9d9d9;
+            background-color: #ffffff;
+        }
+
+        .header .w-right .search img {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            right: 10px;
+            top: 12px;
+        }
+
+.logIned {
+    width: 300px;
+}
+
+    .logIned a {
+        font-weight: normal !important;
+        color: #000 !important;
+        text-decoration: none;
+    }
+
+
+.header .w-right .logIn {
+    height: 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    background-color: #aa261b;
+    text-align: center;
+    width: 200px;
+    margin-bottom: 5px;
+}
+
+    .header .w-right .logIn .btn-submit {
+        color: #ffffff;
+        padding-top: 5px;
+        font-weight: bold;
+    }
+
+        .header .w-right .logIn .btn-submit a {
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+#myNavbar .search {
+    float: right;
+    margin-top: 13px;
+}
+
+.navigation {
+    width: 100%;
+    background: #222222;
+}
+
+    .navigation a {
+        color: #FFF;
+        text-transform: uppercase;
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+
+        .navigation a:hover {
+            color: #e70000 !important;
+            font-weight: bold;
+            background: none !important;
+        }
+
+
+#menu .dropdown-menu {
+    display: none;
+    position: absolute;
+    width: 220px;
+    padding: 0 !important;
+    text-transform: none;
+    margin-left: -2px;
+    margin-top: -1px;
+}
+
+    #menu .dropdown-menu li {
+        margin-left: 0 !important;
+        display: block !important;
+        font-size: 14px;
+        border-bottom: 1px solid #e0ded9;
+        background: #363636;
+        font-weight: normal;
+        text-transform: none;
+    }
+
+    #menu .dropdown-menu > li > a, #menu .dropdown-menu li {
+        color: #FFF;
+        padding: 5px;
+    }
+
+#menu .navbar-nav .dropdown:hover .dropdown-menu {
+    display: block
+}
+
+#menu .dropdown {
+    position: relative;
+}
+
+.aui .navbar-nav > li > a, .aui .nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#menu .dropdown-toggle {
+    float: left;
+}
+
+#myNavbar .navbar-nav {
+    -ms-align-items: center;
+    align-items: center;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 111;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: #222222 !important;
+    outline: none !important;
+    color: #e70000;
+}
+
+.navigation li:hover a:after, .navigation li:focus a:after {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
+
+.navigation li a:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background-color: #e70000;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: all .25s ease;
+    -moz-transition: all .25s ease;
+    -ms-transition: all .25s ease;
+    -o-transition: all .25s ease;
+    transition: all .25s ease;
+}
+
+.slideAnh {
+    width: 100%;
+    height: 450px;
+    max-height: 450px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .slideAnh img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+    }
+
+.slideBar {
+    padding-left: 0;
+    padding-right: 0;
+    background: #f5f5f5;
+}
+
+    .slideBar li {
+        border-top: 1px solid #e4e2e2;
+        display: block;
+        padding: 10px 15px;
+    }
+
+        .slideBar li a {
+            color: #000;
+        }
+
+            .slideBar li a:hover {
+                text-decoration: none;
+                color: #aa261b;
+                font-weight: bold;
+            }
+
+        .slideBar li img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+    .slideBar .slideBarText {
+        font-size: 16px;
+    }
+
+
+.slideBarTitle {
+    text-align: center;
+    padding: 10px 0;
+    color: #FFF;
+    background: #aa261b;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 !important;
+    display: none;
+}
+
+.serviceGroup {
+    font-size: 14px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #262626;
+    text-transform: uppercase;
+}
+
+.serviceContent a {
+    color: #262626;
+}
+
+    .serviceContent a:hover {
+        color: #262626;
+        text-decoration: none;
+    }
+
+.contentTitle {
+    font-size: 16px;
+    color: #262626;
+}
+
+.contentTex {
+    color: #616161;
+    font-style: italic;
+}
+
+
+
+.footer {
+    width: 100%;
+    height: 195px;
+    margin: auto;
+    background-color: #aa261b;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+    .footer img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+
+
+    .footer .text {
+        padding-top: 15px;
+    }
+
+        .footer .text p {
+            font-size: 14px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.43;
+            letter-spacing: normal;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 1px;
+        }
+
+            .footer .text p.normal {
+                font-weight: normal;
+                margin-top: 1px;
+            }
+
+.services .service {
+    width: 260px;
+    border-radius: 4px;
+    background-color: #eeeeee;
+    padding: 0px 15px 0px;
+    margin: 10px 10px 10px;
+}
+
+    .services .service .title {
+        text-align: center;
+    }
+
+.content .title a {
+    color: #000;
+}
+
+.services .service .title h1 {
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #434343;
+}
+
+.services .service .title img {
+    width: 85px;
+    height: 85px;
+}
+
+.services .service p {
+    width: 100%;
+    height: 75px;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.29;
+    letter-spacing: normal;
+    color: #262626;
+    text-align: left;
+    overflow: hidden;
+}
+
+.services .service a {
+    width: 100%;
+    height: 14px;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.17;
+    letter-spacing: normal;
+    color: #aa261b;
+    text-align: left;
+}
+
+.navbar-toggle {
+    border-color: #FFF;
+}
+
+    .navbar-toggle .icon-bar {
+        background: #FFF;
+    }
+
+.tabs {
+    width: 100%;
+    height: 50px;
+    background-color: #aa261b;
+    display: flex;
+    flex-direction: row;
+}
+
+.tab {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    display: flex;
+    padding: 11px 33px;
+    margin-top: 10px;
+    color: #ffffffff;
+}
+
+.panels {
+    background: #ffffffff;
+    height: 100%;
+    margin-top: 10px;
+}
+
+.panel {
+    display: none;
+    animation: fadein .8s;
+    flex-direction: row;
+}
+
+    .panel .info {
+        flex: 1;
+    }
+
+        .panel .info .content {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+
+        .panel .info h3 {
+            border-bottom: solid 4px #e8e8e8;
+            color: #aa261b;
+        }
+
+        .panel .info.w-left {
+            padding-right: 20px;
+        }
+
+        .panel .info.w-right {
+            padding-left: 20px;
+        }
+
+        .panel .info .item {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 20px;
+        }
+
+            .panel .info .item .item-content {
+            }
+
+                .panel .info .item .item-content.item-left {
+                    text-align: center;
+                    border-radius: 4px;
+                    background-color: #eeeeee;
+                    padding: 10px 6px 8px;
+                }
+
+                    .panel .info .item .item-content.item-left.img {
+                        background-color: unset;
+                        padding: 0;
+                    }
+
+                    .panel .info .item .item-content.item-left img {
+                        width: 90px;
+                        height: 60px;
+                    }
+
+                    .panel .info .item .item-content.item-left .month {
+                        width: 80px;
+                        font-size: 18px;
+                        font-weight: 500;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        text-align: center;
+                        color: #2c2c2c;
+                        margin-bottom: 5px;
+                        font-weight: bold;
+                    }
+
+                    .panel .info .item .item-content.item-left .date {
+                        font-size: 20px;
+                        font-weight: 500;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        text-align: center;
+                        color: #aa261b;
+                        margin-top: 1px;
+                    }
+
+                .panel .info .item .item-content.item-right {
+                    padding-left: 15px;
+                }
+
+                    .panel .info .item .item-content.item-right .title {
+                        font-size: 16px;
+                        font-weight: normal;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: 1.25;
+                        letter-spacing: normal;
+                        color: #262626;
+                    }
+
+                    .panel .info .item .item-content.item-right .datetime {
+                        font-style: italic;
+                        font-size: 16px;
+                        font-weight: normal;
+                        font-stretch: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        color: #616161;
+                    }
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.panel-title {
+    font-size: 1.5em;
+    font-weight: bold
+}
+
+.radio {
+    display: none;
+}
+
+.chil-slideBar {
+    padding-left: 10px;
+}
+
+#tonghop:checked ~ .panels #tonghop-panel,
+#daotaodaihoc:checked ~ .panels #daotaodaihoc-panel,
+#daotaosaudaihoc:checked ~ .panels #daotaosaudaihoc-panel,
+#contacsinhvien:checked ~ .panels #contacsinhvien-panel {
+    display: flex;
+}
+
+#tonghop:checked ~ .tabs #tonghop-tab,
+#daotaodaihoc:checked ~ .tabs #daotaodaihoc-tab,
+#daotaosaudaihoc:checked ~ .tabs #daotaosaudaihoc-tab,
+#contacsinhvien:checked ~ .tabs #contacsinhvien-tab {
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #aa261b;
+    background: #ffffffff;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.tongHop, .daiHoc, .sauDaiHoc, .congTacSinhVien {
+    width: 150px;
+    float: left;
+    text-align: center;
+    display: block;
+}
+
+.daiHoc {
+    width: 200px;
+}
+
+.sauDaiHoc, .congTacSinhVien {
+    width: 220px;
+}
+
+.nameImg {
+    width: 22%;
+    float: left;
+    margin-right: 20px;
+}
+
+    .nameImg img {
+        border-radius: 100%;
+        width: 60px;
+    }
+
+.nameText {
+    color: #000;
+    text-align: left;
+}
+
+.caiDat {
+    background: #FFF;
+    border-radius: 5px;
+    display: none;
+    position: absolute;
+    width: 280px;
+    z-index: 1;
+}
+
+    .caiDat li {
+        display: block;
+        text-align: left;
+        padding: 5px 0px;
+        border-radius: 5px;
+    }
+
+    .caiDat a {
+        color: #111;
+    }
+
+.logIned:hover .caiDat {
+    display: block !important;
+	position: absolute;
+    right: 0;
+    z-index: 1111;
+}
+
+.serviceContent {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    display: block;
+}
+
+@media only screen and (device-width : 414px) and (device-height : 736px) and (-webkit-device-pixel-ratio : 3) {
+	.header .w-right .logIn .btn-submit{
+		padding-top: 2px;
+	}
+	.header .w-right .logIn{
+		height: 25px;
+	}
+    .w-left {
+        margin-bottom: 5px;
+    }
+
+    .header .w-right {
+        margin-top: 0;
+    }
+
+        .header .w-right .search input, .logIn {
+            width: 165px !important;
+        }
+
+    .services .service {
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    .header .w-left {
+        margin-top: 5px;
+    }
+
+    #tonghop:checked ~ .panels #tonghop-panel, #daotaodaihoc:checked ~ .panels #daotaodaihoc-panel, #daotaosaudaihoc:checked ~ .panels #daotaosaudaihoc-panel, #contacsinhvien:checked ~ .panels #contacsinhvien-panel {
+        display: block;
+    }
+
+    .panel .info.w-right {
+        padding-left: 0;
+    }
+
+    .panel .info .item .item-content.item-left img {
+        width: auto;
+    }
+
+    .tabs {
+        height: auto;
+    }
+
+    .tongHop, .daiHoc, .sauDaiHoc, .congTacSinhVien {
+        float: none;
+        display: block;
+        width: auto;
+        text-align: left;
+    }
+
+    #tonghop:checked ~ .tabs #tonghop-tab, #daotaodaihoc:checked ~ .tabs #daotaodaihoc-tab, #daotaosaudaihoc:checked ~ .tabs #daotaosaudaihoc-tab, #contacsinhvien:checked ~ .tabs #contacsinhvien-tab {
+        text-align: left;
+    }
+
+    .logIned {
+        width: 200px;
+    }
+
+    .slideBar li {
+        display: none;
+    }
+
+    .slideBarTitle {
+        display: block;
+    }
+
+    .slideAnh {
+        height: 160px;
+    }
+}
+
+@media only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
+	.header .w-right .logIn .btn-submit{
+		padding-top: 2px;
+	}
+	.header .w-right .logIn{
+		height: 25px;
+	}
+    .logIned {
+        width: 185px;
+    }
+
+    .w-left {
+        margin-bottom: 5px;
+    }
+
+    .header .w-right {
+        margin-top: 0;
+    }
+
+        .header .w-right .search input, .logIn {
+            width: 165px !important;
+        }
+
+    .services .service {
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    .header .w-left {
+        margin-top: 5px;
+    }
+
+    #tonghop:checked ~ .panels #tonghop-panel, #daotaodaihoc:checked ~ .panels #daotaodaihoc-panel, #daotaosaudaihoc:checked ~ .panels #daotaosaudaihoc-panel, #contacsinhvien:checked ~ .panels #contacsinhvien-panel {
+        display: block;
+    }
+
+    .panel .info.w-right {
+        padding-left: 0;
+    }
+
+    .panel .info .item .item-content.item-left img {
+        width: auto;
+    }
+
+    .tabs {
+        height: auto;
+    }
+
+    .tongHop, .daiHoc, .sauDaiHoc, .congTacSinhVien {
+        float: none;
+        display: block;
+        width: auto;
+        text-align: left;
+    }
+
+    #tonghop:checked ~ .tabs #tonghop-tab, #daotaodaihoc:checked ~ .tabs #daotaodaihoc-tab, #daotaosaudaihoc:checked ~ .tabs #daotaosaudaihoc-tab, #contacsinhvien:checked ~ .tabs #contacsinhvien-tab {
+        text-align: left;
+    }
+
+    .slideBar li {
+        display: none;
+    }
+
+    .slideBarTitle {
+        display: block;
+    }
+
+    .slideAnh {
+        height: 160px;
+    }
+
+    .nameImg {
+        width: 22%;
+        float: left;
+        margin-right: 25px;
+    }
+}
+
+@media only screen and (device-width : 375px) and (device-height : 667px) and (-webkit-device-pixel-ratio : 2) {
+	.header .w-right .logIn .btn-submit{
+		padding-top: 2px;
+	}
+	.header .w-right .logIn{
+		height: 25px;
+	}
+    .logIned {
+        width: 185px;
+    }
+
+    .w-left {
+        margin-bottom: 5px;
+    }
+
+    .header .w-right {
+        margin-top: 0;
+    }
+
+        .header .w-right .search input, .logIn {
+            width: 165px !important;
+        }
+
+    .services .service {
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    .header .w-left {
+        margin-top: 5px;
+    }
+
+    #tonghop:checked ~ .panels #tonghop-panel, #daotaodaihoc:checked ~ .panels #daotaodaihoc-panel, #daotaosaudaihoc:checked ~ .panels #daotaosaudaihoc-panel, #contacsinhvien:checked ~ .panels #contacsinhvien-panel {
+        display: block;
+    }
+
+    .panel .info.w-right {
+        padding-left: 0;
+    }
+
+    .panel .info .item .item-content.item-left img {
+        width: auto;
+    }
+
+    .tabs {
+        height: auto;
+    }
+
+    .tongHop, .daiHoc, .sauDaiHoc, .congTacSinhVien {
+        float: none;
+        display: block;
+        width: auto;
+        text-align: left;
+    }
+
+    #tonghop:checked ~ .tabs #tonghop-tab, #daotaodaihoc:checked ~ .tabs #daotaodaihoc-tab, #daotaosaudaihoc:checked ~ .tabs #daotaosaudaihoc-tab, #contacsinhvien:checked ~ .tabs #contacsinhvien-tab {
+        text-align: left;
+    }
+
+    .slideBar li {
+        display: none;
+    }
+
+    .slideBarTitle {
+        display: block;
+    }
+
+    .slideAnh {
+        height: 160px;
+    }
+
+    .nameImg {
+        width: 22%;
+        float: left;
+        margin-right: 25px;
+    }
+}
+
+@media (min-width: 1920px) {
+
+    .container {
+        width: 1500px;
+    }
+}
+
+
+@media (max-width: 987px) {
+	.header .w-right .logIn{
+		height: 25px;
+	}
+	.header .w-right .logIn .btn-submit{
+		padding-top: 2px;
+	}
+
+    .logIned {
+        width: 185px;
+    }
+
+    .w-left {
+        margin-bottom: 5px;
+    }
+
+    .header .w-right {
+        margin-top: 0;
+    }
+
+        .header .w-right .search input, .logIn {
+            width: 165px !important;
+        }
+
+    .services .service {
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    .header .w-left {
+        margin-top: 5px;
+    }
+
+    #tonghop:checked ~ .panels #tonghop-panel, #daotaodaihoc:checked ~ .panels #daotaodaihoc-panel, #daotaosaudaihoc:checked ~ .panels #daotaosaudaihoc-panel, #contacsinhvien:checked ~ .panels #contacsinhvien-panel {
+        display: block;
+    }
+
+    .panel .info.w-right {
+        padding-left: 0;
+    }
+
+    .panel .info .item .item-content.item-left img {
+        width: auto;
+    }
+
+    .tabs {
+        height: auto;
+    }
+
+    .tongHop, .daiHoc, .sauDaiHoc, .congTacSinhVien {
+        float: none;
+        display: block;
+        width: auto;
+        text-align: left;
+    }
+
+    #tonghop:checked ~ .tabs #tonghop-tab, #daotaodaihoc:checked ~ .tabs #daotaodaihoc-tab, #daotaosaudaihoc:checked ~ .tabs #daotaosaudaihoc-tab, #contacsinhvien:checked ~ .tabs #contacsinhvien-tab {
+        text-align: left;
+    }
+
+    .slideBar li {
+        display: none;
+    }
+
+    .slideBarTitle {
+        display: block;
+    }
+
+    .slideAnh {
+        height: 160px;
+    }
+
+    .nameImg {
+        width: 22%;
+        float: left;
+        margin-right: 25px;
+    }
+}
