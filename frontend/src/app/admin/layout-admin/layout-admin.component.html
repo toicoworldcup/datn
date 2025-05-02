@@ -1,28 +1,32 @@
 <div class="app-layout">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- Logo -->
-    <div class="logo">
-      <img src="assets/images/Logo-1.jpg" alt="Logo" class="sidebar-logo">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Phần thân: Sidebar + Nội dung -->
+  <div class="main-body">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Logo -->
+    
+
+      <!-- Menu -->
+      <ul class="menu-list">
+        <li><a routerLink="/admin/student" class="menu-item">Danh sách học sinh</a></li>
+        <li><a routerLink="/admin/teacher" class="menu-item">Danh sách giáo viên</a></li>
+        <li><a routerLink="/admin/course" class="menu-item">Danh sách học phần</a></li>
+        <li><a routerLink="/admin/clazz" class="menu-item">Danh sách lớp</a></li>
+        <li><a routerLink="/admin/semester" class="menu-item">Quản lí đăng kí kì học</a></li>
+        <li><a routerLink="/admin/assign-teacher" class="menu-item">Phân công giáo viên</a></li>
+        <li><a routerLink="/admin/create-clazz" class="menu-item">Tạo lớp</a></li>
+        <li><a routerLink="/admin/class-list" class="menu-item">Tạo thời khoá biểu</a></li>
+        <li><a routerLink="/admin/class-list" class="menu-item">Quản lí tài khoản sinh viên</a></li>
+      </ul>
     </div>
 
-    <!-- Menu -->
-    <ul class="menu-list">
-      <li><a routerLink="/admin/student" class="menu-item">Danh sách học sinh</a></li>
-      <li><a routerLink="/admin/teacher" class="menu-item">Danh sách giáo viên</a></li>
-      <li><a routerLink="/admin/course" class="menu-item">Danh sách học phần</a></li>
-      <li><a routerLink="/admin/clazz" class="menu-item">Danh sách lớp</a></li>
-      <li><a routerLink="/admin/semester" class="menu-item">Quản lí đăng kí kì học</a></li>
-      <li><a routerLink="/admin/assign-teacher" class="menu-item">Phân công giáo viên</a></li>
-      <li><a routerLink="/admin/create-clazz" class="menu-item">Tạo lớp</a></li>
-      <li><a routerLink="/admin/class-list" class="menu-item">Tạo thời khoá biểu</a></li>
-      <li><a routerLink="/admin/class-list" class="menu-item">Quản lí tài khoản sinh viên</a></li>
-    </ul>
-    
-  </div>
-
-  <!-- Nội dung chính -->
-  <div class="content">
-    <router-outlet></router-outlet>  <!-- Các component con sẽ được hiển thị ở đây -->
+    <!-- Nội dung -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

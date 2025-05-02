@@ -1,5 +1,6 @@
 package org.example.doantn.Service;
 
+import org.example.doantn.Dto.response.UserInfoResponse;
 import org.example.doantn.Entity.RoleType;
 import org.example.doantn.Entity.Student;
 import org.example.doantn.Entity.Teacher;
@@ -8,15 +9,11 @@ import org.example.doantn.Repository.RoleRepo;
 import org.example.doantn.Repository.StudentRepo;
 import org.example.doantn.Repository.TeacherRepo;
 import org.example.doantn.Repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -73,12 +70,28 @@ public class UserService implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities("ROLE_" + user.getRole().getName()) // Thêm "ROLE_" vào quyền
                 .build();
+    }
+
+    public UserInfoResponse getUserInfo(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        // Kiểm tra loại người dùng (Student hoặc Teacher)
+        String fullName = "";
+        String role = user.getRole().getName();
+
+        if (user.getStudent() != null) {
+            fullName = user.getStudent().getName(); // Lấy tên học sinh
+        } else if (user.getTeacher() != null) {
+            fullName = user.getTeacher().getName(); // Lấy tên giáo viên
+        }
+
+        return new UserInfoResponse(fullName, role);
     }
 
 

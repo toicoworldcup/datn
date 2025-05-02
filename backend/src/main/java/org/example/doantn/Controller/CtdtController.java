@@ -7,6 +7,7 @@ import org.example.doantn.Dto.response.CtdtDTO;
 import org.example.doantn.Dto.response.CthDTO;
 import org.example.doantn.Dto.response.StudentDTO;
 import org.example.doantn.Entity.*;
+import org.example.doantn.Repository.BatchRepo;
 import org.example.doantn.Service.CtdtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,8 @@ import java.util.stream.Collectors;
 public class CtdtController {
     @Autowired
     private CtdtService ctdtService;
+    @Autowired
+    private BatchRepo batchRepo;
 
     @PreAuthorize("hasRole('QLDT')")
     @GetMapping
@@ -63,7 +66,7 @@ public class CtdtController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + e.getMessage());
         }
     }
-    @PreAuthorize("hasRole('QLDT')")
+    //  @PreAuthorize("hasRole('QLDT')")
     @GetMapping("/{maCt}")
     public List<CthDTO> getCoursesByMaCt(@PathVariable String maCt) {
         return ctdtService.getCoursesByMaCt(maCt);
@@ -71,19 +74,28 @@ public class CtdtController {
 
     @PreAuthorize("hasRole('QLDT')")
     @PostMapping("/ctdt/assign")
-    public ResponseEntity<?> addCourse(@RequestBody CthRequest request) {
+    public ResponseEntity<?> addCourses(@RequestBody CthRequest request) {
         try {
-            ctdtService.assignCourse(request.getMaCt(), request.getMaHocPhan());
-            return ResponseEntity.ok("Thêm học phần thành công");
+            // Thêm nhiều học phần vào chương trình đào tạo
+            ctdtService.assignCourses(request.getMaCt(), request.getMaHocPhanList());
+
+            // Trả về danh sách học phần đã được cập nhật
+            List<CthDTO> cthDTOList = ctdtService.getCoursesByMaCt(request.getMaCt());
+            return ResponseEntity.ok(cthDTOList);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi thêm học phần: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi thêm học phần: " + e.getMessage());
         }
     }
+
 
 
     private Ctdt convertToEntity(CtdtRequest request) {
         Ctdt ctdt = new Ctdt();
         ctdt.setName(request.getName());
+        Batch batch = batchRepo.findByName(request.getKhoa())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy khoá với tên: " + request.getKhoa()));
         return ctdt;
     }
 

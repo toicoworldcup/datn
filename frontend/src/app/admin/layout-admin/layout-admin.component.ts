@@ -4,7 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-layout-admin',
   standalone: false,
   templateUrl: './layout-admin.component.html',
-  styleUrl: './layout-admin.component.css'
+  styleUrl: './layout-admin.component.css',
+  
 })
 export class LayoutAdminComponent {
 

@@ -6,4 +6,6 @@ import lombok.Data;
 public class CtdtRequest {
     private String name;
     private String maCt;
+    private String khoa;
+
 }

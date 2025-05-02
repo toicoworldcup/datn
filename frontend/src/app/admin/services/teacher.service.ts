@@ -2,12 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Teacher } from '../models/teacher.model';
+export interface TeacherInfoResponse {
+  fullName: string;
+  className: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeacherService {
   private apiUrl = 'http://localhost:8080/teachers';
+  private apiUrl2 = 'http://localhost:8080/api/teacherinfo'; // URL của API backend
+
 
   constructor(private http: HttpClient) {}
 
@@ -30,4 +36,8 @@ export class TeacherService {
   deleteTeacher(maGv: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${maGv}`);
   }
+  getTeacherInfo(): Observable<TeacherInfoResponse> {
+      return this.http.get<TeacherInfoResponse>(this.apiUrl2);
+    }
+  
 }

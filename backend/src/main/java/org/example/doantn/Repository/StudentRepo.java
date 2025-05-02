@@ -21,6 +21,11 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
 
 
     List<Student> findByBatchName(String batchName);
+    @Query("SELECT s FROM Student s WHERE s.ctdt.maCt = :maCt AND s.batch.name = :batchName")
+    List<Student> findByCtdtMaCtAndBatchName(@Param("maCt") String maCt, @Param("batchName") String batchName);
+
+    @Query("SELECT s FROM Student s WHERE s.ctdt.maCt = :maCt")
+    List<Student> findByCtdtMaCt(@Param("maCt") String maCt);
 
     boolean existsByMssv(String mssv);
 }

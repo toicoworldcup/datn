@@ -60,6 +60,12 @@ public class StudentService {
         return studentRepo.findByUser_Username(username);
     }
 
+    public List<Student> getStudentsByCtdtNameAndBatch(String ctdtName, String batchName) {
+        return studentRepo.findByCtdtMaCtAndBatchName(ctdtName, batchName);
+    }
+    public List<Student> getStudentsByCtdtName(String maCt) {
+        return studentRepo.findByCtdtMaCt(maCt);
+    }
     public Student updateStudent(int id, Student updatedStudent) {
         Optional<Student> optionalStudent = studentRepo.findById(id);
         if (optionalStudent.isPresent()) {

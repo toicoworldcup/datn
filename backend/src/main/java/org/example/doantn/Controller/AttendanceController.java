@@ -1,10 +1,7 @@
 package org.example.doantn.Controller;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.example.doantn.Dto.request.AttendanceRequest;
-import org.example.doantn.Dto.request.StudentRequest;
 import org.example.doantn.Dto.response.AttendanceDTO;
-import org.example.doantn.Dto.response.StudentDTO;
 import org.example.doantn.Entity.*;
 import org.example.doantn.Repository.ClazzRepo;
 import org.example.doantn.Repository.DangkilopRepo;
@@ -21,14 +18,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/attendance")
+
 public class AttendanceController {
 
     @Autowired
@@ -119,6 +114,7 @@ public class AttendanceController {
 
         );
     }
+
     private Attendance convertToEntity(AttendanceRequest request) {
         Attendance attendance = new Attendance();
         attendance.setStatus(request.getStatus());
@@ -137,6 +133,4 @@ public class AttendanceController {
         }
         return attendance;
     }
-
-
 }

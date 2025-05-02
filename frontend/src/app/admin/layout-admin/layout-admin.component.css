@@ -1,24 +1,42 @@
-/* Giao diện chính */
+/* Layout chính: Header trên cùng, phần thân dưới */
 .app-layout {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
+/* Header */
+app-header {
+  height: 60px;
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  justify-content: center; /* Căn giữa chữ theo chiều ngang */
+
+}
+
+/* Phần thân: sidebar + nội dung */
+.main-body {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 60px);
+}
+
+/* Sidebar */
 .sidebar {
   background-color: #34495e;
   color: #ecf0f1;
   padding: 20px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-
-  width: fit-content;      /* Tự co theo nội dung */
-  min-width: 180px;        /* Đặt giới hạn tối thiểu */
-  max-width: 250px;        /* Không quá to nếu text dài */
+  width: fit-content;
+  min-width: 180px;
+  max-width: 250px;
 }
-
 
 /* Logo */
 .logo {
@@ -39,40 +57,10 @@
 }
 
 .sidebar ul li {
-  margin: 12px 0;
-}
-
-.menu-item {
-  color: #ecf0f1;
-  text-decoration: none;
-  font-size: 17px;
-  padding: 10px 15px;
-  border-radius: 8px;
-  display: block;
-  transition: all 0.3s ease;
-}
-
-.menu-item:hover {
-  background-color: #1abc9c;
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-/* Nội dung chính */
-.content {
-  flex: 1;
-  padding: 30px;
-  background-color: #f7f9fa;
-  overflow-y: auto;
-}
-/* Mỗi item có đường kẻ phân cách luôn hiển thị */
-.sidebar ul li {
   margin: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* đường kẻ mảnh màu trắng mờ */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Mục menu */
 .menu-item {
   color: #ecf0f1;
   text-decoration: none;
@@ -83,7 +71,6 @@
   transition: all 0.3s ease;
 }
 
-/* Hover hiệu ứng đẹp */
 .menu-item:hover {
   background-color: #1abc9c;
   color: #fff;
@@ -91,28 +78,22 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-
-
-.content h1 {
-  margin-top: 0;
-  font-size: 26px;
-  color: #2c3e50;
-}
-
-.content p {
-  font-size: 18px;
-  color: #7f8c8d;
+/* Nội dung */
+.content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f7f9fa;
+  overflow-y: auto;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .app-layout {
+  .main-body {
     flex-direction: column;
   }
 
   .sidebar {
     width: 100%;
-    height: auto;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
@@ -128,6 +109,7 @@
 
   .sidebar ul li {
     margin: 5px;
+    border-bottom: none;
   }
 
   .content {

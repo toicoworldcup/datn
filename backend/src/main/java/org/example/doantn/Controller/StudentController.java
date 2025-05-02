@@ -48,7 +48,7 @@ public class StudentController {
     @Autowired
     private StudentRepo studentRepo;
 
-    // @PreAuthorize("hasRole('ADMIN')")
+     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> studentDTOs = studentService.getAllStudents()
@@ -58,7 +58,7 @@ public class StudentController {
         return ResponseEntity.ok(studentDTOs);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     @GetMapping("/{mssv}")
     public ResponseEntity<StudentDTO> getStudentById(@PathVariable String mssv, Authentication authentication) {
         String username = authentication.getName();
@@ -72,7 +72,7 @@ public class StudentController {
     }
 
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search/{mssv}")
     public ResponseEntity<StudentDTO> searchStudentByMssv(@PathVariable String mssv) {
         Optional<Student> student = studentService.getStudentByMssv(mssv);
@@ -84,7 +84,7 @@ public class StudentController {
         return ResponseEntity.ok(convertToDTO(student.get()));
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search/batch/{batch}")
     public ResponseEntity<List<StudentDTO>> searchStudentsByBatch(@PathVariable String batch) {
         // Gọi dịch vụ để tìm kiếm sinh viên theo khóa
@@ -103,9 +103,42 @@ public class StudentController {
         return ResponseEntity.ok(studentDTOs);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/search/by-ctdt-and-batch/{ctdtName}/{batchName}")
+    public ResponseEntity<List<StudentDTO>> getStudentsByCtdtNameAndBatch(@PathVariable  String ctdtName,@PathVariable  String batchName) {
+        List<Student> students = studentService.getStudentsByCtdtNameAndBatch(ctdtName, batchName);
+
+        if (students.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // Chuyển danh sách sinh viên sang danh sách DTO và trả về kết quả
+        List<StudentDTO> studentDTOs = students.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(studentDTOs);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/search/by-code/{maCt}")
+    public ResponseEntity<List<StudentDTO>> getStudentsByCodename(@PathVariable String maCt) {
+        List<Student> students = studentService.getStudentsByCtdtName(maCt);
+        // Nếu không có sinh viên nào trong khóa học đó
+        if (students.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // Chuyển danh sách sinh viên sang danh sách DTO và trả về kết quả
+        List<StudentDTO> studentDTOs = students.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(studentDTOs);
+    }
 
 
-    // @PreAuthorize("hasRole('ADMIN')")
+
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> addStudent(@RequestBody StudentRequest request) {
         try {
@@ -119,21 +152,21 @@ public class StudentController {
         }
     }
 
-   // @PreAuthorize("hasRole('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable Integer id, @RequestBody Student studentDetails) {
         Student updatedStudent = studentService.updateStudent(id, studentDetails);
         return ResponseEntity.ok(convertToDTO(updatedStudent));
     }
 
-   // @PreAuthorize("hasRole('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Integer id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok("Xóa sinh viên thành công");
     }
 
-   // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/import")
     public ResponseEntity<String> importStudents(@RequestParam("file") MultipartFile file) {
         try {
@@ -146,7 +179,7 @@ public class StudentController {
         }
     }
 
-   // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/export")
     public void exportStudents(HttpServletResponse response) {
         try {

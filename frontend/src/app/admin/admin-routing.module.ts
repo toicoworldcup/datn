@@ -1,3 +1,4 @@
+// admin/admin-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutAdminComponent } from './layout-admin/layout-admin.component';
@@ -8,17 +9,20 @@ import { ClazzListComponent } from './components/clazz-list/clazz-list.component
 import { SemesterListComponent } from './components/semester-list/semester-list.component';
 import { AssignTeacherComponent } from './components/assign-teacher/assign-teacher.component';
 import { CreateClazzComponent } from './components/create-clazz/create-clazz.component';
+import { AuthGuard } from '../core/guards/auth.guard';  // Import AuthGuard
 
 const routes: Routes = [
   {
-    path: '', component: LayoutAdminComponent, children: [
-      { path: 'student', component: StudentListComponent },
-      { path: 'teacher', component: TeacherListComponent },
-      { path: 'course', component: CourseListComponent },
-      { path: 'clazz', component: ClazzListComponent },
-      { path: 'semester', component: SemesterListComponent },
-      { path: 'assign-teacher', component: AssignTeacherComponent },
-      { path: 'create-clazz', component: CreateClazzComponent }
+    path: '', 
+    component: LayoutAdminComponent,
+    children: [
+      { path: 'student', component: StudentListComponent, canActivate: [AuthGuard] },
+      { path: 'teacher', component: TeacherListComponent, canActivate: [AuthGuard] },
+      { path: 'course', component: CourseListComponent, canActivate: [AuthGuard] },
+      { path: 'clazz', component: ClazzListComponent, canActivate: [AuthGuard] },
+      { path: 'semester', component: SemesterListComponent, canActivate: [AuthGuard] },
+      { path: 'assign-teacher', component: AssignTeacherComponent, canActivate: [AuthGuard] },
+      { path: 'create-clazz', component: CreateClazzComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

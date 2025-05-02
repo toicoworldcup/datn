@@ -18,6 +18,10 @@ public class Ctdt {
     private String maCt;
     @OneToMany(mappedBy = "ctdt")
     private List<Student> students;
+    @ManyToOne
+    @JoinColumn(name = "batch_id") // hoặc tên cột phù hợp với cơ sở dữ liệu
+    private Batch batch;
+
     @ManyToMany
     @JoinTable(
             name = "course_ctdt",
@@ -33,6 +37,14 @@ public class Ctdt {
         this.courses = courses;
         this.name = name;
         this.students = students;
+    }
+
+    public Batch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(Batch batch) {
+        this.batch = batch;
     }
 
     public Set<Course> getCourses() {

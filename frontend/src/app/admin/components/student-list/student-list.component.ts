@@ -14,17 +14,26 @@ import { FormsModule } from '@angular/forms';
 export class StudentListComponent implements OnInit {
   isSearchVisible = false; // Mặc định là ẩn phần tìm kiếm
   isFileVisible: boolean = false;
+  isTableVisible: boolean = false; // Thêm biến trạng thái hiển thị bảng
 
   students: any[] = [];
   p: number = 1;
   mssvSearch: string = '';
+  maCtSearch: string = '';
   batchSearch: string = '';
   selectedFile: File | null = null;
+
   toggleSearch() {
     this.isSearchVisible = !this.isSearchVisible; // Chuyển đổi trạng thái hiển thị
   }
+
   toggleFile() {
     this.isFileVisible = !this.isFileVisible;
+  }
+
+  // Hàm chuyển đổi trạng thái hiển thị bảng
+  toggleTableVisibility(): void {
+    this.isTableVisible = !this.isTableVisible;
   }
 
   constructor(private studentService: StudentService) {}
@@ -69,6 +78,20 @@ export class StudentListComponent implements OnInit {
       error: (error) => {
         alert('Không tìm thấy sinh viên theo khoá');
         console.error('Lỗi khi tìm kiếm theo khoá:', error);
+      },
+    });
+  }
+
+  searchByCtdt(): void {
+    if (!this.maCtSearch || this.maCtSearch.trim() === '') return;
+
+    this.studentService.getStudentsByCtdt(this.maCtSearch).subscribe({
+      next: (data) => {
+        this.students = data;
+      },
+      error: (error) => {
+        alert('Không tìm thấy sinh viên theo Ctdt');
+        console.error('Lỗi khi tìm kiếm theo ctdt:', error);
       },
     });
   }

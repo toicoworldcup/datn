@@ -1,5 +1,4 @@
-<div class="container-fluid mt-4 px-4 custom-content-container">
-  <!-- 🌈 Tiêu đề đẹp -->
+<div class="container-fluid mt-4 px-4">
   <div class="container-fluid mt-3 px-3">
     <div class="text-center">
       <h2 class="title-heading">Danh sách sinh viên</h2>
@@ -11,41 +10,56 @@
       <button class="btn btn-info me-2" style="width: 150px;" (click)="toggleSearch()">
         <i class="fa fa-search me-1"></i> Tìm kiếm
       </button>
-      <button class="btn btn-secondary" style="width: 150px;" (click)="toggleFile()">
+      <button class="btn btn-secondary me-2" style="width: 150px;" (click)="toggleFile()">
         <i class="fa fa-file me-1"></i> File
+      </button>
+      <button class="btn btn-warning" style="width: 150px;" (click)="toggleTableVisibility()">
+        {{ isTableVisible ? 'Ẩn danh sách' : 'Hiện danh sách' }}
       </button>
     </div>
 
-    <!-- Tìm kiếm -->
-    <div *ngIf="isSearchVisible" class="col-md-12 mt-3">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="mb-2">
-            <label for="mssvInput" class="form-label">Tìm theo MSSV</label>
-            <div class="input-group">
-              <input id="mssvInput" type="text" class="form-control" placeholder="Nhập MSSV" [(ngModel)]="mssvSearch">
-              <button class="btn btn-primary" (click)="searchStudent()">
-                <i class="fa fa-search"></i> Tìm
-              </button>
-            </div>
+    <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isSearchVisible}" style="background: rgba(0,0,0,0.4);">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tìm kiếm Sinh Viên</h5>
+            <button type="button" class="close" (click)="toggleSearch()">×</button>
           </div>
-        </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="mssvInput" class="form-label bold-label">Tìm theo MSSV</label>
+              <div class="input-group">
+                <input id="mssvInput" type="text" class="form-control" placeholder="Nhập MSSV" [(ngModel)]="mssvSearch">
+                <button class="btn btn-primary btn-sm-search" (click)="searchStudent()">
+                  <i class="fa fa-search"></i> Tìm
+                </button>
+              </div>
+            </div>
 
-        <div class="col-md-3">
-          <div class="mb-2">
-            <label for="batchInput" class="form-label">Tìm theo khóa học</label>
-            <div class="input-group">
-              <input id="batchInput" type="text" class="form-control" placeholder="Nhập khóa học" [(ngModel)]="batchSearch">
-              <button class="btn btn-primary" (click)="searchByBatch()">
-                <i class="fa fa-search"></i> Tìm
-              </button>
+            <div class="form-group">
+              <label for="batchInput" class="form-label bold-label">Tìm theo khóa học</label>
+              <div class="input-group">
+                <input id="batchInput" type="text" class="form-control" placeholder="Nhập khóa học" [(ngModel)]="batchSearch">
+                <button class="btn btn-primary btn-sm-search" (click)="searchByBatch()">
+                  <i class="fa fa-search"></i> Tìm
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="maCtInput" class="form-label bold-label">Tìm theo CTĐT</label>
+              <div class="input-group">
+                <input id="maCtInput" type="text" class="form-control" placeholder="Nhập mã CTĐT" [(ngModel)]="maCtSearch">
+                <button class="btn btn-primary btn-sm-search" (click)="searchByCtdt()">
+                  <i class="fa fa-search"></i> Tìm
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- File -->
     <div *ngIf="isFileVisible" class="col-md-12 mt-3">
       <div class="row">
         <div class="col-md-3">
@@ -61,8 +75,7 @@
       </div>
     </div>
 
-    <!-- Bảng danh sách sinh viên -->
-    <div class="col-md-12">
+    <div class="col-md-12" *ngIf="isTableVisible">
       <div style="overflow-x: auto;">
         <table class="table table-bordered table-striped table-hover">
           <thead class="table-info text-center">
@@ -98,13 +111,18 @@
         </table>
       </div>
 
-      <!-- Phân trang -->
       <pagination-controls
         (pageChange)="p = $event"
         previousLabel="«"
         nextLabel="»"
         class="d-flex justify-content-center mt-3">
       </pagination-controls>
+    </div>
+
+    <div *ngIf="!isTableVisible" class="col-md-12 mt-3">
+      <div class="alert alert-info">
+        Danh sách sinh viên đã được ẩn. Nhấn nút "Hiện danh sách" để xem.
+      </div>
     </div>
   </div>
 </div>

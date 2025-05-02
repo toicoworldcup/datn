@@ -38,21 +38,32 @@ public class DangkihocphanService {
         return dangkihocphanRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đăng ký học phần với ID: " + id));
     }
-        public Dangkihocphan createDangkihocphan(Dangkihocphan dangkihocphan) {
-            Course course = courseRepo.findByMaHocPhan(dangkihocphan.getCourse().getMaHocPhan())
-                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy học phần với mã: " ));
-            Semester semester = semesterRepo.findByName(dangkihocphan.getSemester().getName())
-                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy kỳ học với tên: "));
-            dangkihocphan.setCourse(course);
-            if (!semester.isOpen()) {
-                throw new IllegalArgumentException("Lỗi: học kì chưa mở");
-            }
-            dangkihocphan.setSemester(semester);
 
-            return dangkihocphanRepo.save(dangkihocphan);
+    public Dangkihocphan createDangkihocphan(Dangkihocphan dangkihocphan) {
+        Course course = courseRepo.findByMaHocPhan(dangkihocphan.getCourse().getMaHocPhan())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy học phần với mã: "));
+
+        Semester semester = semesterRepo.findByName(dangkihocphan.getSemester().getName())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy kỳ học với tên: "));
+
+        Student student = studentRepo.findById(dangkihocphan.getStudent().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sinh viên với ID: " + dangkihocphan.getStudent().getId()));
+
+        // Kiểm tra học phần có trong chương trình đào tạo của sinh viên
+        if (!student.getCtdt().getCourses().contains(course)) {
+            throw new IllegalArgumentException("Học phần không thuộc chương trình đào tạo của sinh viên.");
         }
 
+        if (!semester.isOpen()) {
+            throw new IllegalArgumentException("Lỗi: học kỳ chưa mở");
+        }
 
+        dangkihocphan.setCourse(course);
+        dangkihocphan.setSemester(semester);
+        dangkihocphan.setStudent(student);
+
+        return dangkihocphanRepo.save(dangkihocphan);
+    }
 
     public Dangkihocphan updateDangkihocphan(Integer id, String username, Integer courseId) {
             Dangkihocphan existingDangkihocphan = dangkihocphanRepo.findById(id)

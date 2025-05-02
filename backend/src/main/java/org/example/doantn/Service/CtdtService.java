@@ -29,17 +29,25 @@ public class CtdtService {
     public Ctdt createCtdt(Ctdt ctdt) {
         return ctdtRepo.save(ctdt);
     }
-    public Ctdt assignCourse(String maCt,String maHocPhan){
-        Course course = courseRepo.findByMaHocPhan(maHocPhan)
-                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy học phần với mã: " ));
-
+    public Ctdt assignCourses(String maCt, List<String> maHocPhanList) {
+        // Lấy chương trình đào tạo theo mã
         Ctdt ctdt = ctdtRepo.findByMaCt(maCt)
-                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy ctdt với mã: " ));
-        ctdt.getCourses().add(course);
-        course.getCtdts().add(ctdt);
-        return ctdtRepo.save(ctdt);
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chương trình đào tạo với mã: " + maCt));
 
+        // Duyệt qua danh sách mã học phần và thêm từng học phần vào chương trình đào tạo
+        for (String maHocPhan : maHocPhanList) {
+            Course course = courseRepo.findByMaHocPhan(maHocPhan)
+                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy học phần với mã: " + maHocPhan));
+
+            // Thêm học phần vào chương trình đào tạo
+            ctdt.getCourses().add(course);
+            course.getCtdts().add(ctdt);
+        }
+
+        // Lưu lại chương trình đào tạo đã được cập nhật
+        return ctdtRepo.save(ctdt);
     }
+
 
     public List<CthDTO> getCoursesByMaCt(String maCt) {
         Ctdt ctdt = ctdtRepo.findByMaCt(maCt)

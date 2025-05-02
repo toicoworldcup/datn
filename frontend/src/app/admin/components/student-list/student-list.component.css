@@ -108,3 +108,75 @@
     margin-left: 5px;
 }
 
+.modal.show {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    z-index: 1050;
+}
+
+/* Modal Dialog */
+.modal-dialog {
+    width: 40%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần đầu modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+/* Nút đóng modal */
+.modal-header .close {
+    font-size: 1.5rem;
+    color: #000;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Body của modal */
+.modal-body {
+    padding: 20px;
+}
+
+/* Form trong modal */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.modal-body .input-group .btn-sm-search {
+    padding: 0.25rem 0.5rem; /* Giảm padding để nút nhỏ hơn */
+    font-size: 0.875rem; /* Giảm kích thước font chữ (tùy chọn) */
+    line-height: 1.5; /* Đảm bảo dòng chữ không bị quá sát */
+    border-radius: 0.2rem; /* Giữ hoặc điều chỉnh độ bo tròn */
+  }
+  
+  /* Đảm bảo nút nằm ngang hàng (thường thì input-group đã xử lý việc này) */
+  .modal-body .input-group {
+    display: flex; /* Đảm bảo input-group là flex container */
+    align-items: center; /* Căn chỉnh các phần tử theo chiều dọc ở giữa */
+  }
+  
+  .modal-body .input-group .form-control {
+    flex-grow: 1; /* Cho phép input chiếm phần lớn không gian */
+    margin-right: 5px; /* Thêm một chút khoảng cách bên phải input */
+  }
+  
+  .modal-body .input-group .btn-sm-search {
+    flex-shrink: 0; /* Ngăn nút bị co lại nếu không đủ không gian */
+  }
+  .bold-label {
+    font-weight: bold;
+  }

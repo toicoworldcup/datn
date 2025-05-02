@@ -17,7 +17,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -87,9 +89,6 @@ public class DangkihocphanController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + e.getMessage());
         }
     }
-
-
-
     @PreAuthorize("hasRole('STUDENT')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDangkihocphan(@PathVariable Integer id, Authentication authentication) {
@@ -108,6 +107,41 @@ public class DangkihocphanController {
         dangkihocphanService.deleteDangkihocphan(id);
         return ResponseEntity.ok("Xóa đăng ký học phần thành công!");
     }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @GetMapping("/ctdt-courses")
+    public ResponseEntity<Map<String, List<CourseDTO>>> getCtdtCourses(Authentication authentication) {
+        String username = authentication.getName();
+        Student student = studentRepo.findByUser_Username(username)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
+
+        // Lấy tất cả học phần trong CTĐT của sinh viên
+        List<Course> allCourses = courseRepo.findByCtdts_MaCt(student.getCtdt().getMaCt());
+
+        // Lấy danh sách học phần sinh viên đã đăng ký
+        List<String> registeredCourseCodes = dangkihocphanService.getDangkihocphanByMssv(student.getMssv())
+                .stream()
+                .map(dkhp -> dkhp.getCourse().getMaHocPhan())
+                .collect(Collectors.toList());
+
+        // Phân loại học phần đã và chưa đăng ký
+        List<CourseDTO> registeredCourses = allCourses.stream()
+                .filter(course -> registeredCourseCodes.contains(course.getMaHocPhan()))
+                .map(CourseDTO::new)
+                .collect(Collectors.toList());
+
+        List<CourseDTO> unregisteredCourses = allCourses.stream()
+                .filter(course -> !registeredCourseCodes.contains(course.getMaHocPhan()))
+                .map(CourseDTO::new)
+                .collect(Collectors.toList());
+
+        Map<String, List<CourseDTO>> response = new HashMap<>();
+        response.put("registered", registeredCourses);
+        response.put("unregistered", unregisteredCourses);
+
+        return ResponseEntity.ok(response);
+    }
+
 
 
 
