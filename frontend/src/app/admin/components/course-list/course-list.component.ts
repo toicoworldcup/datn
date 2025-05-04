@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
-import { CourseService } from '../../services/course.service';
-import { Course } from '../../models/course.model';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { NgxPaginationModule } from "ngx-pagination";
+import { FormsModule } from "@angular/forms";
+import { CourseService } from "../../../services/course.service";
+import { Course } from "../../models/course.model";
 @Component({
-  selector: 'app-course-list',
-  templateUrl: './course-list.component.html',
-  styleUrls: ['./course-list.component.css'],
+  selector: "app-course-list",
+  templateUrl: "./course-list.component.html",
+  styleUrls: ["./course-list.component.css"],
   standalone: true,
   imports: [CommonModule, NgxPaginationModule, FormsModule], // Đảm bảo các module này đã được import
 })
 export class CourseListComponent implements OnInit {
   courses: Course[] = []; // Danh sách các khóa học
-  searchTerm: string = ''; // Từ khóa tìm kiếm
+  searchTerm: string = ""; // Từ khóa tìm kiếm
   p: number = 1;
-  mahocphanSearch: string = '';
+  mahocphanSearch: string = "";
 
   isSearchVisible = false; // Mặc định là ẩn phần tìm kiếm
 
@@ -37,7 +37,7 @@ export class CourseListComponent implements OnInit {
         console.log(data);
       },
       error: (error) => {
-        console.error('Có lỗi khi gọi API', error);
+        console.error("Có lỗi khi gọi API", error);
       },
     });
   }
@@ -50,7 +50,7 @@ export class CourseListComponent implements OnInit {
         this.courses = [course];
       },
       error: (error) => {
-        alert('Không tìm thấy hoc phan');
+        alert("Không tìm thấy hoc phan");
         console.error(error);
       },
     });

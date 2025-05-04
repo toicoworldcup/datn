@@ -14,6 +14,9 @@ import java.util.Optional;
 public interface ClazzRepo extends JpaRepository<Clazz, Integer> {
     List<Clazz> findBySemester(Semester semester);
 
+    List<Clazz> findByTeachersIsEmpty();
+
+
     Optional<Clazz> findByMaLopAndSemester_Name(String maLop, String semesterName);
 
     @Query("SELECT t.maGv, COUNT(c) FROM Clazz c JOIN c.teachers t GROUP BY t.maGv")

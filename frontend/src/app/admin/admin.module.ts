@@ -35,7 +35,7 @@ import { AdminComponent } from './admin.component';
     AssignTeacherComponent,
     CreateClazzComponent,
     AdminComponent,
-    HeaderComponent // LayoutAdminComponent có thể không phải là standalone
+    HeaderComponent ,// LayoutAdminComponent có thể không phải là standalone
 
   ],
   providers: [

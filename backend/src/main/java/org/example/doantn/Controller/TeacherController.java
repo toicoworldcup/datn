@@ -34,7 +34,7 @@ public class TeacherController {
     @Autowired
     private TeacherRepo teacherRepo;
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TeacherDTO>> getAllTeachers() {
         List<TeacherDTO> teachers = teacherService.getAllTeachers()
@@ -44,7 +44,7 @@ public class TeacherController {
         return ResponseEntity.ok(teachers);
     }
 
-    //@PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/myinfo")
     public ResponseEntity<TeacherDTO> getLoggedInTeacherInfo(Authentication authentication) {
         String username = authentication.getName();
@@ -57,7 +57,7 @@ public class TeacherController {
         return ResponseEntity.ok(convertToDTO(teacher.get()));
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{maGv}")
     public ResponseEntity<TeacherDTO> getTeacherByMaGvForAdmin(@PathVariable String maGv) {
         Optional<Teacher> teacher = teacherRepo.findByMaGv(maGv);
@@ -70,7 +70,7 @@ public class TeacherController {
     }
 
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> addTeacher(@RequestBody TeacherRequest request) {
         try {
@@ -98,13 +98,13 @@ public class TeacherController {
         return ResponseEntity.ok("Xóa giáo viên thành công!");
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{teacherId}/class-count")
     public ResponseEntity<Integer> getClassCount(@PathVariable int teacherId) {
         int count = teacherService.getNumberOfClassesByTeacher(teacherId);
         return ResponseEntity.ok(count);
     }
-    //@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     @GetMapping("/{maGv}/clazzes")
     public ResponseEntity<Set<ClazzDTO>> getClazzesByTeacher(
             @PathVariable String maGv, Authentication authentication) {

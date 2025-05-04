@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
-import { ClazzService } from '../../services/clazz.service';
 import { Clazz } from '../../models/clazz.model';
+import { Teacher } from '../../models/teacher.model';
+import { ClazzService } from '../../../services/clazz.service';
+import { TeacherService } from '../../../services/teacher.service';
+import { CommonModule } from "@angular/common";
+import { NgxPaginationModule } from "ngx-pagination";
+import { FormsModule } from "@angular/forms";
+
 
 @Component({
   selector: 'app-clazz-list',
@@ -14,63 +17,66 @@ import { Clazz } from '../../models/clazz.model';
 })
 export class ClazzListComponent implements OnInit {
   clazzes: Clazz[] = [];
+  teachers: Teacher[] = [];
   p: number = 1;
+  isAddClazzModalVisible: boolean = false;
+  newClazz: Clazz = { maLop: '', maHocPhan: '', hocki: '' };
 
-  // Form data
-  newClazz: Partial<Clazz> = {};
-  editLichThi: Date | null = null;
-  assignMaGv: string = '';
-  assignHocKi: string = '';
-  assignMaLop: string = '';
-  isAddClazzModalVisible = false; // Mặc định là ẩn phần tìm kiếm
-
-
-  constructor(private clazzService: ClazzService) {}
+  constructor(
+    private clazzService: ClazzService,
+    private teacherService: TeacherService
+  ) { }
 
   ngOnInit(): void {
     this.loadClazzes();
-  }
-  toggleAddClazzModal() {
-    this.isAddClazzModalVisible = !this.isAddClazzModalVisible; // Chuyển đổi trạng thái hiển thị
+    this.loadTeachers(); // Tải danh sách giáo viên để có thể hiển thị tên
   }
 
   loadClazzes(): void {
-    this.clazzService.getAllClazzes().subscribe({
-      next: (data) => (this.clazzes = data),
-      error: (err) => console.error('Lỗi khi tải lớp:', err),
-    });
+    this.clazzService.getAllClazzes().subscribe(
+      (data: Clazz[]) => {
+        this.clazzes = data;
+      },
+      (error) => {
+        console.error('Lỗi khi tải danh sách lớp học:', error);
+      }
+    );
+  }
+
+  loadTeachers(): void {
+    this.teacherService.getAllTeachers().subscribe(
+      (data: Teacher[]) => {
+        this.teachers = data;
+      },
+      (error) => {
+        console.error('Lỗi khi tải danh sách giáo viên:', error);
+      }
+    );
+  }
+
+  toggleAddClazzModal(): void {
+    this.isAddClazzModalVisible = !this.isAddClazzModalVisible;
+    this.newClazz = { maLop: '', maHocPhan: '', hocki: '' }; // Reset form khi mở
   }
 
   addClazz(): void {
-    if (!this.newClazz.maLop || !this.newClazz.hocki) {
-      alert('Vui lòng nhập đầy đủ mã lớp và học kỳ.');
-      return;
-    }
-
-    this.clazzService.addClazz(this.newClazz as Clazz).subscribe({
-      next: (clazz) => {
-        this.clazzes.push(clazz);
-        this.newClazz = {}; // clear form
+    this.clazzService.addClazz(this.newClazz).subscribe(
+      (response) => {
+        console.log('Thêm lớp thành công:', response);
+        this.loadClazzes(); // Tải lại danh sách lớp sau khi thêm
+        this.toggleAddClazzModal(); // Đóng modal
       },
-      error: (err) => console.error('Lỗi khi thêm lớp:', err),
-    });
+      (error) => {
+        console.error('Lỗi khi thêm lớp:', error);
+      }
+    );
   }
 
-  assignTeacher(): void {
-    if (!this.assignMaLop || !this.assignHocKi || !this.assignMaGv) {
-      alert('Vui lòng nhập đầy đủ thông tin gán giáo viên.');
-      return;
+  getTeacherName(teachers: any[] | undefined): string {
+    if (!teachers || teachers.length === 0) {
+      return 'Chưa có';
     }
-
-    this.clazzService
-      .assignTeacherToClazz(this.assignMaLop, this.assignHocKi, this.assignMaGv)
-      .subscribe({
-        next: (msg) => {
-          alert('Đã gán giáo viên thành công.');
-          this.loadClazzes();
-          this.assignMaGv = '';
-        },
-        error: (err) => console.error('Lỗi khi gán giáo viên:', err),
-      });
+    const teacherNames = teachers.map(teacher => teacher.name);
+    return teacherNames.join(', '); // Nối tên các giáo viên bằng dấu phẩy và khoảng trắng
   }
 }

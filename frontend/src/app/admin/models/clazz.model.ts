@@ -1,7 +1,8 @@
 export interface Clazz {
-    maLop: string;
-    maHocPhan: string;
-    hocki: string;
-    lichThi: Date; // dùng string để dễ xử lý binding với input type="date"
-  }
-  
+  maLop: string;
+  maHocPhan: string;
+  hocki: string;
+  lichThi?: string | null;
+  teachers?: any[]; // Sử dụng khi lấy danh sách lớp (API trả về)
+  maGv?: string;     // Sử dụng khi tạo mới lớp (form nhập liệu)
+}

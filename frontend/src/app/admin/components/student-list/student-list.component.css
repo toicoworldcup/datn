@@ -1,182 +1,231 @@
-/* Cải thiện bảng để không có dòng xen kẽ đen trắng */
-.table {
-    table-layout: auto;
-    width: 100%;
-    border-collapse: collapse; /* Sử dụng border-collapse để không có khoảng cách giữa các ô */
-    margin-top: 30px;
-}
+/* CSS cho component Danh sách Sinh viên */
 
-/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
-.table th, .table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd; /* Đường viền nhẹ */
-    white-space: nowrap;
-}
+/* Kế thừa và tùy chỉnh từ CSS chung (nếu có) */
+/* Bạn có thể không cần lặp lại các style như .table, .title-heading, .modal nếu chúng đã được định nghĩa ở file CSS chung */
 
-/* Cắt bớt chữ trong các ô nếu nó dài quá */
-.table td, .table th {
-    overflow: hidden;
-    white-space: nowrap; /* Đảm bảo nội dung không xuống dòng */
-    text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
-}
-
-/* Cải thiện tiêu đề với màu nhẹ hơn */
+/* Tiêu đề trang */
 .title-heading {
-    font-size: 2.5rem; /* Giảm kích thước font */
-    background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
-    color: #2c3e50;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 15px;
-    padding: 15px 25px;
-    display: inline-block;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    letter-spacing: 1px;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-/* Hiệu ứng hover cho tiêu đề */
-.title-heading:hover {
-    transform: scale(1.05);
-}
-
-/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
-.table th, .table td {
-    padding: 8px; /* Giảm padding trong bảng để thu nhỏ kích thước */
+    font-size: 2.2rem; /* Điều chỉnh kích thước font cho phù hợp */
   }
   
-  .table th {
-    font-size: 14px; /* Giảm kích thước chữ của tiêu đề cột */
+  /* Container chính */
+  .container-fluid.mt-4.px-4 {
+    padding-left: 15px; /* Điều chỉnh padding cho phù hợp */
+    padding-right: 15px;
   }
   
-  .table td {
-    font-size: 14px; /* Giảm kích thước chữ của nội dung bảng */
+  .container-fluid.mt-3.px-3 {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 20px; /* Thêm khoảng cách với các nút */
   }
   
-.custom-content-container {
-    background-color: #ededea		; /* màu nền nhẹ */
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05); /* bóng nhẹ */
-  }
-  
-
-.container {
-    padding: 20px;
-}
-
-/* Thêm khoảng cách cho .row */
-.row {
-    margin-top: 20px;
-}
-
-/* Điều chỉnh khoảng cách giữa bảng và các phần tử khác */
-.table {
-    margin-top: 30px;
-}
-
-
-.container, .table, .input-group, .btn {
-    border-radius: 8px; /* Bo tròn các góc */
-}
-
-/* Tùy chỉnh phần tìm kiếm */
-.search-container {
+  /* Các nút Tìm kiếm, File, Ẩn/Hiện danh sách */
+  .col-md-12.d-flex.justify-content-start.mb-3 button.btn {
     display: flex;
-    justify-content: space-between; /* Đảm bảo các phần tử trong container được căn chỉnh đều */
     align-items: center;
-    gap: 15px; /* Giảm khoảng cách giữa các phần tử tìm kiếm */
-    margin-top: 20px; /* Di chuyển xuống dưới một chút */
-}
-
-.search-container .input-group {
-    width: auto;
-}
-
-.search-container .mb-2 {
-    margin-bottom: 0; /* Loại bỏ khoảng cách thừa giữa các phần tử tìm kiếm */
-}
-
-.search-container label {
-    font-weight: bold;
-}
-
-.search-container button {
-    margin-left: 5px;
-}
-
-.modal.show {
+    margin-right: 10px; /* Khoảng cách giữa các nút */
+  }
+  
+  .col-md-12.d-flex.justify-content-start.mb-3 button.btn i {
+    margin-right: 5px;
+  }
+  
+  /* Modal tìm kiếm */
+  .modal.fade.show {
     display: block;
     background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
     z-index: 1050;
-}
-
-/* Modal Dialog */
-.modal-dialog {
-    width: 40%;
-    max-width: 1200px;
-    margin: auto;
-}
-
-/* Nội dung modal */
-.modal-content {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Phần đầu modal */
-.modal-header {
+  }
+  
+  .modal-dialog.modal-lg.modal-dialog-centered {
+    max-width: 800px; /* Điều chỉnh độ rộng modal nếu cần */
+    margin: 30px auto; /* Điều chỉnh vị trí modal nếu cần */
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-}
-
-/* Nút đóng modal */
-.modal-header .close {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .modal-title {
+    margin-bottom: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  
+  .modal-header .close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
     font-size: 1.5rem;
-    color: #000;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-}
-
-/* Body của modal */
-.modal-body {
-    padding: 20px;
-}
-
-/* Form trong modal */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.modal-body .input-group .btn-sm-search {
-    padding: 0.25rem 0.5rem; /* Giảm padding để nút nhỏ hơn */
-    font-size: 0.875rem; /* Giảm kích thước font chữ (tùy chọn) */
-    line-height: 1.5; /* Đảm bảo dòng chữ không bị quá sát */
-    border-radius: 0.2rem; /* Giữ hoặc điều chỉnh độ bo tròn */
-  }
-  
-  /* Đảm bảo nút nằm ngang hàng (thường thì input-group đã xử lý việc này) */
-  .modal-body .input-group {
-    display: flex; /* Đảm bảo input-group là flex container */
-    align-items: center; /* Căn chỉnh các phần tử theo chiều dọc ở giữa */
-  }
-  
-  .modal-body .input-group .form-control {
-    flex-grow: 1; /* Cho phép input chiếm phần lớn không gian */
-    margin-right: 5px; /* Thêm một chút khoảng cách bên phải input */
-  }
-  
-  .modal-body .input-group .btn-sm-search {
-    flex-shrink: 0; /* Ngăn nút bị co lại nếu không đủ không gian */
-  }
-  .bold-label {
     font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group .form-control {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+  
+  .input-group .btn-sm-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    flex-shrink: 0;
+  }
+  
+  .input-group .btn-sm-search i {
+    margin-right: 0.25rem;
+  }
+  
+  /* Khu vực Import/Export File */
+  .col-md-3 {
+    margin-bottom: 1rem;
+  }
+  
+  .d-flex.justify-content-between button.btn {
+    margin-right: 0.5rem;
+  }
+  
+  /* Bảng danh sách sinh viên */
+  .col-md-12 {
+    margin-top: 1rem;
+  }
+  
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #bee5eb; /* Màu nền thead */
+    text-align: center;
+  }
+  
+  .table tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05); /* Màu nền các dòng lẻ */
+  }
+  
+  .table-info thead th {
+    background-color: #bee5eb;
+  }
+  
+  /* Phân trang */
+  .pagination-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pagination-controls .ngx-pagination {
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    border-radius: 0.25rem;
+  }
+  
+  .pagination-controls .ngx-pagination li a,
+  .pagination-controls .ngx-pagination li span {
+    padding: 0.5rem 0.75rem;
+    line-height: 1.5;
+    border: 1px solid #dee2e6;
+    margin-left: -1px;
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .pagination-controls .ngx-pagination li:first-child a,
+  .pagination-controls .ngx-pagination li:first-child span {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  
+  .pagination-controls .ngx-pagination li:last-child a,
+  .pagination-controls .ngx-pagination li:last-child span {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+  
+  .pagination-controls .ngx-pagination li.active a,
+  .pagination-controls .ngx-pagination li.active span {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    cursor: default;
+  }
+  
+  .pagination-controls .ngx-pagination li.disabled a,
+  .pagination-controls .ngx-pagination li.disabled span {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+  }
+  
+  /* Thông báo khi ẩn bảng */
+  .alert.alert-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+    border-radius: 0.25rem;
   }

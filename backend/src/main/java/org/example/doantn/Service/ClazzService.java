@@ -1,5 +1,8 @@
 package org.example.doantn.Service;
 
+import org.example.doantn.Dto.response.ClassTeacherDTO;
+import org.example.doantn.Dto.response.ClazzDTO;
+import org.example.doantn.Dto.response.TeacherDTO;
 import org.example.doantn.Entity.Clazz;
 import org.example.doantn.Entity.Course;
 import org.example.doantn.Entity.Semester;
@@ -9,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ClazzService {
@@ -110,6 +111,43 @@ public class ClazzService {
         return clazzRepo.save(clazz);
     }
 
+    public List<TeacherDTO> getTeachersByClazz(String maLop, String hocKi) {
+        Clazz clazz = clazzRepo.findByMaLopAndSemester_Name(maLop, hocKi).orElse(null);
+        if (clazz != null) {
+            return clazz.getTeachers().stream()
+                    .map(TeacherDTO::new)
+                    .collect(Collectors.toList());
+        }
+        return null; // Hoặc throw một exception nếu bạn muốn xử lý trường hợp không tìm thấy lớp
+    }
+
+    public List<ClassTeacherDTO> getTeacherCodesByClassDTO() {
+        List<Clazz> allClazzes = clazzRepo.findAll();
+        List<ClassTeacherDTO> result = new ArrayList<>();
+
+        for (Clazz clazz : allClazzes) {
+            if (clazz.getTeachers() != null) {
+                List<String> teacherCodes = clazz.getTeachers().stream()
+                        .map(teacher -> teacher.getMaGv())
+                        .collect(Collectors.toList());
+                String classIdentifier = clazz.getMaLop() + " - " + (clazz.getSemester() != null ? clazz.getSemester().getName() : "N/A");
+                result.add(new ClassTeacherDTO(classIdentifier, teacherCodes));
+            } else {
+                String classIdentifier = clazz.getMaLop() + " - " + (clazz.getSemester() != null ? clazz.getSemester().getName() : "N/A");
+                result.add(new ClassTeacherDTO(classIdentifier, new ArrayList<>()));
+            }
+        }
+
+        return result;
+    }
+
+
+    public List<ClazzDTO> getUnassignedClazzes() {
+        List<Clazz> unassignedClazzes = clazzRepo.findByTeachersIsEmpty();
+        return unassignedClazzes.stream()
+                .map(ClazzDTO::new)
+                .collect(Collectors.toList());
+    }
 
     public void generateClazzForCourse(String maHocPhan, String hocki) {
         Optional<Course> courseOpt = courseRepo.findByMaHocPhan(maHocPhan);

@@ -6,7 +6,7 @@ import { HeaderComponent } from './header/header.component';
   selector: 'app-admin',
   standalone: true, // Ensure this is true
   imports: [
-   RouterModule,HeaderComponent     // ... other standalone components or modules AdminComponent uses
+   RouterModule,HeaderComponent    // ... other standalone components or modules AdminComponent uses
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']

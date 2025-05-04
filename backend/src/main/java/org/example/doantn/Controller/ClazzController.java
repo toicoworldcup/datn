@@ -2,13 +2,16 @@ package org.example.doantn.Controller;
 
 import org.example.doantn.Dto.request.ClazzRequest;
 import org.example.doantn.Dto.request.TeacherRequest;
+import org.example.doantn.Dto.response.ClassTeacherDTO;
 import org.example.doantn.Dto.response.ClazzDTO;
 import org.example.doantn.Dto.response.TeacherDTO;
 import org.example.doantn.Entity.Clazz;
 import org.example.doantn.Entity.Teacher;
 import org.example.doantn.Repository.CourseRepo;
 import org.example.doantn.Repository.SemesterRepo;
+import org.example.doantn.Repository.TeacherRepo;
 import org.example.doantn.Service.ClazzService;
+import org.example.doantn.Service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,9 @@ public class ClazzController {
     @Autowired
     private SemesterRepo semesterRepo;
 
+    @Autowired
+    private TeacherService teacherService;
+
     //@PreAuthorize("hasRole('QLDT')")
     @GetMapping
     public ResponseEntity<List<ClazzDTO>> getAllClazzes() {
@@ -47,6 +53,33 @@ public class ClazzController {
         return ResponseEntity.ok(new ClazzDTO(clazz));
     }
 
+    //@PreAuthorize("hasRole('QLDT')")
+    @GetMapping("/by-clazz/{maLop}/{hocki}")
+    public ResponseEntity<List<TeacherDTO>> getTeachersByClazz(
+            @PathVariable String maLop,
+            @PathVariable String hocki
+    ) {
+        List<TeacherDTO> teachers = clazzService.getTeachersByClazz(maLop, hocki);
+        if (teachers != null) {
+            return ResponseEntity.ok(teachers);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PreAuthorize("hasRole('QLDT')")
+    @GetMapping("/codes-by-class")
+    public ResponseEntity<List<ClassTeacherDTO>> getTeacherCodesByClassDTOEndpoint() {
+        List<ClassTeacherDTO> teacherCodesByClass = clazzService.getTeacherCodesByClassDTO();
+        return ResponseEntity.ok(teacherCodesByClass);
+    }
+
+    @PreAuthorize("hasRole('QLDT')")
+    @GetMapping("/unassigned")
+    public ResponseEntity<List<ClazzDTO>> getUnassignedClazzes() {
+        List<ClazzDTO> unassignedClazzes = clazzService.getUnassignedClazzes();
+        return ResponseEntity.ok(unassignedClazzes);
+    }
 
     //@PreAuthorize("hasRole('QLDT')")
     @PostMapping
@@ -95,7 +128,6 @@ public class ClazzController {
             @PathVariable String maGv,
             @PathVariable String hocKi) {
         try {
-
             clazzService.assignTeacherToClazz(maLop, maGv, hocKi);
             return ResponseEntity.ok("Phân công giáo viên thành công");
         } catch (Exception e) {
@@ -120,22 +152,18 @@ public class ClazzController {
         Clazz clazz = new Clazz();
         clazz.setLichThi(request.getLichThi());
         clazz.setMaLop(request.getMaLop());
-        if(request.getMaHocPhan() != null){
+        if (request.getMaHocPhan() != null) {
             courseRepo.findByMaHocPhan(request.getMaHocPhan()).ifPresent(clazz::setCourse);
         }
-        if(request.getHocki() != null){
+        if (request.getHocki() != null) {
             semesterRepo.findByName(request.getHocki()).ifPresent(clazz::setSemester);
         }
-
-
+        // Không cần set danh sách giáo viên ở đây vì đây là quá trình tạo/cập nhật lớp,
+        // việc gán giáo viên sẽ được thực hiện ở API khác (assignTeacherToClazz)
         return clazz;
     }
+
     private ClazzDTO convertToDTO(Clazz clazz) {
-        return new ClazzDTO(
-                clazz.getMaLop(),
-                clazz.getSemester() != null ? clazz.getSemester().getName() : null,
-                clazz.getCourse() != null ? clazz.getCourse().getMaHocPhan() : null,
-                clazz.getLichThi()
-                );
+        return new ClazzDTO(clazz); // Sử dụng constructor ClazzDTO(Clazz clazz) đã được sửa
     }
 }

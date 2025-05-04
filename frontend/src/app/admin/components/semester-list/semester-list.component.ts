@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { SemesterService } from '../../services/semester.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Semester } from '../../models/semester.model';
+import { Component, OnInit } from "@angular/core";
+import { SemesterService } from "../../../services/semester.service";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Semester } from "../../models/semester.model";
 
 @Component({
-  selector: 'app-semester-list',
-  templateUrl: './semester-list.component.html',
-  styleUrls: ['./semester-list.component.css'],
+  selector: "app-semester-list",
+  templateUrl: "./semester-list.component.html",
+  styleUrls: ["./semester-list.component.css"],
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
 export class SemesterListComponent implements OnInit {
   semesters: Semester[] = [];
-  newSemester: Semester = { name: '', isOpen: false };
+  newSemester: Semester = { name: "", isOpen: false };
   editingSemester: Semester | null = null;
   isSearchVisible = false; // Mặc định là ẩn phần tìm kiếm
   p: number = 1;
@@ -30,7 +30,7 @@ export class SemesterListComponent implements OnInit {
         // Giả sử rằng isOpen đã là boolean từ backend, không cần phải chuyển đổi
         this.semesters = data;
       },
-      error: (err) => console.error('Lỗi khi tải học kỳ:', err),
+      error: (err) => console.error("Lỗi khi tải học kỳ:", err),
     });
   }
   toggleSearch() {
@@ -39,16 +39,16 @@ export class SemesterListComponent implements OnInit {
 
   addSemester(): void {
     if (!this.newSemester.name.trim()) {
-      alert('Vui lòng nhập tên học kỳ.');
+      alert("Vui lòng nhập tên học kỳ.");
       return;
     }
 
     this.semesterService.createSemester(this.newSemester).subscribe({
       next: (semester) => {
         this.semesters.push(semester);
-        this.newSemester = { name: '', isOpen: false };
+        this.newSemester = { name: "", isOpen: false };
       },
-      error: (err) => console.error('Lỗi khi thêm học kỳ:', err),
+      error: (err) => console.error("Lỗi khi thêm học kỳ:", err),
     });
   }
 
@@ -69,7 +69,7 @@ export class SemesterListComponent implements OnInit {
           if (index > -1) this.semesters[index] = updated;
           this.editingSemester = null;
         },
-        error: (err) => console.error('Lỗi khi cập nhật học kỳ:', err),
+        error: (err) => console.error("Lỗi khi cập nhật học kỳ:", err),
       });
   }
 
@@ -80,14 +80,14 @@ export class SemesterListComponent implements OnInit {
   openRegistration(name: string): void {
     this.semesterService.openRegistration(name).subscribe({
       next: (updated) => this.loadSemesters(),
-      error: (err) => console.error('Lỗi khi mở đăng ký:', err),
+      error: (err) => console.error("Lỗi khi mở đăng ký:", err),
     });
   }
 
   closeRegistration(name: string): void {
     this.semesterService.closeRegistration(name).subscribe({
       next: (updated) => this.loadSemesters(),
-      error: (err) => console.error('Lỗi khi đóng đăng ký:', err),
+      error: (err) => console.error("Lỗi khi đóng đăng ký:", err),
     });
   }
 }
