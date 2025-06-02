@@ -42,11 +42,4 @@ public class SemesterService {
         return semesterRepo.save(semester);
     }
 
-    // Cập nhật thông tin học kỳ
-    public Semester updateSemester(String name, Semester updatedSemester) {
-        Semester semester = getSemesterByName(name);
-        semester.setName(updatedSemester.getName());
-        semester.setOpen(updatedSemester.isOpen());
-        return semesterRepo.save(semester);
-    }
 }

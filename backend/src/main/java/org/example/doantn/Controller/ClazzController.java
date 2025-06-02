@@ -7,7 +7,6 @@ import org.example.doantn.Entity.Clazz;
 import org.example.doantn.Repository.CourseRepo;
 import org.example.doantn.Repository.SemesterRepo;
 import org.example.doantn.Service.ClazzService;
-import org.example.doantn.Service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

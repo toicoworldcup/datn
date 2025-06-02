@@ -248,8 +248,6 @@ public class ClazzService {
         if (batchOptional.isEmpty()) {
             throw new RuntimeException("Không tìm thấy khóa học: " + khoa);
         }
-        Batch batch = batchOptional.get();
-
         Optional<Semester> semesterOptional = semesterRepo.findByName(hocKi);
         if (semesterOptional.isEmpty()) {
             throw new RuntimeException("Không tìm thấy học kỳ: " + hocKi);

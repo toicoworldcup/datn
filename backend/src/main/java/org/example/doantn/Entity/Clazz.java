@@ -3,6 +3,7 @@ package org.example.doantn.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Setter
 @Getter
 @Entity
 @Table(name = "clazz")
@@ -82,47 +84,4 @@ public class Clazz {
 
     // Getters and Setters
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setMaLop(String maLop) {
-        this.maLop = maLop;
-    }
-
-    public void setLichThi(LocalDate lichThi) {
-        this.lichThi = lichThi;
-    }
-
-    public void setSoLuongSinhVien(Integer soLuongSinhVien) {
-        this.soLuongSinhVien = soLuongSinhVien;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
-    public void setDangkilops(Set<Dangkilop> dangkilops) {
-        this.dangkilops = dangkilops;
-    }
-
-    public void setTeachers(Set<Teacher> teachers) {
-        this.teachers = teachers;
-    }
-
-    public void setGrades(Set<Grade> grades) {
-        this.grades = grades;
-    }
-
-    public void setAttendances(Set<Attendance> attendances) {
-        this.attendances = attendances;
-    }
-
-    public void setSchedules(Set<Schedule> schedules) {
-        this.schedules = schedules;
-    }
 }

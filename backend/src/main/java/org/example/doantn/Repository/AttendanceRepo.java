@@ -14,8 +14,6 @@ import java.util.List;
 
 @Repository
 public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
-    @Query("SELECT a FROM Attendance a WHERE a.clazz.id = :clazzId AND a.attendanceDate = :date")
-    List<Attendance> findByClazzIdAndDate(@Param("clazzId") Integer clazzId, @Param("date") LocalDate date);
 
     List<Attendance> findByClazzAndSemesterAndAttendanceDate(Clazz clazz, Semester semester, LocalDate attendanceDate);
 

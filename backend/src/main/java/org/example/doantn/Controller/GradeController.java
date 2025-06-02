@@ -27,8 +27,6 @@ public class GradeController {
     @Autowired
     private StudentRepo studentRepo;
     @Autowired
-    private TeacherRepo teacherRepo;
-    @Autowired
     private ClazzRepo clazzRepo;
     @Autowired
     private SemesterRepo semesterRepo;

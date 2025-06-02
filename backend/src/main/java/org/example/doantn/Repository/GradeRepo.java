@@ -14,9 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface GradeRepo extends JpaRepository<Grade, Integer> {
-    @Query("SELECT g FROM Grade g WHERE g.student.id = :studentId AND g.clazz.id = :clazzId")
-    Optional<Grade> findByClazzIdAndStudentId(@Param("clazzId") Integer clazzId, @Param("studentId") Integer studentId);
-
     @Query("SELECT g FROM Grade g " +
             "JOIN g.clazz c " +
             "JOIN c.semester s " +

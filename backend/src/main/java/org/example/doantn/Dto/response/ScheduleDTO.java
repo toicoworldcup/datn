@@ -2,7 +2,6 @@ package org.example.doantn.Dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.doantn.Entity.Schedule;
 
 @Setter
 @Getter

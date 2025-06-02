@@ -28,9 +28,6 @@ public class DangkihocphanService {
     @Autowired
     private SemesterRepo semesterRepo;
 
-    @Autowired
-    private GradeService gradeService; // Inject GradeService
-
     public List<Dangkihocphan> getAllDangkihocphan() {
         return dangkihocphanRepo.findAll();
     }
