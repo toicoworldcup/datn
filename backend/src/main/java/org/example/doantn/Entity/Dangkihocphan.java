@@ -1,91 +1,60 @@
 package org.example.doantn.Entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name="dang_ki_hoc_phan")
+@Table(name = "dang_ki_hoc_phan")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Dangkihocphan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="điểm_gk")
+
+    @Column(name = "điểm_gk")
     private Double gki;
-    @Column(name="điểm_ck")
+
+    @Column(name = "điểm_ck")
     private Double cki;
+
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
     @ManyToOne
     @JoinColumn(name = "semester_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     private Semester semester;
 
-    public Dangkihocphan(Course course, Integer id, Semester semester, Student student) {
-        this.course = course;
-        this.id = id;
-        this.semester = semester;
-        this.student = student;
-    }
+    @Column(name = "diem_hoc_phan")
+    private Double finalGrade;
 
-    public Semester getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
-    public Double getCki() {
-        return cki;
-    }
-
-    public void setCki(Double cki) {
-        this.cki = cki;
-    }
-
-    public Double getGki() {
-        return gki;
-    }
-
-    public void setGki(Double gki) {
-        this.gki = gki;
-    }
-
-    public Dangkihocphan() {
-    }
+    @Column(name = "xep_loai")
+    private String gradeLetter;
 
     public Dangkihocphan(Student student, Course course) {
         this.student = student;
         this.course = course;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
+    public Dangkihocphan(Course course, Integer id, Semester semester, Student student, Double gki, Double cki, Double finalGrade, String gradeLetter) {
         this.course = course;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
+        this.semester = semester;
         this.student = student;
+        this.gki = gki;
+        this.cki = cki;
+        this.finalGrade = finalGrade;
+        this.gradeLetter = gradeLetter;
     }
 }

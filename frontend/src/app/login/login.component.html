@@ -1,13 +1,29 @@
 <div class="login-container">
-    <h2>Đăng nhập</h2>
-    <form (ngSubmit)="login()" #loginForm="ngForm">
-      <label for="username">Tên đăng nhập:</label>
-      <input id="username" type="text" [(ngModel)]="username" name="username" required />
-      
-      <label for="password">Mật khẩu:</label>
-      <input id="password" type="password" [(ngModel)]="password" name="password" required />
-      
-      <button type="submit">Đăng nhập</button>
-    </form>
+  <div class="login-box">
+    <div class="login-illustration">
+      <div class="avatar-circle">
+        <img src="assets/images/avata.png" alt="User Avatar">
+      </div>
+    </div>
+    <div class="login-form">
+      <h2>User Login</h2>
+      <div class="input-group">
+        <label for="username">
+          Tên đăng nhập
+        </label>
+        <input type="text" id="username" name="username" [(ngModel)]="username">
+      </div>
+      <div class="input-group">
+        <label for="password">
+          Mật khẩu
+        </label>
+        <input type="password" id="password" name="password" [(ngModel)]="password">
+      </div>
+      <button class="login-button" (click)="login()">Đăng nhập</button>
+      <div class="forgot-password">
+        <a href="#">Quên tên đăng nhập / mật khẩu?</a>
+      </div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </div>
   </div>
-  
+</div>

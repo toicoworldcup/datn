@@ -229,3 +229,14 @@
     color: #0c5460;
     border-radius: 0.25rem;
   }
+  .btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  
+    &:hover {
+      background-color: #138496;
+      border-color: #117a8b;
+    }
+  }

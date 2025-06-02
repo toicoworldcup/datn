@@ -12,7 +12,7 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     public void sendCredentials(String toEmail, String username, String rawPassword) {
-        String subject = "Thông tin tài khoản sinh viên";
+        String subject = "Thông tin tài khoản hệ thống";
         String text = String.format("""
                 Chào bạn,
 

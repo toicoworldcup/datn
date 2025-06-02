@@ -1,14 +1,13 @@
 package org.example.doantn.Service;
 
 import org.example.doantn.Entity.Semester;
-import org.example.doantn.Entity.Teacher;
 import org.example.doantn.Repository.SemesterRepo;
-import org.example.doantn.Repository.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class SemesterService {
 
@@ -17,6 +16,11 @@ public class SemesterService {
 
     // Lấy danh sách tất cả học kỳ
     public List<Semester> getAllSemesters() {
+        return semesterRepo.findAll().stream()
+                .filter(Semester::isOpen) // Sử dụng hàm isOpen()
+                .collect(Collectors.toList());
+    }
+    public List<Semester> getAllSemestersNoFilter() {
         return semesterRepo.findAll();
     }
 

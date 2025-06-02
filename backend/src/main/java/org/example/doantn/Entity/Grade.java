@@ -1,10 +1,14 @@
 package org.example.doantn.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "grade")
 public class Grade {
@@ -25,67 +29,37 @@ public class Grade {
     private Semester semester;
 
     @Column(name = "diem_gk")
-    private double diemGk;
+    private Double diemGk;
 
     @Column(name = "diem_ck")
-    private double diemCk;
+    private Double diemCk;
+
+    @Column(columnDefinition = "TEXT")
+    private String history;
 
     public Grade() {
+        this.history = ""; // Khởi tạo history rỗng
     }
 
-    public Grade(Clazz clazz, double diemCk, double diemGk, Semester semester, Student student) {
-        this.clazz = clazz;
-        this.diemCk = diemCk;
-        this.diemGk = diemGk;
-        this.semester = semester;
-        this.student = student;
-    }
+    // Getters and setters
 
-    public Clazz getClazz() {
-        return clazz;
-    }
-
-    public void setClazz(Clazz clazz) {
-        this.clazz = clazz;
-    }
-
-    public double getDiemCk() {
-        return diemCk;
-    }
-
-    public void setDiemCk(double diemCk) {
-        this.diemCk = diemCk;
-    }
-
-    public double getDiemGk() {
-        return diemGk;
-    }
-
-    public void setDiemGk(double diemGk) {
-        this.diemGk = diemGk;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Semester getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
+    public void appendHistory(Double oldGk, Double newGk, Double oldCk, Double newCk) {
+        StringBuilder sb = new StringBuilder(this.history != null ? this.history : "");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        sb.append("[").append(now.format(formatter)).append("] ");
+        boolean hasChange = false;
+        if ((oldGk == null && newGk != null) || (oldGk != null && !oldGk.equals(newGk))) {
+            sb.append("GK: ").append(oldGk != null ? oldGk : "N/A").append(" -> ").append(newGk != null ? newGk : "N/A").append("; ");
+            hasChange = true;
+        }
+        if ((oldCk == null && newCk != null) || (oldCk != null && !oldCk.equals(newCk))) {
+            sb.append("CK: ").append(oldCk != null ? oldCk : "N/A").append(" -> ").append(newCk != null ? newCk : "N/A").append("; ");
+            hasChange = true;
+        }
+        if (hasChange) {
+            sb.append("\n");
+            this.history = sb.toString();
+        }
     }
 }

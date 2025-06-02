@@ -2,9 +2,7 @@ package org.example.doantn.Service;
 
 import org.example.doantn.Entity.Clazz;
 import org.example.doantn.Entity.Course;
-import org.example.doantn.Entity.Teacher;
 import org.example.doantn.Repository.CourseRepo;
-import org.example.doantn.Repository.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +50,20 @@ public class CourseService {
             throw new RuntimeException("Không tìm thấy khóa học với ID: " + id);
         }
         courseRepo.deleteById(id);
+    }
+
+    public List<Course> searchCoursesByProgramAndKhoa(String program, String khoa) {
+        // Triển khai logic tìm kiếm dựa trên program và khoa tại đây
+        // Ví dụ (tùy thuộc vào cấu trúc Entity Course của bạn):
+        if (program != null && !program.isEmpty() && khoa != null && !khoa.isEmpty()) {
+            return courseRepo.findByCtdt_maCtAndKhoa(program, khoa);
+        } else if (program != null && !program.isEmpty()) {
+            return courseRepo.findByCtdt_maCt(program);
+        } else if (khoa != null && !khoa.isEmpty()) {
+            return courseRepo.findByKhoa(khoa);
+        } else {
+            return courseRepo.findAll(); // Hoặc trả về một danh sách trống nếu không có tiêu chí tìm kiếm
+        }
     }
 
 }

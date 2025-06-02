@@ -7,6 +7,7 @@ import org.example.doantn.Entity.Dangkihocphan;
 import org.example.doantn.Entity.Semester;
 import org.example.doantn.Entity.Student;
 import org.example.doantn.Repository.CourseRepo;
+import org.example.doantn.Repository.DangkihocphanRepo;
 import org.example.doantn.Repository.SemesterRepo;
 import org.example.doantn.Repository.StudentRepo;
 import org.example.doantn.Service.DangkihocphanService;
@@ -17,10 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,6 +27,8 @@ public class DangkihocphanController {
 
     @Autowired
     private DangkihocphanService dangkihocphanService;
+    @Autowired
+    private DangkihocphanRepo dangkihocphanRepo;
 
     @Autowired
     private StudentRepo studentRepo;
@@ -37,7 +37,6 @@ public class DangkihocphanController {
     @Autowired
     private CourseRepo courseRepo;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<DkhpDTO>> getAllDangkihocphan() {
         List<DkhpDTO> result = dangkihocphanService.getAllDangkihocphan()
@@ -48,7 +47,6 @@ public class DangkihocphanController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<DkhpDTO> getDangkihocphanById(@PathVariable Integer id) {
         Dangkihocphan dangkihocphan = dangkihocphanService.getDangkihocphanById(id);
@@ -59,7 +57,6 @@ public class DangkihocphanController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{mssv}/{semesterName}")
     public ResponseEntity<List<DkhpDTO> > getDangkihocphanByMSSVAndSemesterName(@PathVariable String mssv,@PathVariable String semesterName) {
         Optional<Student> student = studentRepo.findByMssv(mssv);
@@ -110,46 +107,94 @@ public class DangkihocphanController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/ctdt-courses")
-    public ResponseEntity<Map<String, List<CourseDTO>>> getCtdtCourses(Authentication authentication) {
+    public ResponseEntity<Map<String, List<Map<String, Object>>>> getCtdtCourses(Authentication authentication) {
         String username = authentication.getName();
         Student student = studentRepo.findByUser_Username(username)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
 
         // Lấy tất cả học phần trong CTĐT của sinh viên
-        List<Course> allCourses = courseRepo.findByCtdts_MaCt(student.getCtdt().getMaCt());
+        List<Course> allCourses = courseRepo.findByCtdt_maCtAndKhoa(student.getCtdt().getMaCt(),student.getBatch().getName());
+        List<Map<String, Object>> allCourseDTOsWithGrades = new ArrayList<>();
 
-        // Lấy danh sách học phần sinh viên đã đăng ký
-        List<String> registeredCourseCodes = dangkihocphanService.getDangkihocphanByMssv(student.getMssv())
-                .stream()
-                .map(dkhp -> dkhp.getCourse().getMaHocPhan())
+        for (Course course : allCourses) {
+            Map<String, Object> courseInfo = new HashMap<>();
+            courseInfo.put("maHocPhan", course.getMaHocPhan());
+            courseInfo.put("tenMonHoc", course.getName());
+            courseInfo.put("soTinChi", course.getTinChi());
+            courseInfo.put("khoiLuong", course.getKhoiLuong());
+            courseInfo.put("suggestedSemester", course.getSuggestedSemester());
+            courseInfo.put("gradeRatio", course.getGradeRatio());
+            courseInfo.put("finalGrade", null);
+            courseInfo.put("gradeLetter", null);
+
+            // Tìm bản ghi Dangkihocphan mới nhất cho sinh viên và môn học này
+            List<Dangkihocphan> enrollments = dangkihocphanRepo.findByStudent_MssvAndCourse_MaHocPhan(student.getMssv(), course.getMaHocPhan());
+            Optional<Dangkihocphan> latestEnrollment = enrollments.stream()
+                    .max(Comparator.comparing(dkhp -> dkhp.getSemester().getName()));
+            if (latestEnrollment.isPresent()) {
+                courseInfo.put("finalGrade", latestEnrollment.get().getFinalGrade());
+                courseInfo.put("gradeLetter", latestEnrollment.get().getGradeLetter());
+            }
+            allCourseDTOsWithGrades.add(courseInfo);
+        }
+
+        // Lấy danh sách các bản ghi Dangkihocphan của sinh viên
+        List<Dangkihocphan> registeredDkhps = dangkihocphanService.getDangkihocphanByMssv(student.getMssv());
+
+        // Nhóm các Dangkihocphan theo maHocPhan và lấy bản ghi mới nhất theo tên học kỳ
+        Map<String, Dangkihocphan> latestRegisteredDkhpMap = registeredDkhps.stream()
+                .collect(Collectors.groupingBy(dkhp -> dkhp.getCourse().getMaHocPhan(),
+                        Collectors.maxBy(Comparator.comparing(dkhp -> dkhp.getSemester().getName()))))
+                .entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().orElse(null)));
+
+        // Tạo danh sách học phần đã đăng ký với thông tin điểm (lấy từ bản ghi mới nhất)
+        List<Map<String, Object>> registeredCoursesWithGrades = allCourses.stream()
+                .filter(course -> latestRegisteredDkhpMap.containsKey(course.getMaHocPhan()))
+                .map(course -> {
+                    Map<String, Object> courseInfo = new HashMap<>();
+                    Dangkihocphan latestDkhp = latestRegisteredDkhpMap.get(course.getMaHocPhan());
+                    courseInfo.put("maHocPhan", course.getMaHocPhan());
+                    courseInfo.put("tenMonHoc", course.getName());
+                    courseInfo.put("soTinChi", course.getTinChi());
+                    courseInfo.put("khoiLuong", course.getKhoiLuong());
+                    courseInfo.put("suggestedSemester", course.getSuggestedSemester());
+                    courseInfo.put("gradeRatio", course.getGradeRatio());
+                    courseInfo.put("finalGrade", latestDkhp != null ? latestDkhp.getFinalGrade() : null);
+                    courseInfo.put("gradeLetter", latestDkhp != null ? latestDkhp.getGradeLetter() : null);
+                    return courseInfo;
+                })
                 .collect(Collectors.toList());
 
-        // Phân loại học phần đã và chưa đăng ký
-        List<CourseDTO> registeredCourses = allCourses.stream()
-                .filter(course -> registeredCourseCodes.contains(course.getMaHocPhan()))
-                .map(CourseDTO::new)
+        // Tạo danh sách học phần chưa đăng ký (chỉ lấy thông tin môn học)
+        List<Map<String, Object>> unregisteredCourses = allCourses.stream()
+                .filter(course -> !latestRegisteredDkhpMap.containsKey(course.getMaHocPhan()))
+                .map(course -> {
+                    Map<String, Object> courseInfo = new HashMap<>();
+                    courseInfo.put("maHocPhan", course.getMaHocPhan());
+                    courseInfo.put("tenMonHoc", course.getName());
+                    courseInfo.put("soTinChi", course.getTinChi());
+                    courseInfo.put("khoiLuong", course.getKhoiLuong());
+                    courseInfo.put("suggestedSemester", course.getSuggestedSemester());
+                    courseInfo.put("gradeRatio", course.getGradeRatio());
+                    return courseInfo;
+                })
                 .collect(Collectors.toList());
 
-        List<CourseDTO> unregisteredCourses = allCourses.stream()
-                .filter(course -> !registeredCourseCodes.contains(course.getMaHocPhan()))
-                .map(CourseDTO::new)
-                .collect(Collectors.toList());
-
-        Map<String, List<CourseDTO>> response = new HashMap<>();
-        response.put("registered", registeredCourses);
+        Map<String, List<Map<String, Object>>> response = new HashMap<>();
+        response.put("all", allCourseDTOsWithGrades);
+        response.put("registered", registeredCoursesWithGrades);
         response.put("unregistered", unregisteredCourses);
 
         return ResponseEntity.ok(response);
     }
 
 
-
-
     @PreAuthorize("hasRole('STUDENT')")
-    @GetMapping("/my-registrations")
+    @GetMapping("/my-registrations/hocki/{semester}")
     public ResponseEntity<List<DkhpDTO>> getMyDangkihocphan(
             Authentication authentication,
-            @RequestParam String semester) {
+            @PathVariable String semester) {
         String username = authentication.getName();
         Student student = studentRepo.findByUser_Username(username)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
@@ -186,7 +231,6 @@ public class DangkihocphanController {
     }
 
 
-
     private Dangkihocphan convertToEntity(DkhpRequest request, String username) {
         Student student = studentRepo.findByUser_Username(username)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sinh viên với username: " + username));
@@ -201,14 +245,17 @@ public class DangkihocphanController {
         dangkihocphan.setStudent(student);
         dangkihocphan.setCourse(course);
         dangkihocphan.setSemester(semester);
+        // Các thuộc tính điểm (gki, cki, finalGrade, gradeLetter) sẽ là null khi tạo mới
         return dangkihocphan;
     }
 
     private DkhpDTO convertToDTO(Dangkihocphan dangkihocphan) {
         return new DkhpDTO(
-                dangkihocphan.getSemester() != null ? dangkihocphan.getSemester().getName() : null,
+                dangkihocphan.getCourse() != null ? dangkihocphan.getCourse().getMaHocPhan() : null,
                 dangkihocphan.getStudent() != null ? dangkihocphan.getStudent().getMssv() : null,
-                dangkihocphan.getCourse() != null ? dangkihocphan.getCourse().getMaHocPhan() : null
+                dangkihocphan.getSemester() != null ? dangkihocphan.getSemester().getName() : null,
+                dangkihocphan.getFinalGrade(),
+                dangkihocphan.getGradeLetter()
         );
     }
 }

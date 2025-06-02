@@ -4,13 +4,11 @@ import org.example.doantn.Entity.Course;
 import org.example.doantn.Entity.Dangkihocphan;
 import org.example.doantn.Entity.Semester;
 import org.example.doantn.Entity.Student;
+import org.example.doantn.Repository.CourseRepo;
 import org.example.doantn.Repository.DangkihocphanRepo;
 import org.example.doantn.Repository.SemesterRepo;
 import org.example.doantn.Repository.StudentRepo;
-import org.example.doantn.Repository.CourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +27,9 @@ public class DangkihocphanService {
 
     @Autowired
     private SemesterRepo semesterRepo;
+
+    @Autowired
+    private GradeService gradeService; // Inject GradeService
 
     public List<Dangkihocphan> getAllDangkihocphan() {
         return dangkihocphanRepo.findAll();
@@ -65,39 +66,20 @@ public class DangkihocphanService {
         return dangkihocphanRepo.save(dangkihocphan);
     }
 
-    public Dangkihocphan updateDangkihocphan(Integer id, String username, Integer courseId) {
-            Dangkihocphan existingDangkihocphan = dangkihocphanRepo.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy đăng ký học phần với ID: " + id));
-
-            Student student = studentRepo.findByUser_Username(username)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
-
-            if (!existingDangkihocphan.getStudent().getId().equals(student.getId())) {
-                throw new RuntimeException("Bạn không có quyền cập nhật đăng ký này!");
-            }
-
-            if (courseId != null) {
-                existingDangkihocphan.setCourse(courseRepo.findById(courseId)
-                        .orElseThrow(() -> new RuntimeException("Không tìm thấy học phần với ID: " + courseId)));
-            }
-
-            return dangkihocphanRepo.save(existingDangkihocphan);
-        }
-
-
-
     public void deleteDangkihocphan(Integer id) {
         if (!dangkihocphanRepo.existsById(id)) {
             throw new RuntimeException("Không tìm thấy đăng ký học phần với ID: " + id);
         }
         dangkihocphanRepo.deleteById(id);
     }
+
     public List<Dangkihocphan> getDangkihocphanByMssv(String mssv) {
         Student student = studentRepo.findByMssv(mssv)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với MSSV: " + mssv));
 
         return dangkihocphanRepo.findByStudent(student);
     }
+
     public List<Dangkihocphan> getDangkihocphanByMssvAndSemester(String mssv, String semester) {
         return dangkihocphanRepo.findByStudent_MssvAndSemesterName(mssv, semester);
     }
@@ -108,7 +90,4 @@ public class DangkihocphanService {
                 .map(dkhp -> dkhp.getCourse().getMaHocPhan()) // Chuyển thành danh sách mã học phần
                 .collect(Collectors.toList());
     }
-
-
-
 }

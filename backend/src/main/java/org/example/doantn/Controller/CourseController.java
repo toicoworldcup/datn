@@ -1,16 +1,13 @@
 package org.example.doantn.Controller;
 
-import org.example.doantn.Dto.request.ClazzRequest;
 import org.example.doantn.Dto.request.CourseRequest;
 import org.example.doantn.Dto.response.ClazzDTO;
 import org.example.doantn.Dto.response.CourseDTO;
-import org.example.doantn.Entity.Clazz;
 import org.example.doantn.Entity.Course;
 import org.example.doantn.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +21,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    //@PreAuthorize("hasRole('QLDT')")
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         List<CourseDTO> courseDTOs = courseService.getAllCourses()
@@ -33,8 +30,19 @@ public class CourseController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(courseDTOs);
     }
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
+    @GetMapping("/search/{maCt}/{khoa}")
+    public ResponseEntity<List<CourseDTO>> searchCourses(
+            @PathVariable String maCt, @PathVariable String khoa
+    ) {
+        List<Course> courses = courseService.searchCoursesByProgramAndKhoa(maCt, khoa);
+        List<CourseDTO> courseDTOs = courses.stream()
+                .map(CourseDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(courseDTOs);
+    }
 
-   // @PreAuthorize("hasRole('QLDT')")
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @GetMapping("/{maHocPhan}")
     public ResponseEntity<CourseDTO> getCourseByMaHocPhan(@PathVariable String maHocPhan) {
         try {
@@ -45,7 +53,7 @@ public class CourseController {
         }
     }
 
-    //@PreAuthorize("hasRole('QLDT')")
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @GetMapping("/clazzes/{maHocPhan}-{semesterName}")
     public ResponseEntity<Set<ClazzDTO>> getClazzesByMaHocPhan(@PathVariable String maHocPhan,@PathVariable String semesterName) {
         Set<ClazzDTO> clazzDTOs = courseService.getClazzesByMaHocPhan(maHocPhan,semesterName)
@@ -55,7 +63,7 @@ public class CourseController {
         return ResponseEntity.ok(clazzDTOs);
     }
 
-    //@PreAuthorize("hasRole('QLDT')")
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CourseRequest request) {
         try {
@@ -71,7 +79,7 @@ public class CourseController {
 
     }
 
-   //@PreAuthorize("hasRole('QLDT')")
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CourseDTO> updateCourse(@PathVariable Integer id, @RequestBody CourseDTO courseDTO) {
         try {
@@ -85,7 +93,7 @@ public class CourseController {
         }
     }
 
-    //@PreAuthorize("hasRole('QLDT')")
+    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
         try {
@@ -100,6 +108,9 @@ public class CourseController {
         course.setMaHocPhan(request.getMaHocPhan());
         course.setName(request.getTenMonHoc());
         course.setTinChi(request.getSoTinChi());
+        course.setKhoiLuong(request.getKhoiLuong());
+        course.setSuggestedSemester(request.getSuggestedSemester());
+        course.setGradeRatio(request.getGradeRatio());
 
 
         return course;
@@ -108,7 +119,10 @@ public class CourseController {
         return new CourseDTO(
                 course.getMaHocPhan(),
                 course.getTinChi(),
-                course.getName()
+                course.getName(),
+                course.getKhoiLuong(),
+                course.getSuggestedSemester(),
+                course.getGradeRatio() // Thêm trường này
         );
     }
 }

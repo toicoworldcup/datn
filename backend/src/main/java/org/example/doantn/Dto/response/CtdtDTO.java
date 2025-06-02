@@ -1,41 +1,23 @@
 package org.example.doantn.Dto.response;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.doantn.Entity.Ctdt;
+import org.example.doantn.Entity.Batch;
 
+@Setter
+@Getter
 public class CtdtDTO {
     private String name;
     private String maCt;
     private String khoa;
-    public CtdtDTO(String name) {
-        this.name = name;
-    }
+
+    // Constructor nhận entity Ctdt (nên dùng để chuyển đổi đầy đủ)
     public CtdtDTO(Ctdt ctdt) {
         this.name = ctdt.getName();
-        this.maCt=ctdt.getMaCt();
-        this.khoa=ctdt.getBatch().getName();
+        this.maCt = ctdt.getMaCt();
+        Batch batch = ctdt.getBatch();
+        this.khoa = (batch != null) ? batch.getName() : null; // Kiểm tra Batch null
     }
 
-    public String getMaCt() {
-        return maCt;
-    }
-
-    public void setMaCt(String maCt) {
-        this.maCt = maCt;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getKhoa() {
-        return khoa;
-    }
-
-    public void setKhoa(String khoa) {
-        this.khoa = khoa;
-    }
 }

@@ -100,3 +100,47 @@
   margin-left: 5px;
 }
 
+/* course-list.component.css */
+
+/* ... Các kiểu dáng hiện tại của bạn ... */
+
+/* Kiểu dáng cho input và button tìm kiếm theo mã nằm ngang trong modal */
+.modal-body .input-group {
+  display: flex; /* Sử dụng flexbox để sắp xếp ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.modal-body .input-group .form-control {
+  flex-grow: 1; /* Cho input chiếm phần lớn không gian */
+  margin-right: 5px; /* Tạo khoảng cách nhỏ giữa input và button */
+}
+
+
+/* Ẩn nút Đóng ở footer của modal tìm kiếm theo mã */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end; /* Vẫn giữ căn phải cho nút Đóng của các modal khác nếu có */
+}
+
+.modal:is(.show) .modal-dialog .modal-content .modal-footer:has(+.modal-body .input-group) .btn-secondary {
+  display: none; /* Ẩn nút Đóng khi có input-group trong body */
+}
+
+/* Hoặc bạn có thể nhắm mục tiêu cụ thể modal tìm kiếm theo mã nếu cần */
+/* #searchCourseModal .modal-footer .btn-secondary {
+  display: none;
+} */
+
+/* course-list.component.css */
+
+.btn-info {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+  &:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+  }
+}

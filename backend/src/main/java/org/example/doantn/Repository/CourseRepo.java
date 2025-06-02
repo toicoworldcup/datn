@@ -20,6 +20,17 @@ public interface CourseRepo extends JpaRepository<Course, Integer> {
 
     List<Course> findByCtdts_MaCt(String maCt);
 
+    // Tìm kiếm học phần theo mã CTĐT và khóa
+    @Query("SELECT c FROM Course c JOIN c.ctdts ctdt JOIN ctdt.batch b WHERE ctdt.maCt = :maCt AND b.name = :khoa")
+    List<Course> findByCtdt_maCtAndKhoa(@Param("maCt") String maCt, @Param("khoa") String khoa);
+
+    // Tìm kiếm học phần theo mã CTĐT
+    @Query("SELECT c FROM Course c JOIN c.ctdts ctdt WHERE ctdt.maCt = :maCt")
+    List<Course> findByCtdt_maCt(@Param("maCt") String maCt);
+
+    // Tìm kiếm học phần theo khóa
+    @Query("SELECT c FROM Course c JOIN c.ctdts ctdt JOIN ctdt.batch b WHERE b.name = :khoa")
+    List<Course> findByKhoa(@Param("khoa") String khoa);
 
 
 }

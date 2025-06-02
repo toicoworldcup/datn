@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { SemesterService } from "../../../services/semester.service";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Semester } from "../../models/semester.model";
+import { Semester } from "../../../models/semester.model";
 
 @Component({
   selector: "app-semester-list",
@@ -25,7 +25,7 @@ export class SemesterListComponent implements OnInit {
   }
 
   loadSemesters(): void {
-    this.semesterService.getAllSemesters().subscribe({
+    this.semesterService.getAllSemestersNoFilter().subscribe({
       next: (data) => {
         // Giả sử rằng isOpen đã là boolean từ backend, không cần phải chuyển đổi
         this.semesters = data;

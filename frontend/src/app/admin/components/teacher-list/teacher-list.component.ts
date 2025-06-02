@@ -3,7 +3,7 @@ import { TeacherService } from "../../../services/teacher.service";
 import { CommonModule } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
 import { FormsModule } from "@angular/forms";
-import { Teacher } from "../../models/teacher.model";
+import { Teacher } from "../../../models/teacher.model";
 
 @Component({
   selector: "app-teacher-list",

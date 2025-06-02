@@ -1,47 +1,115 @@
 .login-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6a1b9a, #e80e8c); /* Màu nền gradient tương tự */
+}
+
+.login-box {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  overflow: hidden;
+  width: 80%; /* Điều chỉnh độ rộng theo ý muốn */
+  max-width: 900px;
+}
+
+.login-illustration {
+  background-color: #f8f9fa; /* Màu nền phần hình ảnh */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  width: 40%; /* Chiếm 40% chiều rộng */
+}
+
+.avatar-circle {
+  background-color: #e9ecef;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.avatar-circle img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.login-form {
+  padding: 40px;
+  width: 60%; /* Chiếm 60% chiều rộng */
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  text-align: center;
+  color: #343a40;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  color: #495057;
+  margin-bottom: 5px;
+}
+
+.input-group label i {
+  margin-right: 5px;
+}
+
+.input-group input[type="text"],
+.input-group input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.login-button {
+  background-color: #28a745; /* Màu xanh lá cây tương tự */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #1e7e34;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.forgot-password a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 15px;
+  text-align: center;
+}
