@@ -1,0 +1,95 @@
+<h2>Nhập Điểm Cho Sinh Viên Theo Lớp</h2>
+
+<div class="mb-3">
+  <label for="hocKi" class="form-label">Chọn Học Kỳ:</label>
+  <select id="hocKi" class="form-select" [(ngModel)]="selectedHocKi" (change)="loadClazzesBySemester()">
+    <option value="">-- Chọn Học Kỳ --</option>
+    <option *ngFor="let hk of semesters" [value]="hk.name">{{ hk.name }}</option>
+  </select>
+</div>
+
+<div class="mb-3" *ngIf="selectedHocKi">
+  <label for="maLop" class="form-label">Chọn Mã Lớp:</label>
+  <select id="maLop" class="form-select" [(ngModel)]="selectedMaLop" (change)="loadStudentsByClazz()">
+    <option value="">-- Chọn Mã Lớp --</option>
+    <option *ngFor="let ml of maLops" [value]="ml">{{ ml }}</option>
+  </select>
+</div>
+
+<div *ngIf="loading" class="alert alert-info">Đang tải danh sách sinh viên...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<div *ngIf="students && students.length > 0 && !loading && !error" class="table-responsive">
+  <h3>Nhập Điểm Lớp {{ selectedMaLop }} - Học kỳ {{ selectedHocKi }}</h3>
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>MSSV</th>
+        <th>Tên</th>
+        <th>Điểm GK</th>
+        <th>Điểm CK</th>
+        <th>Lịch Sử Sửa Điểm</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.mssv }}</td>
+        <td>{{ student.name }}</td>
+        <td>
+          <input type="number" class="form-control form-control-sm" [(ngModel)]="student.diemGk" (input)="validateGradeInput($event)">
+        </td>
+        <td>
+          <input type="number" class="form-control form-control-sm" [(ngModel)]="student.diemCk" (input)="validateGradeInput($event)">
+        </td>
+        <td>
+          <button class="btn btn-sm btn-info" (click)="showHistory(student.history)">Xem</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-success mt-3" (click)="saveGrades()" [disabled]="isSaveDisabled()">Lưu Điểm</button>
+</div>
+
+<div *ngIf="students && students.length === 0 && !loading && !error && selectedMaLop && selectedHocKi" class="alert alert-warning">
+  Không có sinh viên trong lớp này ở học kỳ này.
+</div>
+
+<div class="modal fade" [ngClass]="{'show': isHistoryModalVisible}" style="display: block;" *ngIf="isHistoryModalVisible">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Lịch Sử Sửa Điểm</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeHistoryModal()"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Thời Gian</th>
+              <th>Thay Đổi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of parsedHistory">
+              <td>{{ log.timestamp }}</td>
+              <td>{{ log.change }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="!parsedHistory || parsedHistory.length === 0">
+          Chưa có lịch sử sửa điểm.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeHistoryModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [ngClass]="{'show': isHistoryModalVisible}" *ngIf="isHistoryModalVisible"></div>
+
+<script>
+  // function showHistory(history) { // Xóa function JavaScript này
+  //   alert(history || 'Chưa có lịch sử sửa điểm.');
+  // }
+</script>

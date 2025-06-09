@@ -1,0 +1,120 @@
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+p {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  color: #333;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.alert {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.alert.error {
+  background-color: #ffe0e0;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+.alert.success {
+  background-color: #e0f7fa;
+  color: #00897b;
+  border: 1px solid #00897b;
+}
+
+/* Pagination styles */
+.ngx-pagination {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.ngx-pagination ul {
+  padding-left: 0;
+  list-style: none;
+  display: inline-block;
+}
+
+.ngx-pagination li {
+  display: inline;
+  margin: 0 5px;
+}
+
+.ngx-pagination a,
+.ngx-pagination span.current {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: #333;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.ngx-pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.ngx-pagination span.current {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.ngx-pagination .disabled a,
+.ngx-pagination .disabled span {
+  color: #777;
+  cursor: default;
+  border-color: #eee;
+  background-color: #eee;
+}

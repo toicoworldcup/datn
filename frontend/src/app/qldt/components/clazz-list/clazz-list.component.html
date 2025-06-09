@@ -1,0 +1,27 @@
+<div class="col-md-12">
+  <table class="table table-bordered table-striped table-hover">
+    <thead class="table-info text-align">
+      <tr>
+        <th>Mã lớp</th>
+        <th>Học kỳ</th>
+        <th>Lịch thi</th>
+        <th>Học phần</th>
+        <th>Giáo viên</th>
+        <th>Số lượng SV</th> <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let clazz of clazzes | paginate : { itemsPerPage: 18, currentPage: p }">
+        <td>{{ clazz.maLop }}</td>
+        <td>{{ clazz.hocki }}</td>
+        <td>{{ clazz.lichThi | date }}</td>
+        <td>{{ clazz.maHocPhan }}</td>
+        <td>{{ getTeacherName(clazz.teachers) }}</td>
+        <td>{{ clazz.soLuongSinhVien }}</td> <td>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>

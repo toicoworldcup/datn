@@ -1,0 +1,122 @@
+<div class="container-fluid mt-4 px-4">
+  <div class="container-fluid mt-3 px-3">
+    <div class="text-center">
+      <h2 class="title-heading">
+        Danh sách Hoc phan
+      </h2>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-auto">
+      <button class="btn btn-info me-2" (click)="openCombinedSearchModal()">
+        <i class="fa fa-search me-1"></i> Tìm kiếm
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-info text-center">
+        <tr>
+          <th>Mã học phần</th>
+          <th>Tên môn học</th>
+          <th>Số tín chỉ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses | paginate: { itemsPerPage: 10, currentPage: p }">
+          <td>{{ course.maHocPhan }}</td>
+          <td>{{ course.tenMonHoc }}</td>
+          <td>{{ course.soTinChi }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination-controls
+      (pageChange)="p = $event"
+      previousLabel="«"
+      nextLabel="»"
+      class="d-flex justify-content-center mt-3">
+    </pagination-controls>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isCombinedSearchModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tìm kiếm học phần</h5>
+          <button type="button" class="btn-close" (click)="closeCombinedSearchModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-info" (click)="openSearchModal()">
+              <i class="fa fa-search me-1"></i> Tìm kiếm theo Mã
+            </button>
+            <button class="btn btn-success" (click)="toggleAdvancedSearchModal()">
+              <i class="fa fa-filter me-1"></i> Tìm kiếm nâng cao
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeCombinedSearchModal()">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isSearchModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tìm kiếm học phần theo mã</h5>
+          <button type="button" class="btn-close" (click)="closeSearchModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="maHocPhanInputModal">Nhập mã học phần:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="maHocPhanInputModal" [(ngModel)]="mahocphanSearch">
+              <button class="btn btn-primary" (click)="searchCourse()">
+                <i class="fa fa-search"></i> Tìm
+              </button>
+            </div>
+            <div *ngIf="searchError" class="text-danger mt-2">{{ searchError }}</div>
+          </div>
+          <div *ngIf="searchResultCourse" class="mt-3">
+            <h5>Kết quả tìm kiếm:</h5>
+            <p><strong>Mã học phần:</strong> {{ searchResultCourse.maHocPhan }}</p>
+            <p><strong>Tên môn học:</strong> {{ searchResultCourse.tenMonHoc }}</p>
+            <p><strong>Số tín chỉ:</strong> {{ searchResultCourse.soTinChi }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isAdvancedSearchModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tìm kiếm học phần nâng cao</h5>
+          <button type="button" class="btn-close" (click)="toggleAdvancedSearchModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="program">Chương trình đào tạo:</label>
+            <input type="text" class="form-control" id="program" [(ngModel)]="searchProgram">
+          </div>
+          <div class="mb-3">
+            <label for="khoa">Khóa:</label>
+            <input type="text" class="form-control" id="khoa" [(ngModel)]="searchKhoa">
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary" (click)="searchCoursesByProgramAndKhoa()">Tìm kiếm</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="toggleAdvancedSearchModal()">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="container-fluid mt-4">
+    <h2>Quản lý Thời Khóa Biểu</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="semesterSelect" class="form-label">Chọn học kỳ:</label>
+            <select class="form-select" id="semesterSelect" [(ngModel)]="selectedSemester"
+                (change)="loadSchedule()">
+                <option value="">-- Chọn học kỳ --</option>
+                <option *ngFor="let semester of semesters" [value]="semester.name">
+                    {{ semester.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6 d-flex justify-content-start">
+            <div class="mr-2" style="width: 25%;">
+                <button class="btn btn-success schedule-button" (click)="generateSchedule()"
+                    [disabled]="!selectedSemester">
+                    <i class="fa fa-plus me-1"></i>
+                    Tạo Thời Khóa Biểu
+                </button>
+            </div>
+            <div style="width: 25%;">
+                <button type="button" class="btn btn-primary schedule-button" (click)="toggleSearchScheduleModal()"
+                    [disabled]="!selectedSemester">
+                    <i class="fa fa-search me-1"></i>
+                    Tìm kiếm mã lớp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': isSearchScheduleModalVisible }"
+        style="background: rgba(0,0,0,0.4);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tìm kiếm thời khóa biểu theo mã lớp</h5>
+                    <button type="button" class="btn-close" (click)="toggleSearchScheduleModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="maLopInput" class="form-label">Mã lớp:</label>
+                        <input type="text" class="form-control" id="maLopInput" [(ngModel)]="searchMaLop">
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" (click)="findScheduleByClazzAndSemester()">Tìm kiếm</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="toggleSearchScheduleModal()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="generationSuccess" class="alert alert-success">
+        Thời khóa biểu đã được tạo thành công!
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+
+    <div *ngIf="schedule.length > 0">
+        <h3>Thời Khóa Biểu Học Kỳ {{ selectedSemester }}</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="table-info">
+                <tr>
+                    <th>Mã Lớp</th>
+                    <th>Phòng</th>
+                    <th>Thời Gian</th>
+                    <th>Thứ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of schedule | paginate: { itemsPerPage: 10, currentPage: p }">
+                    <td>{{ item.clazzName }}</td>
+                    <td>{{ item.roomName }}</td>
+                    <td>{{ item.timeSlot }}</td>
+                    <td>{{ item.dayOfWeek }}</td>
+                </tr>
+            </tbody>
+        </table>
+         <pagination-controls
+            (pageChange)="p = $event"
+            previousLabel="«"
+            nextLabel="»"
+            class="d-flex justify-content-center mt-3">
+        </pagination-controls>
+    </div>
+    <div *ngIf="schedule.length === 0 && selectedSemester && !errorMessage">
+        Không có lịch biểu cho học kỳ này hoặc chưa được tạo.
+    </div>
+</div>

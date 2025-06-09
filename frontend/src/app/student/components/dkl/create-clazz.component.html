@@ -1,0 +1,83 @@
+<div class="container">
+  <h2>Đăng ký Lớp Học</h2>
+
+  <div>
+    <label for="selectedSemester">Chọn học kỳ:</label>
+    <select
+      id="selectedSemester"
+      [(ngModel)]="selectedSemester"
+      (change)="loadRegisteredClasses()"
+      class="form-control form-control-sm"
+    >
+      <option value="">-- Chọn học kỳ --</option>
+      <option *ngFor="let semester of semesters" [value]="semester.name">
+        {{ semester.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mt-3">
+    <label for="maLop">Mã Lớp:</label>
+    <input
+      type="text"
+      id="maLop"
+      [(ngModel)]="newRegistration.maLop"
+      class="form-control form-control-sm"
+    />
+  </div>
+
+  <button (click)="registerNewClass()" class="btn btn-primary btn-sm mt-2">
+    Đăng ký
+  </button>
+
+  <h3 class="mt-4">Danh Sách Lớp Đã Đăng Ký</h3>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="registeredClasses.length > 0" class="table-responsive mt-2">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Mã Lớp</th>
+          <th class="text-center">Huỷ lớp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let registration of registeredClasses">
+          <td>{{ registration.maLop }}</td>
+          <td class="text-center">
+            <input
+              type="checkbox"
+              [value]="registration.id"
+              (change)="onCheckboxChange(registration.id!, $event)"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    *ngIf="selectedClassesToDelete.length > 0"
+    (click)="bulkUnregisterClasses()"
+    class="btn btn-danger btn-sm mt-2"
+  >
+    Hủy lớp đã chọn
+  </button>
+
+  <div *ngIf="registeredClasses.length === 0 && selectedSemester && !errorMessage">
+    <p>Không có lớp học nào được đăng ký trong học kỳ này.</p>
+  </div>
+
+  <div *ngIf="!selectedSemester && !errorMessage && semesters.length > 0">
+    <p>Vui lòng chọn học kỳ để xem danh sách đăng ký.</p>
+  </div>
+
+  <div *ngIf="semesters.length === 0 && !errorMessage">
+    <p>Đang tải danh sách học kỳ...</p>
+  </div>
+</div>

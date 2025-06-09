@@ -1,0 +1,119 @@
+/* Layout chính: Header trên cùng, phần thân dưới */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* Header */
+app-header {
+  height: 60px;
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  justify-content: center; /* Căn giữa chữ theo chiều ngang */
+
+}
+
+/* Phần thân: sidebar + nội dung */
+.main-body {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 60px);
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #34495e;
+  color: #ecf0f1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  min-width: 180px;
+  max-width: 250px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 120px;
+  border-radius: 10px;
+}
+
+/* Menu */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.menu-item {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 17px;
+  padding: 18px 15px;
+  border-radius: 8px;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #1abc9c;
+  color: #fff;
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Nội dung */
+.content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f7f9fa;
+  overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .sidebar ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .sidebar ul li {
+    margin: 5px;
+    border-bottom: none;
+  }
+
+  .content {
+    width: 100%;
+    padding: 15px;
+  }
+}

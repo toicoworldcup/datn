@@ -1,0 +1,23 @@
+<header class="header-container">
+  <!-- Bên trái: logo và tiêu đề -->
+  <div class="header-left">
+    <img src="assets/images/Logo-1.jpg" alt="Logo" class="logo-img" />
+    <span class="app-title">Quản lý sinh viên</span>
+  </div>
+
+  <!-- Bên phải: icon người dùng -->
+  <div class="header-right">
+    <div (click)="toggleDropdown()" class="user-icon">👤</div>
+
+    <!-- Dropdown menu dạng danh sách -->
+    <div class="user-dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
+      <div class="user-info">
+        <p><strong>Xin chào:</strong> {{ username }}</p>
+        <p><strong>Quyền:</strong> {{ role }}</p>
+      </div>
+      <ul class="user-dropdown-list">
+        <li class="user-dropdown-item" (click)="logout()">🚪 Đăng xuất</li>
+      </ul>
+    </div>
+  </div>
+</header>

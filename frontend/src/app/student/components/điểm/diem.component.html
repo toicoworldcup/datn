@@ -1,0 +1,44 @@
+<div class="container">
+  <h2>Xem Điểm Theo Học Kỳ</h2>
+
+  <div>
+    <label for="semester">Chọn học kỳ:</label>
+    <select id="semester" [(ngModel)]="selectedSemester">
+      <option value="">-- Chọn học kỳ --</option>
+      <option *ngFor="let hk of hocKyOptions" [value]="hk.name">{{ hk.name }}</option>
+    </select>
+    <button (click)="loadGrades()">Xem Điểm</button>
+  </div>
+
+  <div *ngIf="errorMessage" style="color: red;">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isDataLoaded">
+    <div *ngIf="grades.length > 0" class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Mã Lớp</th>
+            <th>Điểm GK</th>
+            <th>Điểm CK</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let grade of grades">
+            <td>{{ grade.maLop }}</td>
+            <td>{{ grade.gki === -1 || grade.gki === 'Chưa có' ? 'Chưa có' : grade.gki }}</td>
+            <td>{{ grade.cki === -1 || grade.cki === 'Chưa có' ? 'Chưa có' : grade.cki }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="grades.length === 0 && !errorMessage && selectedSemester">
+      Không có điểm nào trong học kỳ này.
+    </div>
+  </div>
+
+  <div *ngIf="hocKyOptions.length === 0 && !errorMessage">
+    Đang tải danh sách học kỳ...
+  </div>
+</div>

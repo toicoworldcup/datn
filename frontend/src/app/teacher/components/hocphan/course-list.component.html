@@ -1,0 +1,48 @@
+<div class="container-fluid mt-4">
+  <h2>Danh Sách Lớp Học</h2>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="semesterSelect" class="form-label">Chọn học kỳ:</label>
+      <select
+        class="form-select"
+        id="semesterSelect"
+        [(ngModel)]="selectedSemester"
+        (change)="loadTeacherModules()"
+      >
+        <option value="">-- Chọn học kỳ --</option>
+        <option *ngFor="let semester of semesters" [value]="semester.name">
+          {{ semester.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <p>Không có lớp nào</p>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="teacherModules.length > 0 && !loading && !error">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Mã học phần</th>
+          <th>Tên môn học</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let module of teacherModules">
+          <td>{{ module.maHocPhan }}</td>
+          <td>{{ module.tenMonHoc }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="teacherModules.length === 0 && !loading && !error && selectedSemester">
+    <p>Không có học phần nào trong học kỳ này.</p>
+  </div>
+</div>

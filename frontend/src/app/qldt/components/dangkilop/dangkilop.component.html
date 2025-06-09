@@ -1,0 +1,49 @@
+<h2>Quản lý Yêu cầu Đăng ký Lớp Đặc Biệt</h2>
+
+<div *ngIf="pendingRequests && pendingRequests.length > 0; else noRequests">
+  <p>Các yêu cầu đang chờ duyệt:</p>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Ngày yêu cầu</th>
+        <th>MSSV Sinh viên</th>
+        <th>Tên Sinh viên</th>
+        <th>Mã Lớp</th>
+        <th>Học kỳ</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of pendingRequests">
+        <td><input type="checkbox" [(ngModel)]="request.isSelected"></td>
+        <td>{{ request.id }}</td>
+        <td>{{ request.requestDate }}</td>
+        <td>{{ request.studentMssv }}</td>
+        <td>{{ request.studentName }}</td>
+        <td>{{ request.clazzMaLop }}</td>
+        <td>{{ request.semesterName }}</td>
+        <td>{{ request.status }}</td>
+        <td>
+          <button (click)="approveRequest(request.id)">Duyệt</button>
+          <button (click)="rejectRequest(request.id)">Từ chối</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="approveSelectedRequests()" [disabled]="!selectedRequestsExist()">Duyệt các mục đã chọn</button>
+  <button (click)="rejectSelectedRequests()" [disabled]="!selectedRequestsExist()">Từ chối các mục đã chọn</button>
+</div>
+
+<ng-template #noRequests>
+  <p>Không có yêu cầu đăng ký lớp đặc biệt nào đang chờ duyệt.</p>
+</ng-template>
+
+<div *ngIf="message" class="alert">{{ message }}</div>
+<div *ngIf="error" class="alert error">{{ error }}</div>
+
+<p>Trang:
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</p>

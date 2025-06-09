@@ -1,0 +1,119 @@
+<div class="container-fluid mt-4 px-4">
+  <div class="container-fluid mt-3 px-3">
+    <div class="text-center">
+      <h2 class="title-heading">
+        Danh sách Học phần theo CTĐT và Khóa
+      </h2>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-auto">
+      <button class="btn btn-primary me-2" (click)="openCreateCtdtModal()">
+        <i class="fa fa-plus me-1"></i> Thêm mới CTĐT
+      </button>
+      <button class="btn btn-success me-2" (click)="openImportExcelModal()">
+        <i class="fa fa-upload me-1"></i> Nhập từ Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <label for="ctdtCodeFilter" class="form-label">Mã CTĐT:</label>
+      <input type="text" class="form-control" id="ctdtCodeFilter" [(ngModel)]="ctdtCodeSearchFilter" (ngModelChange)="searchCourses()">
+    </div>
+    <div class="col-md-3">
+      <label for="khoaFilter" class="form-label">Khóa:</label>
+      <input type="text" class="form-control" id="khoaFilter" [(ngModel)]="khoaSearchFilter" (ngModelChange)="searchCourses()">
+    </div>
+  </div>
+
+  <div class="row">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-info text-center">
+        <tr>
+          <th>Mã học phần</th>
+          <th>Tên môn học</th>
+          <th>Số tín chỉ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of filteredCourses | paginate: { itemsPerPage: 10, currentPage: p }">
+          <td>{{ course.maHocPhan }}</td>
+          <td>{{ course.tenMonHoc }}</td>
+          <td>{{ course.tinChi }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination-controls
+      (pageChange)="p = $event"
+      previousLabel="«"
+      nextLabel="»"
+      class="d-flex justify-content-center mt-3">
+    </pagination-controls>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isCreateCtdtModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm mới Chương trình đào tạo</h5>
+          <button type="button" class="btn-close" (click)="closeCreateCtdtModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="tenCTDTModal" class="form-label">Tên chương trình:</label>
+            <input type="text" class="form-control" id="tenCTDTModal" [(ngModel)]="newCtdtName">
+          </div>
+          <div class="mb-3">
+            <label for="maCTDTModal" class="form-label">Mã chương trình:</label>
+            <input type="text" class="form-control" id="maCTDTModal" [(ngModel)]="newCtdtMaCt">
+          </div>
+          <div class="mb-3">
+            <label for="khoaCTDTModal" class="form-label">Khóa học:</label>
+            <input type="text" class="form-control" id="khoaCTDTModal" [(ngModel)]="newCtdtKhoa">
+          </div>
+          <div *ngIf="createCtdtError" class="alert alert-danger mt-2">{{ createCtdtError }}</div>
+          <div *ngIf="createCtdtMessage" class="alert alert-success mt-2">{{ createCtdtMessage }}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeCreateCtdtModal()">Đóng</button>
+          <button type="button" class="btn btn-primary" (click)="createCtdt()">Tạo mới</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isImportExcelModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nhập học phần từ Excel</h5>
+          <button type="button" class="btn-close" (click)="closeImportExcelModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="ctdtCodeExcelModal" class="form-label">Mã CTĐT:</label>
+            <input type="text" class="form-control" id="ctdtCodeExcelModal" [(ngModel)]="ctdtCodeExcel">
+          </div>
+          <div class="mb-3">
+            <label for="khoaExcelModal" class="form-label">Khóa:</label>
+            <input type="text" class="form-control" id="khoaExcelModal" [(ngModel)]="khoaExcel">
+          </div>
+          <div class="mb-3">
+            <label for="fileUploadModal" class="form-label">Chọn file Excel:</label>
+            <input type="file" id="fileUploadModal" (change)="onFileSelected($event)" class="form-control-file">
+          </div>
+          <div *ngIf="uploadError" class="alert alert-danger mt-2">{{ uploadError }}</div>
+          <div *ngIf="uploadMessage" class="alert alert-success mt-2">{{ uploadMessage }}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeImportExcelModal()">Đóng</button>
+          <button type="button" class="btn btn-success" (click)="uploadFile()" [disabled]="!selectedFile || !ctdtCodeExcel || !khoaExcel">Tải lên</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

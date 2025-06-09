@@ -1,0 +1,61 @@
+<div class="container-fluid mt-4">
+  <h2>Danh Sách Lớp Học</h2>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="semesterSelect" class="form-label">Chọn học kỳ:</label>
+      <select
+        class="form-select"
+        id="semesterSelect"
+        [(ngModel)]="selectedSemester"
+        (change)="loadClasses()"
+      >
+        <option value="">-- Chọn học kỳ --</option>
+        <option *ngFor="let semester of semesters" [value]="semester.name">
+          {{ semester.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <p>Đang tải danh sách lớp học...</p>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="classes.length > 0 && !loading && !error">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Mã lớp</th>
+          <th>Tên lớp</th>
+          <th>Lịch thi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let lop of classes | paginate : { itemsPerPage: 10, currentPage: p }
+          "
+        >
+          <td>{{ lop.maLop }}</td>
+          <td>{{ lop.maHocPhan }}</td>
+          <td>{{ lop.lichThi }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls
+      (pageChange)="p = $event"
+      previousLabel="&laquo;"
+      nextLabel="&raquo;"
+      class="d-flex justify-content-center mt-3"
+    >
+    </pagination-controls>
+  </div>
+
+  <div *ngIf="classes.length === 0 && !loading && !error && selectedSemester">
+    <p>Không có lớp học nào trong học kỳ này.</p>
+  </div>
+</div>

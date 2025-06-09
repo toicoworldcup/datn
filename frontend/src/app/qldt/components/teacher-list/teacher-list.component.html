@@ -1,0 +1,292 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <div class="container-fluid mt-3 px-3">
+    <div class="text-center">
+      <h2 class="title-heading">Danh sách Giáo viên</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-start mb-3">
+      <button
+        class="btn btn-info me-2"
+        style="width: 200px"
+        (click)="toggleAddTeacherModal()"
+      >
+        <i class="fa fa-user-plus me-1"></i> Thêm giáo viên</button
+      ><button
+        class="btn btn-info me-2"
+        style="width: 150px"
+        (click)="toggleSearch()"
+      >
+        <i class="fa fa-search me-1"></i> Tìm kiếm
+      </button>
+      <button
+        class="btn btn-success"
+        style="width: 150px"
+        (click)="toggleFileUploadModal()"
+      >
+        <i class="fa fa-upload me-1"></i> Import
+      </button>
+    </div>
+    <div
+      class="modal fade"
+      tabindex="-1"
+      [ngClass]="{ 'show d-block': isSearchVisible }"
+      style="background: rgba(0, 0, 0, 0.4)"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tìm kiếm Giáo Viên</h5>
+            <button type="button" class="close" (click)="toggleSearch()">
+              ×
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="maGvInput" class="form-label bold-label"
+                >Tìm theo Mã giáo viên</label
+              >
+              <div class="input2-group">
+                <input
+                  id="maGvInput"
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập mã giáo viên"
+                  [(ngModel)]="maGvSearch"
+                />
+                <button
+                  class="btn btn-primary btn-sm-search"
+                  (click)="searchTeacher()"
+                >
+                  <i class="fa fa-search"></i> Tìm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      tabindex="-1"
+      [ngClass]="{ 'show d-block': isFileUploadVisible }"
+      style="background: rgba(0, 0, 0, 0.4)"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Import Danh Sách Giáo Viên</h5>
+            <button
+              type="button"
+              class="close"
+              (click)="toggleFileUploadModal()"
+            >
+              ×
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="fileUpload">Chọn file Excel</label>
+              <input
+                type="file"
+                class="form-control"
+                id="fileUpload"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+            <div *ngIf="importMessage" class="alert alert-success mt-3">
+              {{ importMessage }}
+            </div>
+            <div *ngIf="importError" class="alert alert-danger mt-3">
+              {{ importError }}
+            </div>
+            <div class="text-center mt-3">
+              <button
+                class="btn btn-primary"
+                [disabled]="!selectedFile"
+                (click)="uploadFile()"
+              >
+                <i class="fa fa-upload me-1"></i> Tải lên
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-info text-center">
+        <tr>
+          <th>Mã GV</th>
+          <th>Tên</th>
+          <th>Email</th>
+          <th>SĐT</th>
+          <th>Ngày sinh</th>
+          <th>Địa chỉ</th>
+          <th>Khoa</th>
+          <th>Giới tính</th>
+          <th>CCCD</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let t of teachers | paginate : { itemsPerPage: 10, currentPage: p }
+          "
+        >
+          <td>{{ t.maGv }}</td>
+          <td>{{ t.name }}</td>
+          <td>{{ t.email }}</td>
+          <td>{{ t.phone }}</td>
+          <td>{{ t.dateOfBirth }}</td>
+          <td>{{ t.address }}</td>
+          <td>{{ t.departmentName }}</td>
+          <td>{{ t.gender }}</td>
+          <td>{{ t.cccd }}</td>
+          <td>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteTeacher(t.maGv)"
+            >
+              Xóa
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pagination-controls
+    (pageChange)="p = $event"
+    previousLabel="«"
+    nextLabel="»"
+    class="d-flex justify-content-center mt-3"
+  >
+  </pagination-controls>
+</div>
+
+<div
+  class="modal show d-block"
+  tabindex="-1"
+  *ngIf="isAddTeacherModalVisible"
+  style="background: rgba(0, 0, 0, 0.4)"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm Giáo Viên</h5>
+        <button type="button" class="close" (click)="toggleAddTeacherModal()">
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="addTeacher()">
+          <div class="form-group">
+            <label for="maGv">Mã Giáo Viên</label>
+            <input
+              id="maGv"
+              class="form-control"
+              [(ngModel)]="newTeacher.maGv"
+              name="maGv"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="name">Tên</label>
+            <input
+              id="name"
+              class="form-control"
+              [(ngModel)]="newTeacher.name"
+              name="name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              class="form-control"
+              [(ngModel)]="newTeacher.email"
+              name="email"
+              required
+              type="email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">SĐT</label>
+            <input
+              id="phoneNumber"
+              class="form-control"
+              [(ngModel)]="newTeacher.phoneNumber"
+              name="phoneNumber"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="dateOfBirth">Ngày sinh</label>
+            <input
+              id="dateOfBirth"
+              class="form-control"
+              [(ngModel)]="newTeacher.dateOfBirth"
+              name="dateOfBirth"
+              required
+              type="date"
+            />
+          </div>
+          <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <input
+              id="address"
+              class="form-control"
+              [(ngModel)]="newTeacher.address"
+              name="address"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="departmentName">Khoa</label>
+            <input
+              id="departmentName"
+              class="form-control"
+              [(ngModel)]="newTeacher.departmentName"
+              name="departmentName"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="gender">Giới tính</label>
+            <select
+              id="gender"
+              class="form-control"
+              [(ngModel)]="newTeacher.gender"
+              name="gender"
+              required
+            >
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cccd">CCCD</label>
+            <input
+              id="cccd"
+              class="form-control"
+              [(ngModel)]="newTeacher.cccd"
+              name="cccd"
+              required
+            />
+          </div>
+          <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-success">
+              Thêm giáo viên
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

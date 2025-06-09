@@ -1,0 +1,61 @@
+  <h2>Xem Danh Sách Điểm Danh</h2>
+
+  <div class="mb-3">
+    <label for="hocKi" class="form-label">Chọn Học Kỳ:</label>
+    <select id="hocKi" class="form-select" [(ngModel)]="selectedHocKi" (change)="loadClazzesBySemester()">
+      <option value="">-- Chọn Học Kỳ --</option>
+      <option *ngFor="let hk of semesters" [value]="hk?.name">{{ hk?.name }}</option>
+    </select>
+  </div>
+
+  <div class="mb-3" *ngIf="selectedHocKi">
+    <label for="maLop" class="form-label">Chọn Mã Lớp:</label>
+    <select id="maLop" class="form-select" [(ngModel)]="selectedMaLop">
+      <option value="">-- Chọn Mã Lớp --</option>
+      <option *ngFor="let ml of maLops" [value]="ml">{{ ml }}</option>
+    </select>
+  </div>
+
+  <div class="mb-3" *ngIf="selectedMaLop && selectedHocKi">
+    <label for="viewAttendanceDate" class="form-label">Chọn Ngày Xem:</label>
+    <input type="date" id="viewAttendanceDate" class="form-control" [(ngModel)]="viewAttendanceDate">
+  </div>
+
+  <button class="btn btn-primary" (click)="viewAttendanceList()" [disabled]="loading || !viewAttendanceDate" 
+          *ngIf="selectedMaLop && selectedHocKi && viewAttendanceDate">
+    Xem Danh Sách
+  </button>
+
+  <div *ngIf="loading" class="alert alert-info">Đang tải dữ liệu...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="attendanceList && attendanceList.length > 0 && !loading && !error && selectedMaLop && selectedHocKi && viewAttendanceDate">
+    <h3>
+      Điểm Danh Lớp {{ selectedMaLop }} - Học kỳ {{ selectedHocKi }} - Ngày 
+      {{ viewAttendanceDate | date:'dd/MM/yyyy' }}
+    </h3>
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>MSSV</th>
+          <th>Tên</th>
+          <th>Trạng Thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of attendanceList">
+          <td>{{ item?.student?.mssv || 'N/A' }}</td>
+          <td>{{ item?.student?.name || 'N/A' }}</td>
+          <td>{{ item?.status || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="isViewButtonClicked && attendanceList?.length === 0 && !loading && !error && selectedMaLop && selectedHocKi && viewAttendanceDate">
+  Không có điểm danh cho lớp này vào ngày {{ viewAttendanceDate | date:'dd/MM/yyyy' }}.
+</div>
+
+  <div *ngIf="!selectedMaLop || !selectedHocKi || !viewAttendanceDate">
+    Vui lòng chọn Học kỳ, Lớp và Ngày để xem điểm danh.
+  </div>

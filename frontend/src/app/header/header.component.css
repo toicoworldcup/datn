@@ -1,0 +1,99 @@
+/* Đảm bảo header chiếm toàn bộ chiều rộng */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Bên trái: logo và tiêu đề */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Bên phải: icon người dùng */
+.header-right {
+  margin-left: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Dropdown menu */
+.user-dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 240px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  padding: 0;
+}
+
+.user-dropdown-menu.show {
+  display: block;
+}
+
+/* Thông tin người dùng bên trên */
+.user-info {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.user-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* Danh sách các hành động */
+.user-dropdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-dropdown-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.user-dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.user-dropdown-item:last-child {
+  border-bottom: none;
+}

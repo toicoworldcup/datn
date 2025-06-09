@@ -1,0 +1,135 @@
+/* CSS cho component Quản lý đăng ký học phần (đồng bộ) */
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+div {
+  margin-bottom: 15px;
+}
+
+h3 {
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+button.register-button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #17a2b8; /* Màu xanh dương nhạt */
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  display: inline-flex;
+  align-items: center;
+}
+
+button.register-button:hover {
+  background-color: #138496; /* Màu xanh dương đậm hơn khi hover */
+}
+
+/* Стиль cho bảng "Học phần đã đăng ký" */
+table[border="1"] {
+  width: 80%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd; /* Thêm border cho toàn bộ bảng */
+}
+
+table[border="1"] th,
+table[border="1"] td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  font-size: 1em;
+}
+
+table[border="1"] th {
+  background-color: #f2f2f2; /* Màu nền header nhạt */
+  font-weight: bold;
+}
+
+.modal-content h5.modal-title {
+  color: #333;
+}
+
+.modal-body label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.modal-body input[type="text"],
+.modal-body select.form-control {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: calc(100% - 130px); /* Điều chỉnh chiều rộng input trong modal */
+}
+
+.modal-footer .btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.unregistered-courses-table-container table.table-bordered {
+  width: 100%; /* Để bảng trong modal chiếm hết chiều rộng */
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.unregistered-courses-table-container table.table-bordered th,
+.unregistered-courses-table-container table.table-bordered td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.unregistered-courses-table-container table.table-bordered th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: center;
+}
+
+.close {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.close:hover {
+  opacity: 0.75;
+}

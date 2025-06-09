@@ -1,0 +1,45 @@
+<div class="app-layout">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Phần thân: Sidebar + Nội dung -->
+  <div class="main-body">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Logo -->
+
+      <!-- Menu -->
+      <ul class="menu-list">
+        <li>
+          <a routerLink="/qldt/course" class="menu-item">Danh sách học phần</a>
+        </li>
+        <li><a routerLink="/qldt/clazz" class="menu-item">Danh sách lớp</a></li>
+        <li><a routerLink="/qldt/teacher" class="menu-item">Danh sách giáo viên</a></li>
+
+        <li>
+          <a routerLink="/qldt/assign-teacher" class="menu-item"
+            >Phân công giáo viên</a
+          >
+        </li>
+        <li>
+          <a routerLink="/qldt/create-clazz" class="menu-item">Tạo lớp</a>
+        </li>
+        <li>
+          <a routerLink="/qldt/semester" class="menu-item">Đợt đăng kí</a>
+        </li>
+        <li>
+          <a routerLink="/qldt/cth" class="menu-item">Chương trình học</a>
+        </li>
+
+        <li>
+          <a routerLink="/qldt/dangkilop" class="menu-item">Quản lí đăng kí</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Nội dung -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

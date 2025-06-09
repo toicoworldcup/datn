@@ -1,0 +1,53 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form>
+        <div class="card shadow-sm" style="background-color: #2c718d;">
+          <div class="card-header text-center" style="background-color: #2c718d; border-bottom: none;">
+            <h5 class="mb-0 text-white">Tạo Lớp Học Theo CTĐT, Khóa và Học kỳ</h5>
+          </div>
+
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="ctdtCode" class="form-label" style="color: white;">Chương trình đào tạo (CTĐT)</label>
+              <select class="form-control" id="ctdtCode" [(ngModel)]="selectedCTDTCode" name="ctdtCode">
+                <option value="" disabled selected>Chọn CTĐT</option>
+                <option *ngFor="let ctdt of ctdtList" [value]="ctdt.maCt">{{ ctdt.maCt }}</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="khoa" class="form-label" style="color: white;">Khóa</label>
+              <select class="form-control" [(ngModel)]="selectedKhoa" name="khoa" id="khoa">
+                <option value="" disabled selected>Chọn Khóa</option>
+                <option *ngFor="let khoa of khoaList" [value]="khoa">{{ khoa }}</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="hocki" class="form-label" style="color: white;">Học kỳ</label>
+              <select class="form-control" [(ngModel)]="selectedHocKi" name="hocki" id="hocki">
+                <option value="" disabled selected>Chọn Học kỳ</option>
+                <option *ngFor="let semester of semesterList" [value]="semester">{{ semester }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card-footer text-center" style="background-color: #2c718d; border-top: none;">
+            <button type="button" class="btn btn-success" (click)="generateClazzesForCTDTKhoa()"
+              [disabled]="!selectedCTDTCode || !selectedKhoa || !selectedHocKi">
+              <i class="fa fa-save me-2"></i> Tạo Lớp Học
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div *ngIf="message" class="alert alert-success mt-3">
+        {{ message }}
+      </div>
+      <div *ngIf="error" class="alert alert-danger mt-3">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+</div>

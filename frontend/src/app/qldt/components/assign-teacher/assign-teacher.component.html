@@ -1,0 +1,140 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <h2 class="mb-4 text-center" style="color: #2c718d">Phân Công Giảng Dạy</h2>
+
+  <div class="row justify-content-center mb-3">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Tìm kiếm lớp học</h5>
+          <form (ngSubmit)="searchClazzes()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="ctdtCode" class="form-label">Chương trình đào tạo</label>
+                <select class="form-control" id="ctdtCode" name="ctdtCode" [(ngModel)]="searchCriteria.ctdtCode">
+                  <option value="" selected>-- Chọn CTĐT --</option>
+                  <option *ngFor="let ctdt of ctdtList" [value]="ctdt.maCt">
+                    {{ ctdt.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="khoa" class="form-label">Khóa</label>
+                <select class="form-control" id="khoa" name="khoa" [(ngModel)]="searchCriteria.khoa">
+                  <option value="" selected>-- Chọn Khóa --</option>
+                  <option *ngFor="let khoa of khoaList" [value]="khoa">
+                    {{ khoa }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="hocKi" class="form-label">Học kỳ</label>
+                <select class="form-control" id="hocKi" name="hocKi" [(ngModel)]="searchCriteria.hocKi">
+                  <option value="" selected>-- Chọn Học kỳ --</option>
+                  <option *ngFor="let semester of semesterList" [value]="semester">
+                    {{ semester }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-2 mb-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-info">
+                  <i class="fa fa-search me-1"></i> Tìm kiếm
+                </button>
+              </div>
+            </div>
+            <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="clazzList.length > 0" class="row">
+    <div class="col-md-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title">Danh sách lớp học</h5>
+            <div>
+              <button class="btn btn-info mr-2" (click)="showAllClazzes()">
+                tất cả
+              </button>
+              <button class="btn btn-info" (click)="showUnassignedClazzes()">
+                chưa phân công
+              </button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table table-bordered">
+              <thead class="table-info">
+                <tr>
+                  <th>Mã lớp</th>
+                  <th>Mã học phần</th>
+                  <th>Học kỳ</th>
+                  <th>Giáo viên phụ trách</th>
+                  <th>Phân công</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let clazz of clazzList; trackBy: trackByClazz">
+                  <td>{{ clazz.maLop }}</td>
+                  <td>{{ clazz.maHocPhan }}</td>
+                  <td>{{ clazz.hocki }}</td>
+                  <td>
+                    <ng-container
+                      *ngIf="
+                        clazz.teachers && clazz.teachers.length > 0;
+                        else noTeacher
+                      "
+                    >
+                      {{ clazz.teachers[0]?.name }} ({{
+                        clazz.teachers[0]?.maGv
+                      }})
+                    </ng-container>
+                    <ng-template #noTeacher>Chưa có</ng-template>
+                  </td>
+                  <td>
+                    <select
+                      class="form-control"
+                      [(ngModel)]="assignment[clazz.maLop]"
+                      [name]="'teacher_' + clazz.maLop"
+                    >
+                      <option value="">-- Chọn giáo viên --</option>
+                      <option
+                        *ngFor="let teacher of getTeachersForClass(clazz.maLop)"
+                        [value]="teacher.maGv"
+                      >
+                        {{ teacher.name }} ({{ teacher.maGv }})
+                      </option>
+                    </select>
+                  </td>
+                  <td>
+                    <button
+                      class="btn btn-sm btn-success"
+                      (click)="assignSingleTeacher(clazz.maLop, assignment[clazz.maLop])"
+                      [disabled]="!assignment[clazz.maLop]"
+                    >
+                      Lưu
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center mt-3">
+            <button
+              class="btn btn-danger"
+              (click)="saveAssignments()"
+              [disabled]="!hasAssignments()"
+            >
+              Lưu tất cả phân công
+            </button>
+            <div *ngIf="message" class="alert alert-success mt-2">
+              {{ message }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

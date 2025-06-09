@@ -1,0 +1,76 @@
+/* CSS đồng bộ với component Danh Sách Đăng Ký Lớp Học cho component Xem Điểm */
+
+.container {
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  width: auto;
+}
+
+.table-responsive {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.table {
+  width: 80%; /* Điều chỉnh chiều rộng bảng */
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #000; /* Thêm border cho toàn bộ bảng */
+  border-radius: 8px; /* Bo tròn viền bảng */
+}
+
+.table th,
+.table td {
+  border: 1px solid #000; /* Thêm border cho các ô */
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table th {
+  background-color: #72d2e1; /* Màu nền header xanh nhạt */
+  font-weight: bold;
+  color: black;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Стиль bổ sung cho button (nếu bạn muốn đồng bộ) */
+button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff; /* Màu xanh dương (có thể điều chỉnh) */
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 20px; /* Thêm margin bottom cho đồng nhất */
+}
+
+button:hover {
+  background-color: #0056b3;
+}

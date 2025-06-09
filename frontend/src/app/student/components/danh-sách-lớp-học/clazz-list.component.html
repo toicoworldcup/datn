@@ -1,0 +1,44 @@
+<div class="container">
+  <h2>Danh Sách Đăng Ký Lớp Học</h2>
+
+  <div>
+    <label for="semester">Chọn học kỳ:</label>
+    <select id="semester" [(ngModel)]="selectedSemester" (change)="loadDanhSachDangKy()">
+      <option value="">-- Chọn học kỳ --</option>
+      <option *ngFor="let hk of hocKyOptions" [value]="hk.name">{{ hk.name }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="danhSachDangKy.length > 0" class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Mã Lớp HP</th>
+          <th>Học kì</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dkl of danhSachDangKy">
+          <td>{{ dkl.maLop }}</td>
+          <td>{{ dkl.semesterName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="danhSachDangKy.length === 0 && !errorMessage && selectedSemester">
+    <p>Không có lớp học nào được đăng ký trong học kỳ này.</p>
+  </div>
+
+  <div *ngIf="!selectedSemester && !errorMessage && hocKyOptions.length > 0">
+    <p>Vui lòng chọn học kỳ để xem danh sách đăng ký.</p>
+  </div>
+
+  <div *ngIf="hocKyOptions.length === 0 && !errorMessage">
+    <p>Đang tải danh sách học kỳ...</p>
+  </div>
+</div>

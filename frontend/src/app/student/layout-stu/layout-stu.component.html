@@ -1,0 +1,37 @@
+<div class="app-layout">
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Phần thân: Sidebar + Nội dung -->
+  <div class="main-body">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Logo -->
+    
+
+      <!-- Menu -->
+      <ul class="menu-list">
+        <li><a routerLink="/student/info" class="menu-item">Thông tin cá nhân</a></li>
+        <li><a routerLink="/student/clazz" class="menu-item">Danh sách lớp </a></li>
+
+        <li><a routerLink="/student/student" class="menu-item">Đăng kí học phần</a></li>
+        <li><a routerLink="/student/create-clazz" class="menu-item">Đăng kí lớp </a></li>
+        <li><a routerLink="/student/diem" class="menu-item">Kết quả học tập</a></li>
+        <li><a routerLink="/student/semester" class="menu-item">Thời khoá biểu</a></li>
+        <li><a routerLink="/student/teacher" class="menu-item">Chương trình đào tạo</a></li>
+                <li><a routerLink="/student/taikhoan" class="menu-item">Đổi mật khẩu</a></li>
+
+
+
+        
+
+      </ul>
+    </div>
+
+    <!-- Nội dung -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

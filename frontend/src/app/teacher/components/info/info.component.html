@@ -1,0 +1,51 @@
+<div class="student-info-container">
+  <h2>Thông Tin Cá nhân</h2>
+
+  <div *ngIf="teacherInfo; else loadingOrError">
+    <div class="info-row">
+      <span class="info-label">Tên:</span>
+      <span class="info-value">{{ teacherInfo.name }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Mã số giáo viên:</span>
+      <span class="info-value">{{ teacherInfo.maGv }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Ngày sinh:</span>
+      <span class="info-value">{{ teacherInfo.dateOfBirth }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Giới tính:</span>
+      <span class="info-value">{{ teacherInfo.gender }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Email:</span>
+      <span class="info-value">{{ teacherInfo.email }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Điện thoại:</span>
+      <span class="info-value">{{ teacherInfo.phone }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">CCCD:</span>
+      <span class="info-value">{{ teacherInfo.cccd }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Khoa:</span>
+      <span class="info-value">{{ teacherInfo.departmentName }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Địa chỉ:</span>
+      <span class="info-value">{{ teacherInfo.address }}</span>
+    </div>
+  </div>
+
+  <ng-template #loadingOrError>
+    <div *ngIf="errorMessage" class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+    <ng-template #loading>
+      <p class="loading">Đang tải thông tin cá nhân...</p>
+    </ng-template>
+  </ng-template>
+</div>

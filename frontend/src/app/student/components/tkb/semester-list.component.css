@@ -1,0 +1,125 @@
+/* Cải thiện bảng để không có dòng xen kẽ đen trắng */
+.table {
+  table-layout: auto;
+  width: 100%;
+  border-collapse: collapse; /* Sử dụng border-collapse để không có khoảng cách giữa các ô */
+  margin-top: 30px;
+}
+
+/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
+.table th {
+  word-wrap: break-word; /* Tránh việc chữ quá dài bị tràn */
+  white-space: nowrap; /* Giữ tiêu đề không xuống dòng */
+  background-color: #72d2e1; /* Màu nền header xanh nhạt */
+}
+.table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #000; /* Border đen cho các ô */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Cắt bớt chữ trong các ô nếu nó dài quá */
+.table td,
+.table th {
+  overflow: hidden;
+  white-space: nowrap; /* Đảm bảo nội dung không xuống dòng */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+}
+
+/* Cải thiện tiêu đề với màu nhẹ hơn */
+.title-heading {
+  font-size: 2.5rem; /* Giảm kích thước font */
+  background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
+  color: #2c3e50;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 15px;
+  padding: 15px 25px;
+  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 1px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng hover cho tiêu đề */
+.title-heading:hover {
+  transform: scale(1.05);
+}
+
+/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
+.table th {
+  word-wrap: break-word; /* Tránh việc chữ quá dài bị tràn */
+  white-space: nowrap; /* Giữ tiêu đề không xuống dòng */
+}
+.custom-content-container {
+  background-color: #ededea; /* màu nền nhẹ */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); /* bóng nhẹ */
+}
+
+.container {
+  padding: 20px;
+}
+
+/* Thêm khoảng cách cho .row */
+.row {
+  margin-top: 20px;
+}
+
+/* Điều chỉnh khoảng cách giữa bảng và các phần tử khác */
+.table {
+  margin-top: 30px;
+}
+
+.container,
+.table,
+.input-group,
+.btn {
+  border-radius: 8px; /* Bo tròn các góc */
+}
+
+/* Tùy chỉnh phần tìm kiếm */
+.search-container {
+  display: flex;
+  justify-content: space-between; /* Đảm bảo các phần tử trong container được căn chỉnh đều */
+  align-items: center;
+  gap: 15px; /* Giảm khoảng cách giữa các phần tử tìm kiếm */
+  margin-top: 20px; /* Di chuyển xuống dưới một chút */
+}
+
+.search-container .input-group {
+  width: auto;
+}
+
+.search-container .mb-2 {
+  margin-bottom: 0; /* Loại bỏ khoảng cách thừa giữa các phần tử tìm kiếm */
+}
+
+.search-container label {
+  font-weight: bold;
+}
+
+.search-container button {
+  margin-left: 5px;
+}
+button:hover {
+  opacity: 0.8; /* Giảm độ mờ khi hover */
+  transition: all 0.3s ease;
+}
+.btn-info {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+  &:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+  }
+}

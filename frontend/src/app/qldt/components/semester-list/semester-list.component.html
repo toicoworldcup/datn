@@ -1,0 +1,96 @@
+<div class="container-fluid mt-4 px-4 custom-content-container">
+  <!-- 🌈 Tiêu đề đẹp -->
+  <div class="container-fluid mt-3 px-3">
+    <div class="text-center">
+      <h2 class="title-heading">Danh sách học kì</h2>
+    </div>
+  </div>
+  <!-- Thêm học kỳ mới -->
+  <div class="row">
+    <!-- Cột chứa nút và input -->
+    <div class="col-md-3">
+      <!-- Nút toggle -->
+      <button class="btn btn-info me-2"  style="width: 150px;" (click)="toggleSearch()">
+        <i class="fa fa-plus me-1"></i> Thêm kì học
+      </button>
+  
+      <!-- Input hiện ra khi bật toggle -->
+      <div *ngIf="isSearchVisible" class="mt-2">
+        <div class="input-group">
+          <input
+            id="maHocPhanInput"
+            type="text"
+            class="form-control"
+            placeholder="Nhập mã học kỳ"
+            [(ngModel)]="newSemester.name"
+          />
+          <button class="btn btn-primary" (click)="addSemester()">
+            <i class="fa fa-plus"></i> Thêm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Danh sách học kỳ -->
+  <div class="row">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-info text-center">
+        <tr>
+          <th class="text-center align-middle">Tên học kỳ</th>
+          <th class="text-center align-middle">Trạng thái</th>
+          <th class="text-center align-middle">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let semester of semesters">
+          <td *ngIf="editingSemester?.name !== semester.name" class="text-center">
+            {{ semester.name }}
+          </td>
+      
+          <td class="text-center">
+            {{ semester.isOpen ? "Đang mở đăng ký" : "Đã đóng đăng ký" }}
+          </td>
+      
+          <td class="text-center">
+            <!-- Nếu đang chỉnh sửa -->
+            <ng-container
+              *ngIf="
+                editingSemester?.name === semester.name;
+                else normalButtons
+              "
+            >
+              <button (click)="updateSemester()" class="btn btn-success me-2" style="width: 100px;">Lưu</button>
+              <button (click)="cancelEdit()" class="btn btn-danger" style="width: 100px;">Hủy</button>
+            </ng-container>
+            <ng-template #normalButtons>
+              <!-- Nút Mở -->
+              <button 
+                (click)="openRegistration(semester.name)" 
+                class="btn btn-success me-2"
+                style="width: 100px;"
+                title="Mở kỳ học"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top">
+                <i class="fa fa-check me-1"></i> Mở
+              </button>
+              
+              <!-- Nút Đóng -->
+              <button 
+                (click)="closeRegistration(semester.name)" 
+                class="btn btn-danger"
+                style="width: 100px;"
+                title="Đóng kỳ học"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top">
+                <i class="fa fa-times me-1"></i> Đóng
+              </button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+        
+    </table>
+  </div>
+</div>

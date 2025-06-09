@@ -1,0 +1,54 @@
+.student-info-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin-top: 20px;
+  width: 80%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.info-row {
+  display: flex; /* Sử dụng Flexbox cho mỗi dòng */
+  align-items: baseline; /* Căn chỉnh theo đường cơ sở */
+  margin-bottom: 8px; /* Khoảng cách giữa các dòng */
+}
+
+.info-label {
+  font-weight: bold;
+  color: #555;
+  width: 180px; /* Tăng chiều rộng nhãn lên 180px */
+  text-align: left;
+  margin-right: 10px;
+  flex-shrink: 0; /* Ngăn nhãn bị co lại */
+}
+.info-value {
+  color: #333;
+  flex-grow: 1; /* Cho giá trị chiếm phần còn lại của dòng */
+  text-align: left;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+  color: #777;
+  width: 100%;
+}

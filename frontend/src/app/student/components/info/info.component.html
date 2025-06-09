@@ -1,0 +1,59 @@
+<div class="student-info-container">
+  <h2>Thông Tin Sinh Viên</h2>
+
+  <div *ngIf="studentInfo; else loadingOrError">
+    <div class="info-row">
+      <span class="info-label">Tên:</span>
+      <span class="info-value">{{ studentInfo.name }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Mã số sinh viên:</span>
+      <span class="info-value">{{ studentInfo.mssv }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Ngày sinh:</span>
+      <span class="info-value">{{ studentInfo.dateOfBirth }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Giới tính:</span>
+      <span class="info-value">{{ studentInfo.gender }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Email:</span>
+      <span class="info-value">{{ studentInfo.email }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Điện thoại:</span>
+      <span class="info-value">{{ studentInfo.phone }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">CCCD:</span>
+      <span class="info-value">{{ studentInfo.cccd }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Khoa:</span>
+      <span class="info-value">{{ studentInfo.departmentName }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Khóa:</span>
+      <span class="info-value">{{ studentInfo.batchName }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Địa chỉ:</span>
+      <span class="info-value">{{ studentInfo.address }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Chương trình đào tạo:</span>
+      <span class="info-value">{{ studentInfo.tenCth }}</span>
+    </div>
+  </div>
+
+  <ng-template #loadingOrError>
+    <div *ngIf="errorMessage" class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+    <ng-template #loading>
+      <p class="loading">Đang tải thông tin sinh viên...</p>
+    </ng-template>
+  </ng-template>
+</div>

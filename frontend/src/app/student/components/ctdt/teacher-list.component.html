@@ -1,0 +1,70 @@
+<h2>Chương trình đào tạo</h2>
+
+<button class="btn btn-primary" (click)="openGraduationModal()">
+  <i class="fa fa-graduation-cap me-1"></i> Xét tốt nghiệp
+</button>
+
+<div *ngIf="loading">Đang tải...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="table" *ngIf="allCourses.length > 0">
+  <thead>
+    <tr>
+      <th>Mã HP</th>
+      <th>Tên môn học</th>
+      <th>Số TC</th>
+      <th>Khối lượng</th>
+      <th>Kỳ gợi ý</th>
+      <th>Điểm cuối kỳ</th>
+      <th>Đánh giá</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of allCourses | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+      <td>{{ item.maHocPhan }}</td>
+      <td>{{ item.tenMonHoc }}</td>
+      <td>{{ item.soTinChi }}</td>
+      <td>{{ item.khoiLuong }}</td>
+      <td>{{ item.suggestedSemester !== undefined ? item.suggestedSemester : 'N/A' }}</td>
+      <td>{{ item.finalGrade !== null ? (item.finalGrade | number: '1.1-1') : 'Chưa có' }}</td>
+      <td>{{ item.gradeLetter || 'Chưa có' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !error && allCourses.length === 0">
+  Không có môn học nào.
+</div>
+
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+<div
+  class="modal fade"
+  [ngClass]="{ 'show d-block': showGraduationModal }"
+  style="background: rgba(0, 0, 0, 0.4)"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Kết quả xét tốt nghiệp</h5>
+        <button type="button" class="close" (click)="closeGraduationModal()">
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="graduationLoading" class="text-center">Đang xử lý...</div>
+        <div *ngIf="graduationError" class="alert alert-danger">{{ graduationError }}</div>
+        <div *ngIf="graduationResult">
+          <p><strong>Đủ điều kiện:</strong> {{ graduationResult.eligible ? 'Có' : 'Không' }}</p>
+          <p><strong>Thông báo:</strong> {{ graduationResult.message }}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeGraduationModal()">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
