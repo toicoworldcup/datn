@@ -1,4 +1,5 @@
 export interface Clazz {
+  id?: number;
   maLop: string;
   maHocPhan: string;
   hocki: string;

@@ -1,121 +1,106 @@
-/* Cải thiện bảng để không có dòng xen kẽ đen trắng */
+/* General improvements for tables to avoid alternating row colors and set proper layout */
 .table {
   table-layout: auto;
   width: 100%;
-  border-collapse: collapse; /* Sử dụng border-collapse để không có khoảng cách giữa các ô */
+  border-collapse: collapse; /* Use border-collapse to remove space between cells */
   margin-top: 30px;
 }
 
-/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
+/* Ensure header and data columns have appropriate widths and consistent styling */
 .table th,
 .table td {
   padding: 10px;
   text-align: left;
-  border: 1px solid #ddd; /* Đường viền nhẹ */
-  white-space: nowrap;
+  border: 1px solid #ddd; /* Light border for cells */
 }
 
-/* Cắt bớt chữ trong các ô nếu nó dài quá */
+/* For table cells (td) and headers (th) - truncate text with ellipsis if it's too long */
 .table td,
 .table th {
   overflow: hidden;
-  white-space: nowrap; /* Đảm bảo nội dung không xuống dòng */
-  text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+  white-space: nowrap; /* Keep content on a single line */
+  text-overflow: ellipsis; /* Add ellipsis if content is truncated */
 }
 
-/* Cải thiện tiêu đề với màu nhẹ hơn */
-.title-heading {
-  font-size: 2.5rem; /* Giảm kích thước font */
-  background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
-  color: #2c3e50;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 15px;
-  padding: 15px 25px;
-  display: inline-block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  letter-spacing: 1px;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
 
-/* Hiệu ứng hover cho tiêu đề */
-.title-heading:hover {
-  transform: scale(1.05);
-}
-
-/* Modal nền mờ */
+/* Modal backdrop when shown */
 .modal.show {
   display: block;
-  background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
-  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 1050; /* Ensure modal is on top */
 }
 
-/* Modal dialog căn giữa */
+/* Centered modal dialog */
 .modal-dialog {
-  width: 70%;
+  width: 30%;
   max-width: 1000px;
-  margin: auto;
-  max-height: 110vh;
+  margin: auto; /* Center the modal horizontally */
+  /* Consider removing max-height: 110vh or setting a more reasonable value like 90vh
+     and adding overflow-y: auto to .modal-body for scrollable content */
+  max-height: 90vh; /* Set a reasonable max height */
+  display: flex; /* Use flexbox to center vertically */
+  align-items: center; /* Center content vertically */
 }
 
-/* Nội dung modal */
+/* Modal content styling */
 .modal-content {
   background-color: #ffffff;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensure content takes full width within dialog */
 }
 
-/* Header modal */
+/* Modal header with space between title and close button */
 .modal-header {
   display: flex;
-  justify-content: space-between; /* Đẩy tiêu đề và nút đóng ra hai bên */
+  justify-content: space-between; /* Pushes title and close button to ends */
   align-items: center;
   padding: 15px;
-  position: relative; /* Để định vị tuyệt đối nút đóng */
+  position: relative; /* For absolute positioning of the close button */
 }
 
-/* Tiêu đề modal */
+/* Modal title styling */
 .modal-title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: bold;
 }
 
-/* Nút đóng modal */
+/* Close button within modal header */
 .modal-header .close {
   position: absolute;
-  top: 8px; /* Điều chỉnh vị trí dọc */
-  right: 10px; /* Điều chỉnh vị trí ngang */
+  top: 8px; /* Adjust vertical position */
+  right: 10px; /* Adjust horizontal position */
   font-size: 1.5rem;
   color: #000;
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 10; /* Đảm bảo nút không bị che khuất */
+  z-index: 10; /* Ensure button is clickable */
 }
 
-/* Body modal */
+/* Modal body styling */
 .modal-body {
   padding: 20px;
+  overflow-y: auto; /* Add scrollbar if content overflows vertically */
+  max-height: calc(90vh - 150px); /* Adjust based on header/footer height */
 }
 
-/* Form group */
+/* Form group styling */
 .form-group {
   margin-bottom: 15px;
 }
 
-/* Label form */
+/* Form label styling */
 .form-label {
   font-weight: bold;
-  display: block; /* Để label chiếm toàn bộ chiều rộng và input nằm dưới */
-  margin-bottom: 5px; /* Thêm khoảng cách giữa label và input */
+  display: block; /* Makes label take full width, putting input below */
+  margin-bottom: 5px; /* Space between label and input */
 }
 
-/* Input, select */
+/* Input and select control styling */
 .form-control {
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -129,18 +114,18 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* Input group tìm kiếm */
+/* Input group for search functionality */
 .input2-group {
   display: flex;
   align-items: center;
 }
 
 .input2-group .form-control {
-  flex-grow: 1;
+  flex-grow: 1; /* Allow input to take available space */
   margin-right: 5px;
 }
 
-/* Nút tìm kiếm nhỏ */
+/* Small search button styling */
 .btn-sm-search {
   display: flex;
   align-items: center;
@@ -149,24 +134,24 @@
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
-  flex-shrink: 0; /* Ngăn nút bị co lại */
+  flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 .btn-sm-search i.fa {
-  margin-right: 5px;
+  margin-right: 5px; /* Space between icon and text */
 }
 
-/* Nút thêm giáo viên và tìm kiếm trên danh sách */
+/* Styling for add teacher and search buttons in a specific layout */
 .col-md-12.d-flex.justify-content-start.mb-3 button.btn {
   display: flex;
   align-items: center;
 }
 
 .col-md-12.d-flex.justify-content-start.mb-3 button.btn i {
-  margin-right: 5px;
+  margin-right: 5px; /* Space between icon and text */
 }
 
-/* Nút xóa trong bảng */
+/* Small danger button styling (e.g., for delete) */
 .btn-danger.btn-sm {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
@@ -174,13 +159,14 @@
   border-radius: 0.2rem;
 }
 
-/* Phân trang */
+/* Pagination controls container */
 .pagination-controls {
   margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center the pagination */
 }
 
+/* Styling for the ngx-pagination list */
 .pagination-controls .ngx-pagination {
   padding-left: 0;
   list-style: none;
@@ -188,29 +174,33 @@
   border-radius: 0.25rem;
 }
 
+/* Styling for pagination links and spans */
 .pagination-controls .ngx-pagination li a,
 .pagination-controls .ngx-pagination li span {
   padding: 0.5rem 0.75rem;
   line-height: 1.5;
   border: 1px solid #dee2e6;
-  margin-left: -1px;
+  margin-left: -1px; /* Overlap borders */
   color: #007bff;
   text-decoration: none;
   cursor: pointer;
 }
 
+/* Border radius for the first pagination item */
 .pagination-controls .ngx-pagination li:first-child a,
 .pagination-controls .ngx-pagination li:first-child span {
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
 }
 
+/* Border radius for the last pagination item */
 .pagination-controls .ngx-pagination li:last-child a,
 .pagination-controls .ngx-pagination li:last-child span {
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
 }
 
+/* Styling for active pagination item */
 .pagination-controls .ngx-pagination li.active a,
 .pagination-controls .ngx-pagination li.active span {
   background-color: #007bff;
@@ -219,21 +209,25 @@
   cursor: default;
 }
 
+/* Styling for disabled pagination item */
 .pagination-controls .ngx-pagination li.disabled a,
 .pagination-controls .ngx-pagination li.disabled span {
   color: #6c757d;
-  pointer-events: none;
+  pointer-events: none; /* Disable click events */
   background-color: #fff;
   border-color: #dee2e6;
 }
+
+/* Info button styling */
 .btn-info {
   color: #fff;
   background-color: #17a2b8;
   border-color: #17a2b8;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
 
-  &:hover {
-    background-color: #138496;
-    border-color: #117a8b;
-  }
+/* Hover effect for info button (standard CSS) */
+.btn-info:hover {
+  background-color: #138496;
+  border-color: #117a8b;
 }

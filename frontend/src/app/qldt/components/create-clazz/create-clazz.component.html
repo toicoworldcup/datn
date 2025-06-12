@@ -10,23 +10,27 @@
           <div class="card-body">
             <div class="mb-3">
               <label for="ctdtCode" class="form-label" style="color: white;">Chương trình đào tạo (CTĐT)</label>
-              <select class="form-control" id="ctdtCode" [(ngModel)]="selectedCTDTCode" name="ctdtCode">
+              <select class="form-control" id="ctdtCode" [(ngModel)]="selectedCTDTCode" name="ctdtCode" required>
                 <option value="" disabled selected>Chọn CTĐT</option>
-                <option *ngFor="let ctdt of ctdtList" [value]="ctdt.maCt">{{ ctdt.maCt }}</option>
+                <option *ngFor="let ctdt of uniqueCtdtNames" [value]="ctdt.code">{{ ctdt.name }}</option>
               </select>
             </div>
 
             <div class="mb-3">
               <label for="khoa" class="form-label" style="color: white;">Khóa</label>
-              <select class="form-control" [(ngModel)]="selectedKhoa" name="khoa" id="khoa">
-                <option value="" disabled selected>Chọn Khóa</option>
-                <option *ngFor="let khoa of khoaList" [value]="khoa">{{ khoa }}</option>
-              </select>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="khoa" 
+                [(ngModel)]="selectedKhoa" 
+                name="khoa" 
+                placeholder="Nhập Khóa (ví dụ: 66, 67)" 
+                required>
             </div>
 
             <div class="mb-3">
               <label for="hocki" class="form-label" style="color: white;">Học kỳ</label>
-              <select class="form-control" [(ngModel)]="selectedHocKi" name="hocki" id="hocki">
+              <select class="form-control" [(ngModel)]="selectedHocKi" name="hocki" id="hocki" required>
                 <option value="" disabled selected>Chọn Học kỳ</option>
                 <option *ngFor="let semester of semesterList" [value]="semester">{{ semester }}</option>
               </select>
@@ -48,6 +52,34 @@
       <div *ngIf="error" class="alert alert-danger mt-3">
         {{ error }}
       </div>
+    </div>
+  </div>
+
+  <div *ngIf="newlyCreatedClazzes.length > 0" class="mt-5">
+    <h3 class="text-center mb-3">Các lớp học vừa được tạo:</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover mx-auto" style="max-width: 800px;">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>Mã Lớp</th>
+            <th>Mã Học Phần</th>
+            <th>Học kỳ</th>
+            <th>Khóa</th>
+            <th>Lịch Thi</th>
+            <th>Số SV</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lop of newlyCreatedClazzes">
+            <td>{{ lop.maLop }}</td>
+            <td>{{ lop.maHocPhan }}</td>
+            <td>{{ lop.hocki }}</td>
+            <td>{{ selectedKhoa }}</td>
+            <td>{{ lop.lichThi | date:'dd/MM/yyyy' }}</td>
+            <td>{{ lop.soLuongSinhVien }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

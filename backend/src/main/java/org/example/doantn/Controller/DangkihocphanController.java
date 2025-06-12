@@ -57,19 +57,30 @@ public class DangkihocphanController {
     }
 
 
-    @GetMapping("/{mssv}/{semesterName}")
-    public ResponseEntity<List<DkhpDTO> > getDangkihocphanByMSSVAndSemesterName(@PathVariable String mssv,@PathVariable String semesterName) {
-        Optional<Student> student = studentRepo.findByMssv(mssv);
-        Optional<Semester> semester = semesterRepo.findByName(semesterName);
+    @GetMapping("/me/semester/{semesterName}") // Đổi đường dẫn API
+    @PreAuthorize("hasRole('STUDENT')") // Đảm bảo chỉ sinh viên mới có thể truy cập
+    public ResponseEntity<List<DkhpDTO>> getDangkihocphanForLoggedInStudentBySemester(
+            Authentication authentication, // Thêm tham số Authentication
+            @PathVariable String semesterName) {
+        try {
+            String username = authentication.getName(); // Lấy username của học sinh đang đăng nhập
 
-        List<DkhpDTO> registrations = dangkihocphanService.getDangkihocphanByMssvAndSemester(student.get().getMssv(), semester.get().getName())
-                .stream()
-                .map(DkhpDTO::new)
-                .collect(Collectors.toList());
+            // Tìm sinh viên dựa trên username
+            Student student = studentRepo.findByUser_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên cho người dùng: " + username));
 
-        return ResponseEntity.ok(registrations);
+            List<DkhpDTO> registrations = dangkihocphanService.getDangkihocphanByMssvAndSemester(student.getMssv(), semesterName)
+                    .stream()
+                    .map(DkhpDTO::new)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(registrations);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Trả về 404 nếu không tìm thấy sinh viên hoặc kỳ học
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Xử lý các lỗi khác
+        }
     }
-
 
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping
@@ -251,11 +262,14 @@ public class DangkihocphanController {
 
     private DkhpDTO convertToDTO(Dangkihocphan dangkihocphan) {
         return new DkhpDTO(
+                dangkihocphan.getId(),
                 dangkihocphan.getCourse() != null ? dangkihocphan.getCourse().getMaHocPhan() : null,
                 dangkihocphan.getStudent() != null ? dangkihocphan.getStudent().getMssv() : null,
                 dangkihocphan.getSemester() != null ? dangkihocphan.getSemester().getName() : null,
                 dangkihocphan.getFinalGrade(),
-                dangkihocphan.getGradeLetter()
+                dangkihocphan.getGradeLetter(),
+                dangkihocphan.getCourse().getTinChi(),
+                dangkihocphan.getCourse().getName()
         );
     }
 }

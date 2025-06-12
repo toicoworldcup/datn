@@ -15,7 +15,7 @@
       <th>Số TC</th>
       <th>Khối lượng</th>
       <th>Kỳ gợi ý</th>
-      <th>Điểm cuối kỳ</th>
+      <th>Điểm học phần</th>
       <th>Đánh giá</th>
     </tr>
   </thead>
@@ -26,7 +26,7 @@
       <td>{{ item.soTinChi }}</td>
       <td>{{ item.khoiLuong }}</td>
       <td>{{ item.suggestedSemester !== undefined ? item.suggestedSemester : 'N/A' }}</td>
-      <td>{{ item.finalGrade !== null ? (item.finalGrade | number: '1.1-1') : 'Chưa có' }}</td>
+      <td>{{ item.finalGrade || 'Chưa có' }}</td>
       <td>{{ item.gradeLetter || 'Chưa có' }}</td>
     </tr>
   </tbody>

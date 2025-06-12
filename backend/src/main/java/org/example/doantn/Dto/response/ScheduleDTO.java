@@ -11,14 +11,16 @@ public class ScheduleDTO {
     private String timeSlot;
     private String dayOfWeek;
     private String semesterName;
+    private String nameCourse;
 
 
-    public ScheduleDTO(String clazzName, String roomName, String timeSlot,String dayOfWeek, String semesterName) {
+    public ScheduleDTO(String clazzName, String roomName, String timeSlot,String dayOfWeek, String semesterName, String nameCourse ) {
         this.clazzName = clazzName;
         this.dayOfWeek = dayOfWeek;
         this.roomName = roomName;
         this.semesterName = semesterName;
         this.timeSlot = timeSlot;
+        this.nameCourse = nameCourse;
     }
 
 

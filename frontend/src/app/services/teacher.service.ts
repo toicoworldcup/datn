@@ -13,6 +13,22 @@ interface ChangePasswordRequest {
   newPassword: string;
 }
 
+// Định nghĩa một interface cho payload khi cập nhật giáo viên
+// để đảm bảo rằng bạn gửi đúng các trường mà backend mong đợi
+export interface TeacherUpdatePayload {
+  id?: number; // Optional vì nó có thể nằm trong URL
+  maGv: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  dateOfBirth: string; // Hoặc Date
+  address: string;
+  gender: string;
+  cccd: string;
+  departmentName: string; // <-- Đây là trường mới bạn muốn gửi dưới dạng chuỗi
+  // Thêm các trường khác nếu có, ví dụ: user, clazzes nếu bạn muốn update chúng
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -30,15 +46,18 @@ export class TeacherService {
   }
 
   addTeacher(teacher: Teacher): Observable<Teacher> {
+    // Phương thức này có thể vẫn gửi Teacher entity bình thường
+    // nếu convertToEntity ở backend của bạn đã xử lý DepartmentName
     return this.http.post<Teacher>(this.apiUrl, teacher);
   }
 
-  updateTeacher(maGv: string, teacher: Teacher): Observable<Teacher> {
-    return this.http.put<Teacher>(`${this.apiUrl}/${maGv}`, teacher);
+  // Sửa đổi phương thức updateTeacher để nhận TeacherUpdatePayload
+  updateTeacher(id: number, payload: TeacherUpdatePayload): Observable<Teacher> {
+    return this.http.put<Teacher>(`${this.apiUrl}/${id}`, payload);
   }
 
-  deleteTeacher(maGv: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${maGv}`);
+  deleteTeacher(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   searchTeacher(maGv: string): Observable<any> {
@@ -68,7 +87,7 @@ export class TeacherService {
   }
 
   changePassword(oldPassword: string, newPassword: string): Observable<any> {
-      const body: ChangePasswordRequest = { oldPassword, newPassword };
-      return this.http.post(`${this.apiUrl}/change-password`, body, { responseType: 'text' });
-    }
+    const body: ChangePasswordRequest = { oldPassword, newPassword };
+    return this.http.post(`${this.apiUrl}/change-password`, body, { responseType: 'text' });
+  }
 }

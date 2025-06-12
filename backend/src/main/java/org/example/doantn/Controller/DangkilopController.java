@@ -262,6 +262,32 @@ public class DangkilopController {
 
         // Nếu được duyệt, tạo bản ghi Dangkilop và tăng số lượng sinh viên
         if (status.equals("APPROVED")) {
+            // Lấy thông tin cần thiết từ request
+            Student student = request.getStudent();
+            Clazz clazz = request.getClazz();
+            Semester semester = request.getSemester();
+            Course course = clazz.getCourse(); // Lấy học phần từ lớp
+
+            // Kiểm tra dữ liệu cần thiết
+            if (student == null || clazz == null || semester == null || course == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi dữ liệu: Thông tin sinh viên, lớp, học kỳ hoặc học phần không đầy đủ.");
+            }
+
+            // --- PHẦN THÊM MỚI THEO YÊU CẦU CỦA BẠN: TẠO DANGKIHOCPHAN ---
+            // Luôn tạo Dangkihocphan mới vì yêu cầu này dành cho học sinh chưa đăng ký học phần
+            Dangkihocphan dkhp = new Dangkihocphan();
+            dkhp.setStudent(student);
+            dkhp.setCourse(course);
+            dkhp.setSemester(semester);
+            dkhp.setGki(null); // Khởi tạo điểm mặc định
+            dkhp.setCki(null); // Khởi tạo điểm mặc định
+            dkhp.setFinalGrade(null); // Không có điểm cuối cùng ban đầu
+            dkhp.setGradeLetter(null); // Không có điểm chữ ban đầu
+            try {
+                dangkihocphanRepo.save(dkhp); // Lưu bản ghi Dangkihocphan mới
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi tạo bản ghi đăng ký học phần: " + e.getMessage());
+            }
             Dangkilop dkl = new Dangkilop();
             dkl.setStudent(request.getStudent());
             dkl.setClazz(request.getClazz());

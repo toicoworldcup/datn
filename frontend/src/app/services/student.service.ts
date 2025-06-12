@@ -105,7 +105,8 @@ export class StudentService {
                 khoiLuong: course.khoiLuong,
                 suggestedSemester:course.suggestedSemester,
                 finalGrade:course.finalGrade,
-                gradeLetter:course.gradeLetter
+                gradeLetter:course.gradeLetter,
+                gradeRatio: course.gradeRatio
 
 
               } as Course)
@@ -118,7 +119,8 @@ export class StudentService {
                 soTinChi: course.soTinChi,
                 tenMonHoc: course.tenMonHoc,
                 khoiLuong: course.khoiLuong,
-                suggestedSemester:course.suggestedSemester
+                suggestedSemester:course.suggestedSemester,
+                gradeRatio:course.gradeRatio
 
               } as Course)
           );
@@ -138,6 +140,12 @@ export class StudentService {
     );
   }
 
+  // --- PHẦN THÊM MỚI THEO YÊU CẦU CỦA BẠN ---
+  getDangkihocphanForLoggedInStudentBySemester(semesterName: string): Observable<DkhpDTO[]> {
+    return this.http.get<DkhpDTO[]>(`${this.apiUrlDkhp}/me/semester/${semesterName}`);
+  }
+  // --- KẾT THÚC PHẦN THÊM MỚI ---
+
   getMissingCourses(): Observable<Course[]> {
     return this.http.get<any[]>(`${this.apiUrlDkhp}/missing-grades`).pipe(
       map((courses: any[]) =>
@@ -149,6 +157,7 @@ export class StudentService {
               soTinChi: course.soTinChi,
               tenMonHoc: course.tenMonHoc,
               khoiLuong: course.khoiLuong,
+              gradeRatio: course.gradeRatio
             } as Course)
         )
       )
@@ -167,6 +176,7 @@ export class StudentService {
                 soTinChi: course.soTinChi,
                 tenMonHoc: course.tenMonHoc,
                 khoiLuong: course.khoiLuong,
+                gradeRatio: course.gradeRatio
                 // Thêm các thuộc tính khác nếu cần
               } as Course)
           )
@@ -187,20 +197,20 @@ export class StudentService {
     return this.http.post(this.gradesUrl, grade);
   }
 
-    updateGrade(mssv: string, maLop: string, semesterName: string, grade: Grade): Observable<Grade> {
+  updateGrade(mssv: string, maLop: string, semesterName: string, grade: Grade): Observable<Grade> {
     return this.http.put<Grade>(`${this.gradesUrl}/${mssv}/${maLop}/${semesterName}`, grade);
   }
-    getGradeByStudentAndClassAndSemester(mssv: string, maLop: string, semesterName: string): Observable<Grade> {
+  getGradeByStudentAndClassAndSemester(mssv: string, maLop: string, semesterName: string): Observable<Grade> {
     return this.http.get<Grade>(`${this.gradesUrl}/student/${mssv}/class/${maLop}/semester/${semesterName}`);
   }
   getMyScheduleBySemester(semesterName: string): Observable<Schedule[]> {
-        return this.http.get<Schedule[]>(`${this.apiUrl}/schedule/semester/${semesterName}`);
+    return this.http.get<Schedule[]>(`${this.apiUrl}/schedule/semester/${semesterName}`);
 
   }
   getMyGradesBySemester(semesterName: string): Observable<any> { // Thay any[] bằng any
     return this.http.get(`${this.gradesUrl}/student/me/semester/${semesterName}`, { responseType: 'text' });
   }
-    getChuongTrinhDaoTaoVaDiem(): Observable<CthDTO[]> {
+  getChuongTrinhDaoTaoVaDiem(): Observable<CthDTO[]> {
     return this.http.get<CthDTO[]>(`${this.apiUrl}/me/chuong-trinh-dao-tao-va-diem`);
   }
   xetTotNghiep(): Observable<any> {
@@ -210,5 +220,11 @@ export class StudentService {
   changePassword(oldPassword: string, newPassword: string): Observable<any> {
     const body: ChangePasswordRequest = { oldPassword, newPassword };
     return this.http.post(`${this.apiUrl}/change-password`, body, { responseType: 'text' });
+  }
+
+  // THÊM MỚI: Phương thức để lấy GPA theo học kỳ
+  getGPABySemester(semesterName: string): Observable<number | string> {
+    // API URL được lấy từ hình ảnh bạn cung cấp
+    return this.http.get<number | string>(`${this.gradesUrl}/me/gpa-by-semester/${semesterName}`);
   }
 }

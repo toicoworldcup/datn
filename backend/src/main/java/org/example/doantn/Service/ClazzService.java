@@ -46,6 +46,14 @@ public class ClazzService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy lớp học với ma: " + maLop));
     }
 
+    public Clazz updateClazzExamDate(Integer clazzId, LocalDate newExamDate) {
+        Clazz existingClazz = clazzRepo.findById(clazzId)
+                .orElseThrow(() -> new RuntimeException("Clazz not found with id: " + clazzId));
+
+        existingClazz.setLichThi(newExamDate); // Cập nhật LỊCH THI
+        return clazzRepo.save(existingClazz);
+    }
+
     public Map<String, Integer> countClazzesPerTeacher() {
         List<Object[]> results = clazzRepo.countClazzesByTeacher();
         Map<String, Integer> teacherClazzCount = new HashMap<>();
@@ -237,17 +245,16 @@ public class ClazzService {
                 .collect(Collectors.toList());
     }
 
-    public int generateClazzesForCTDTCodeAndKhoa(String ctdtCode, String khoa, String hocKi) {
-        Optional<Ctdt> ctdtOptional = ctdtRepo.findByMaCt(ctdtCode);
+    @Transactional
+    // THAY ĐỔI: Kiểu trả về từ 'int' sang 'List<Clazz>'
+    public List<Clazz> generateClazzesForCTDTCodeAndKhoa(String ctdtCode, String khoa, String hocKi) {
+        Batch batch = batchRepo.findByName(khoa)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học: " + khoa));
+        Optional<Ctdt> ctdtOptional = ctdtRepo.findByMaCtAndBatch(ctdtCode,batch);
         if (ctdtOptional.isEmpty()) {
             throw new RuntimeException("Không tìm thấy CTĐT với mã: " + ctdtCode);
         }
         Ctdt ctdt = ctdtOptional.get();
-
-        Optional<Batch> batchOptional = batchRepo.findByName(khoa);
-        if (batchOptional.isEmpty()) {
-            throw new RuntimeException("Không tìm thấy khóa học: " + khoa);
-        }
         Optional<Semester> semesterOptional = semesterRepo.findByName(hocKi);
         if (semesterOptional.isEmpty()) {
             throw new RuntimeException("Không tìm thấy học kỳ: " + hocKi);
@@ -260,12 +267,13 @@ public class ClazzService {
         }
 
         int maxStudentsPerClazz = 50;
-        int classesCreatedCount = 0;
+        List<Clazz> createdClazzes = new ArrayList<>(); // <-- THAY ĐỔI: Tạo danh sách để lưu các lớp đã tạo
 
         for (Course course : coursesInCTDT) {
             String maHocPhan = course.getMaHocPhan();
 
-            // Kiểm tra xem lớp học cho học phần, khóa, học kỳ đã tồn tại chưa
+            // Kiểm tra xem lớp học cho học phần đã tồn tại trong học kỳ này chưa
+            // Nếu logic của bạn muốn bỏ qua tạo nếu đã có bất kỳ lớp nào cho học phần đó trong học kỳ đó
             if (clazzRepo.existsByCourse_MaHocPhanAndSemester_NameStartingWith(maHocPhan, hocKi)) {
                 System.out.println("Lớp học cho học phần " + maHocPhan + ", khóa " + khoa + ", học kỳ " + hocKi + " đã tồn tại.");
                 continue; // Bỏ qua nếu đã tồn tại
@@ -281,12 +289,24 @@ public class ClazzService {
                     clazz.setMaLop(maHocPhan + "-" + khoa.replaceAll("\\s+", "") + "-" + hocKi.replaceAll("\\s+", "") + "-" + i);
                     clazz.setCourse(course);
                     clazz.setSemester(semester);
-                    clazzRepo.save(clazz);
-                    classesCreatedCount++;
+                    Clazz savedClazz = clazzRepo.save(clazz); // Lưu và nhận đối tượng đã được persist
+                    createdClazzes.add(savedClazz); // <-- THAY ĐỔI: Thêm vào danh sách
                 }
             }
         }
-        return classesCreatedCount;
+        return createdClazzes; // <-- THAY ĐỔI: Trả về danh sách các lớp đã tạo
+    }
+
+    public List<Clazz> getClazzesBySemesterName(String semesterName) {
+        if (semesterName == null || semesterName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên học kỳ không được để trống.");
+        }
+        // Find the Semester object by its name
+        Semester semester = semesterRepo.findByName(semesterName)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy học kỳ với tên: " + semesterName));
+
+        // Use the findBySemester method from ClazzRepo with the Semester object
+        return clazzRepo.findBySemester(semester);
     }
 
     public List<TeacherDTO> getAvailableTeachersForClazz(String maLop, String hocKi) {

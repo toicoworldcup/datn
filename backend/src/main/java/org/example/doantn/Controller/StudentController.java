@@ -239,7 +239,8 @@ public class StudentController {
                         schedule.getRoom().getName(),
                         schedule.getTimeSlot().getName(),
                         schedule.getDayOfWeek(),
-                        schedule.getSemester().getName()
+                        schedule.getSemester().getName(),
+                        schedule.getClazz().getCourse().getName()
                 ))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(scheduleDTOs);

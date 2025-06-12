@@ -2,18 +2,30 @@
   <div class="container-fluid mt-3 px-3">
     <div class="text-center">
       <h2 class="title-heading">
-        Danh sách Hoc phan
+        Danh sách học phần
       </h2>
     </div>
   </div>
   <div class="row mb-3">
     <div class="col-md-auto">
+      <button class="btn btn-primary me-2" (click)="openAddCourseModal()">
+        <i class="fa fa-plus me-1"></i> Thêm
+      </button>
       <button class="btn btn-info me-2" (click)="openCombinedSearchModal()">
         <i class="fa fa-search me-1"></i> Tìm kiếm
       </button>
     </div>
   </div>
 
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+  </div>
   <div class="row">
     <table class="table table-bordered table-striped table-hover">
       <thead class="table-info text-center">
@@ -21,6 +33,10 @@
           <th>Mã học phần</th>
           <th>Tên môn học</th>
           <th>Số tín chỉ</th>
+          <th>Khối lượng</th>
+          <th>Học kỳ đề xuất</th>
+          <th>Tỷ lệ điểm</th>
+          <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +44,13 @@
           <td>{{ course.maHocPhan }}</td>
           <td>{{ course.tenMonHoc }}</td>
           <td>{{ course.soTinChi }}</td>
+          <td>{{ course.khoiLuong }}</td>
+          <td>{{ course.suggestedSemester }}</td>
+          <td>{{ course.gradeRatio }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="openEditCourseModal(course)">Sửa</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteCourse(course.id!)">Xóa</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -38,6 +61,92 @@
       nextLabel="»"
       class="d-flex justify-content-center mt-3">
     </pagination-controls>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isAddCourseModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm học phần mới</h5>
+          <button type="button" class="btn-close" (click)="closeAddCourseModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addCourse()">
+            <div class="mb-3">
+              <label for="addMaHocPhan">Mã học phần:</label>
+              <input type="text" class="form-control" id="addMaHocPhan" [(ngModel)]="newCourse.maHocPhan" name="maHocPhan" required>
+            </div>
+            <div class="mb-3">
+              <label for="addTenMonHoc">Tên môn học:</label>
+              <input type="text" class="form-control" id="addTenMonHoc" [(ngModel)]="newCourse.tenMonHoc" name="tenMonHoc" required>
+            </div>
+            <div class="mb-3">
+              <label for="addSoTinChi">Số tín chỉ:</label>
+              <input type="number" class="form-control" id="addSoTinChi" [(ngModel)]="newCourse.soTinChi" name="soTinChi" required>
+            </div>
+            <div class="mb-3">
+              <label for="addKhoiLuong">Khối lượng:</label>
+              <input type="text" class="form-control" id="addKhoiLuong" [(ngModel)]="newCourse.khoiLuong" name="khoiLuong">
+            </div>
+            <div class="mb-3">
+              <label for="addSuggestedSemester">Học kỳ đề xuất:</label>
+              <input type="number" class="form-control" id="addSuggestedSemester" [(ngModel)]="newCourse.suggestedSemester" name="suggestedSemester">
+            </div>
+            <div class="mb-3">
+              <label for="addGradeRatio">Tỷ lệ điểm:</label>
+              <input type="text" class="form-control" id="addGradeRatio" [(ngModel)]="newCourse.gradeRatio" name="gradeRatio">
+            </div>
+            <div class="text-end">
+              <button type="button" class="btn btn-secondary me-2" (click)="closeAddCourseModal()">Hủy</button>
+              <button type="submit" class="btn btn-primary">Thêm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isEditCourseModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sửa học phần</h5>
+          <button type="button" class="btn-close" (click)="closeEditCourseModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="updateCourse()" *ngIf="editedCourse">
+            <div class="mb-3">
+              <label for="editMaHocPhan">Mã học phần:</label>
+              <input type="text" class="form-control" id="editMaHocPhan" [(ngModel)]="editedCourse.maHocPhan" name="editMaHocPhan" required>
+            </div>
+            <div class="mb-3">
+              <label for="editTenMonHoc">Tên môn học:</label>
+              <input type="text" class="form-control" id="editTenMonHoc" [(ngModel)]="editedCourse.tenMonHoc" name="editTenMonHoc" required>
+            </div>
+            <div class="mb-3">
+              <label for="editSoTinChi">Số tín chỉ:</label>
+              <input type="number" class="form-control" id="editSoTinChi" [(ngModel)]="editedCourse.soTinChi" name="editSoTinChi" required>
+            </div>
+            <div class="mb-3">
+              <label for="editKhoiLuong">Khối lượng:</label>
+              <input type="text" class="form-control" id="editKhoiLuong" [(ngModel)]="editedCourse.khoiLuong" name="editKhoiLuong">
+            </div>
+            <div class="mb-3">
+              <label for="editSuggestedSemester">Học kỳ đề xuất:</label>
+              <input type="number" class="form-control" id="editSuggestedSemester" [(ngModel)]="editedCourse.suggestedSemester" name="editSuggestedSemester">
+            </div>
+            <div class="mb-3">
+              <label for="editGradeRatio">Tỷ lệ điểm:</label>
+              <input type="text" class="form-control" id="editGradeRatio" [(ngModel)]="editedCourse.gradeRatio" name="editGradeRatio">
+            </div>
+            <div class="text-end">
+              <button type="button" class="btn btn-secondary me-2" (click)="closeEditCourseModal()">Hủy</button>
+              <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isCombinedSearchModalVisible}" style="background: rgba(0,0,0,0.4);">
@@ -87,6 +196,9 @@
             <p><strong>Mã học phần:</strong> {{ searchResultCourse.maHocPhan }}</p>
             <p><strong>Tên môn học:</strong> {{ searchResultCourse.tenMonHoc }}</p>
             <p><strong>Số tín chỉ:</strong> {{ searchResultCourse.soTinChi }}</p>
+            <p *ngIf="searchResultCourse.khoiLuong"><strong>Khối lượng:</strong> {{ searchResultCourse.khoiLuong }}</p>
+            <p *ngIf="searchResultCourse.suggestedSemester"><strong>Học kỳ đề xuất:</strong> {{ searchResultCourse.suggestedSemester }}</p>
+            <p *ngIf="searchResultCourse.gradeRatio"><strong>Tỷ lệ điểm:</strong> {{ searchResultCourse.gradeRatio }}</p>
           </div>
         </div>
       </div>

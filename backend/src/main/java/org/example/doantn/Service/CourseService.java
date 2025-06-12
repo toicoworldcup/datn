@@ -28,20 +28,37 @@ public class CourseService {
     public Set<Clazz> getClazzesByMaHocPhan(String maHocPhan,String semesterName) {
         return courseRepo.getClazzesByMaHocPhanAndSemesterName(maHocPhan,semesterName);
     }
-    public Course updateCourse(Integer id, String name, String maHocPhan, Integer tinChi) {
+    public Course updateCourse(Integer id, String tenMonHoc, String maHocPhan, Integer soTinChi, String khoiLuong, Integer suggestedSemester, String gradeRatio) {
+        // Tìm khóa học hiện có theo ID
         Course existingCourse = courseRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học với ID: " + id));
+        // Vẫn nên xem xét thay thế RuntimeException bằng một Custom Exception
+        // như ResourceNotFoundException đã đề cập trước đó.
 
-        if (name != null) {
-            existingCourse.setName(name);
+        // Cập nhật các trường của ENTITY dựa trên dữ liệu từ DTO
+        // Lưu ý: Các tham số của phương thức này có tên giống với DTO để tiện mapping
+        // nhưng bên trong chúng ta gọi setter của Entity với tên trường của Entity.
+
+        if (tenMonHoc != null) {
+            existingCourse.setName(tenMonHoc); // Tên môn học trong Entity là 'name'
         }
         if (maHocPhan != null) {
             existingCourse.setMaHocPhan(maHocPhan);
         }
-        if (tinChi != null) {
-            existingCourse.setTinChi(tinChi);
+        if (soTinChi != null) {
+            existingCourse.setTinChi(soTinChi); // Số tín chỉ trong Entity là 'tinChi'
+        }
+        if (khoiLuong != null) {
+            existingCourse.setKhoiLuong(khoiLuong);
+        }
+        if (suggestedSemester != null) {
+            existingCourse.setSuggestedSemester(suggestedSemester);
+        }
+        if (gradeRatio != null) {
+            existingCourse.setGradeRatio(gradeRatio);
         }
 
+        // Lưu và trả về Course đã được cập nhật
         return courseRepo.save(existingCourse);
     }
 

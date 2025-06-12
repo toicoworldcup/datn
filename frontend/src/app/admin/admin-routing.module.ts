@@ -7,7 +7,6 @@ import { CourseListComponent } from "./components/course-list/course-list.compon
 import { ClazzListComponent } from "./components/clazz-list/clazz-list.component";
 import { SemesterListComponent } from "./components/semester-list/semester-list.component";
 import { AssignTeacherComponent } from "./components/assign-teacher/assign-teacher.component";
-import { CreateClazzComponent } from "./components/create-clazz/create-clazz.component";
 import { LayoutAdminComponent } from "./layout-admin/layout-admin.component";
 import { ScheduleListComponent } from "./components/schedule-list/schedule-list.component";
 import { AuthGuard } from "../core/guards/auth.guard";
@@ -50,11 +49,6 @@ const routes: Routes = [
       {
         path: "assign-teacher",
         component: AssignTeacherComponent,
-        canActivate: [AuthGuard],
-      },
-      {
-        path: "create-clazz",
-        component: CreateClazzComponent,
         canActivate: [AuthGuard],
       },
     ],

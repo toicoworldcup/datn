@@ -10,23 +10,15 @@
   <div class="row mb-3">
     <div class="col-md-auto">
       <button class="btn btn-primary me-2" (click)="openCreateCtdtModal()">
-        <i class="fa fa-plus me-1"></i> Thêm mới CTĐT
+        <i class="fa fa-plus me-1"></i> Thêm CTĐT
       </button>
       <button class="btn btn-success me-2" (click)="openImportExcelModal()">
         <i class="fa fa-upload me-1"></i> Nhập từ Excel
       </button>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-3">
-      <label for="ctdtCodeFilter" class="form-label">Mã CTĐT:</label>
-      <input type="text" class="form-control" id="ctdtCodeFilter" [(ngModel)]="ctdtCodeSearchFilter" (ngModelChange)="searchCourses()">
-    </div>
-    <div class="col-md-3">
-      <label for="khoaFilter" class="form-label">Khóa:</label>
-      <input type="text" class="form-control" id="khoaFilter" [(ngModel)]="khoaSearchFilter" (ngModelChange)="searchCourses()">
-    </div>
+      <button class="btn btn-info me-2" (click)="openSearchCriteriaModal()">
+        <i class="fa fa-search me-1"></i> Tìm kiếm 
+      </button>
+      </div>
   </div>
 
   <div class="row">
@@ -43,6 +35,9 @@
           <td>{{ course.maHocPhan }}</td>
           <td>{{ course.tenMonHoc }}</td>
           <td>{{ course.tinChi }}</td>
+        </tr>
+        <tr *ngIf="filteredCourses.length === 0 && !searchError">
+          <td colspan="3" class="text-center">Không có học phần nào được tìm thấy. </td>
         </tr>
       </tbody>
     </table>
@@ -112,6 +107,32 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeImportExcelModal()">Đóng</button>
           <button type="button" class="btn btn-success" (click)="uploadFile()" [disabled]="!selectedFile || !ctdtCodeExcel || !khoaExcel">Tải lên</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': isSearchCriteriaModalVisible}" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tìm kiếm học phần theo CTĐT và Khóa</h5>
+          <button type="button" class="btn-close" (click)="closeSearchCriteriaModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="ctdtCodeSearchModal" class="form-label">Mã CTĐT:</label>
+            <input type="text" class="form-control" id="ctdtCodeSearchModal" [(ngModel)]="ctdtCodeSearchFilter">
+          </div>
+          <div class="mb-3">
+            <label for="khoaSearchModal" class="form-label">Khóa:</label>
+            <input type="text" class="form-control" id="khoaSearchModal" [(ngModel)]="khoaSearchFilter">
+          </div>
+          <div *ngIf="searchError" class="alert alert-danger mt-2">{{ searchError }}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeSearchCriteriaModal()">Đóng</button>
+          <button type="button" class="btn btn-primary" (click)="performSearchAndCloseModal()">Tìm kiếm</button>
         </div>
       </div>
     </div>

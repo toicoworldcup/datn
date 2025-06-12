@@ -89,6 +89,22 @@ public class ClazzController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
+    @PutMapping("/{clazzId}/update-exam-date")
+    public ResponseEntity<ClazzDTO> updateClazzExamDate(
+            @PathVariable Integer clazzId,
+            @RequestParam(required = false) String lichThi) { // lichThi có thể null để xóa
+        try {
+            LocalDate examDate = (lichThi != null && !lichThi.isEmpty()) ? LocalDate.parse(lichThi) : null;
+            Clazz updatedClazz = clazzService.updateClazzExamDate(clazzId, examDate);
+            return ResponseEntity.ok(new ClazzDTO(updatedClazz));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Hoặc trả về một đối tượng lỗi
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> addClazz(@RequestBody ClazzRequest request) {
@@ -177,24 +193,59 @@ public class ClazzController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(clazzDTOs);
     }
+    // Trong file org.example.doantn.Controller.ClazzController.java
+
+// ... (các import và phần code khác giữ nguyên) ...
+
     @PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @PostMapping("/generate-by-ctdt-khoa/{ctdtCode}/{khoa}/{hocKi}")
-    public ResponseEntity<String> generateClazzesByCTDTCodeAndKhoa(
+// THAY ĐỔI: Kiểu trả về từ 'ResponseEntity<String>' sang 'ResponseEntity<List<ClazzDTO>>'
+    public ResponseEntity<List<ClazzDTO>> generateClazzesByCTDTCodeAndKhoa(
             @PathVariable String ctdtCode,
             @PathVariable String khoa,
             @PathVariable String hocKi
     ) {
         try {
-            int numberOfClassesCreated = clazzService.generateClazzesForCTDTCodeAndKhoa(ctdtCode, khoa, hocKi);
-            if (numberOfClassesCreated > 0) {
-                return ResponseEntity.ok("Đã tạo " + numberOfClassesCreated + " lớp học thành công.");
-            } else {
-                return ResponseEntity.ok("Đã tạo lớp trước đó rồi.");
-            }
+            // Gọi service để tạo lớp, và nhận về danh sách các đối tượng Clazz đã tạo
+            List<Clazz> createdClazzes = clazzService.generateClazzesForCTDTCodeAndKhoa(ctdtCode, khoa, hocKi);
+
+            // Chuyển đổi List<Clazz> sang List<ClazzDTO> để trả về frontend
+            List<ClazzDTO> createdClazzDTOs = createdClazzes.stream()
+                    .map(ClazzDTO::new) // Sử dụng constructor của ClazzDTO
+                    .collect(Collectors.toList());
+
+            // THAY ĐỔI: Trả về danh sách các ClazzDTO đã tạo
+            // Frontend sẽ nhận được một mảng JSON của các đối tượng lớp học
+            return ResponseEntity.ok(createdClazzDTOs);
+
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
+            // Khi có lỗi, trả về HttpStatus.BAD_REQUEST (400) và một body rỗng (hoặc null)
+            // Frontend sẽ kiểm tra trạng thái HTTP và xử lý lỗi.
+            // Bạn có thể cân nhắc trả về một đối tượng lỗi cụ thể nếu cần thông báo chi tiết hơn.
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    @PreAuthorize("hasRole('QLDT')")
+    @GetMapping("/by-semester-name/{semesterName}") // A clear endpoint name
+    public ResponseEntity<List<ClazzDTO>> getClazzesBySemesterName(
+            @PathVariable String semesterName) { // User only needs to provide semesterName
+        try {
+            // Call the service method that handles finding the Semester object
+            List<Clazz> clazzes = clazzService.getClazzesBySemesterName(semesterName);
+            List<ClazzDTO> clazzDTOs = clazzes.stream()
+                    .map(ClazzDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(clazzDTOs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Return 400 Bad Request if semesterName is invalid
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 Not Found if semester does not exist
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Catch other unexpected errors
+        }
+    }
+
     @PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
 
     @GetMapping("/malop/{maLop}/semester/{hocKi}/available-teachers")

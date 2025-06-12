@@ -20,7 +20,7 @@ public class SemesterController {
     public ResponseEntity<List<Semester>> getAllSemesters() {
         return ResponseEntity.ok(semesterService.getAllSemesters());
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('QLDT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('QLDT') or hasRole('STUDENT') or hasRole('TEACHER')")
     @GetMapping("/all")
     public ResponseEntity<List<Semester>> getAllSemestersNoFilter() {
         return ResponseEntity.ok(semesterService.getAllSemestersNoFilter());

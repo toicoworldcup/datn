@@ -35,7 +35,7 @@ export class SemesterListComponent implements OnInit {
   loadSemesters(): void {
     this.loading = true;
     this.error = '';
-    this.semesterService.getAllSemesters().subscribe({
+    this.semesterService.getAllSemestersNoFilter().subscribe({
       next: (data) => {
         this.semesters = data;
         this.loading = false;

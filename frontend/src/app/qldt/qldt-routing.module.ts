@@ -12,6 +12,7 @@ import { AuthGuard } from "../core/guards/auth.guard"; // Import AuthGuard
 import { LayoutQldtComponent } from "./layout-qldt/layout-qldt.component";
 import { DangkilopComponent } from "./components/dangkilop/dangkilop.component";
 import { CthComponent } from "./components/cth/cth.component";
+import { ScheduleListComponent } from "./components/schedule-list/schedule-list.component";
 
 const routes: Routes = [
   {
@@ -66,6 +67,11 @@ const routes: Routes = [
       {
         path: "teacher",
         component: TeacherListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: "tkb",
+        component: ScheduleListComponent,
         canActivate: [AuthGuard],
       },
 

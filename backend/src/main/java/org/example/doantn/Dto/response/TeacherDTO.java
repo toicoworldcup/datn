@@ -5,6 +5,7 @@ import org.example.doantn.Entity.Teacher;
 import java.time.LocalDate;
 
 public class TeacherDTO {
+    private Integer id; // <--- THÊM TRƯỜNG ID Ở ĐÂY
     private String name;
     private String maGv;
     private LocalDate dateOfBirth;
@@ -14,7 +15,9 @@ public class TeacherDTO {
     private String cccd;
     private String departmentName;
     private String address;
+
     public TeacherDTO(Teacher teacher) {
+        this.id = teacher.getId(); // <--- GÁN ID TỪ ENTITY
         this.name = teacher.getName();
         this.maGv = teacher.getMaGv();
         this.dateOfBirth = teacher.getDateOfBirth();
@@ -24,13 +27,14 @@ public class TeacherDTO {
         this.cccd = teacher.getCccd();
         this.departmentName = teacher.getDepartment().getName();
         this.address = teacher.getAddress();
-
     }
 
     public TeacherDTO() {
     }
 
-    public TeacherDTO(String address, String cccd, LocalDate dateOfBirth, String departmentName, String email, String gender, String maGv, String name, String phone) {
+    // Constructor mới với id
+    public TeacherDTO(Integer id, String address, String cccd, LocalDate dateOfBirth, String departmentName, String email, String gender, String maGv, String name, String phone) {
+        this.id = id; // <--- THÊM ID VÀO CONSTRUCTOR
         this.address = address;
         this.cccd = cccd;
         this.dateOfBirth = dateOfBirth;
@@ -42,6 +46,16 @@ public class TeacherDTO {
         this.phone = phone;
     }
 
+    // Getters and Setters cho id
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    // Các getters và setters khác giữ nguyên
     public String getAddress() {
         return address;
     }
@@ -49,7 +63,6 @@ public class TeacherDTO {
     public void setAddress(String address) {
         this.address = address;
     }
-
 
     public String getCccd() {
         return cccd;

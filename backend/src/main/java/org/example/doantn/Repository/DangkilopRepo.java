@@ -2,6 +2,7 @@ package org.example.doantn.Repository;
 
 import org.example.doantn.Entity.Clazz;
 import org.example.doantn.Entity.Dangkilop;
+import org.example.doantn.Entity.Semester;
 import org.example.doantn.Entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,8 @@ public interface DangkilopRepo extends JpaRepository<Dangkilop, Integer> {
     @Query("SELECT d FROM Dangkilop d WHERE d.clazz.maLop = :maLop AND d.semester.name = :semesterName And d.student.mssv = :mssv")
     Optional<Dangkilop> findByClazzMaLopAndSemesterNameAndMssv(String maLop, String semesterName,String mssv);
     List<Dangkilop> findByClazz(Clazz clazz); // Thêm dòng này
+
+    List<Dangkilop> findByStudentAndSemester(Student student, Semester semester);
 
 
 

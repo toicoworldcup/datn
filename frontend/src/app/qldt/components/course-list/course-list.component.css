@@ -1,60 +1,77 @@
 /* Cải thiện bảng để không có dòng xen kẽ đen trắng */
 .table {
-  table-layout: auto;
+  table-layout: fixed; /* Rất quan trọng: Giúp kiểm soát chiều rộng cột tốt hơn */
   width: 100%;
   border-collapse: collapse; /* Sử dụng border-collapse để không có khoảng cách giữa các ô */
   margin-top: 30px;
 }
 
-/* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
+/* Đảm bảo các cột tiêu đề và ô dữ liệu có chiều rộng phù hợp và xử lý tràn nội dung */
 .table th, .table td {
   padding: 10px;
   text-align: left;
   border: 1px solid #ddd; /* Đường viền nhẹ */
-  white-space: nowrap;
-}
-
-/* Cắt bớt chữ trong các ô nếu nó dài quá */
-.table td, .table th {
-  overflow: hidden;
-  white-space: nowrap; /* Đảm bảo nội dung không xuống dòng */
+  word-wrap: break-word; /* Cho phép từ dài bị ngắt dòng */
+  overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
   text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
-}
-
-/* Cải thiện tiêu đề với màu nhẹ hơn */
-.title-heading {
-  font-size: 2.5rem; /* Giảm kích thước font */
-  background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
-  color: #2c3e50;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 15px;
-  padding: 15px 25px;
-  display: inline-block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  letter-spacing: 1px;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-/* Hiệu ứng hover cho tiêu đề */
-.title-heading:hover {
-  transform: scale(1.05);
+  /* Loại bỏ white-space: nowrap; khỏi đây để cho phép xuống dòng nếu cần */
 }
 
 /* Đảm bảo các cột tiêu đề có chiều rộng phù hợp */
 .table th {
-  word-wrap: break-word; /* Tránh việc chữ quá dài bị tràn */
-  white-space: nowrap; /* Giữ tiêu đề không xuống dòng */
+  white-space: normal; /* Cho phép tiêu đề xuống dòng nếu quá dài */
+  background-color: #f2f2f2; /* Thêm màu nền cho tiêu đề để dễ nhìn hơn */
+  font-weight: bold;
 }
+
+/* Tối ưu hóa chiều rộng của từng cột nếu cần (TÙY CHỈNH THEO DỮ LIỆU THỰC TẾ CỦA BẠN) */
+.table th:nth-child(1), .table td:nth-child(1) { /* Mã học phần */
+  width: 10%; /* Ví dụ: 10% chiều rộng bảng */
+}
+
+.table th:nth-child(2), .table td:nth-child(2) { /* Tên môn học */
+  width: 25%; /* Tên môn học thường dài hơn */
+}
+
+.table th:nth-child(3), .table td:nth-child(3) { /* Số tín chỉ */
+  width: 8%;
+  text-align: center; /* Căn giữa cho số tín chỉ */
+}
+
+.table th:nth-child(4), .table td:nth-child(4) { /* Khối lượng */
+  width: 12%;
+}
+
+.table th:nth-child(5), .table td:nth-child(5) { /* Học kỳ đề xuất */
+  width: 10%;
+  text-align: center;
+}
+
+.table th:nth-child(6), .table td:nth-child(6) { /* Tỷ lệ điểm */
+  width: 15%;
+}
+
+.table th:nth-child(7), .table td:nth-child(7) { /* Hành động */
+  width: 20%; /* Nút Sửa/Xóa cần đủ không gian */
+  text-align: center;
+}
+
+
+/* Cắt bớt chữ trong các ô nếu nó dài quá (đã xử lý ở .table th, .table td) */
+/* .table td, .table th {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+} */
+/* => Phần này bị trùng lặp và xung đột, đã được tích hợp vào .table th, .table td bên trên. */
+
+
 .custom-content-container {
-  background-color: #ededea		; /* màu nền nhẹ */
+  background-color: #ededea; /* màu nền nhẹ */
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05); /* bóng nhẹ */
 }
-
 
 .container {
   padding: 20px;
@@ -69,7 +86,6 @@
 .table {
   margin-top: 30px;
 }
-
 
 .container, .table, .input-group, .btn {
   border-radius: 8px; /* Bo tròn các góc */
@@ -122,16 +138,22 @@
   justify-content: flex-end; /* Vẫn giữ căn phải cho nút Đóng của các modal khác nếu có */
 }
 
-.modal:is(.show) .modal-dialog .modal-content .modal-footer:has(+.modal-body .input-group) .btn-secondary {
-  display: none; /* Ẩn nút Đóng khi có input-group trong body */
+/* Đảm bảo chỉ ẩn nút Đóng của modal tìm kiếm theo mã cụ thể, không ảnh hưởng các modal khác */
+/* Cách an toàn hơn là thêm một class riêng cho modal tìm kiếm theo mã trong HTML, ví dụ: id="searchModal" */
+/* Và sau đó dùng CSS như thế này: */
+/* #searchModal .modal-footer .btn-secondary {
+  display: none;
+} */
+/* Vì không có id cụ thể trong HTML bạn cung cấp, tôi sẽ dùng selector tương tự của bạn nhưng có thể ảnh hưởng nếu cấu trúc HTML tương tự ở modal khác */
+.modal.d-block:has(.modal-body .input-group) .modal-footer .btn-secondary {
+  display: none;
 }
 
-/* Hoặc bạn có thể nhắm mục tiêu cụ thể modal tìm kiếm theo mã nếu cần */
-/* #searchCourseModal .modal-footer .btn-secondary {
+/* Hoặc nếu bạn muốn ẩn nút đóng của cả modal tìm kiếm theo mã và tìm kiếm nâng cao nếu có chung cấu trúc footer */
+/* .modal-footer .btn-secondary {
   display: none;
 } */
 
-/* course-list.component.css */
 
 .btn-info {
   color: #fff;

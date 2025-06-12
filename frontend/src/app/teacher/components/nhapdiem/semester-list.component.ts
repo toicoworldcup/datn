@@ -20,18 +20,18 @@ export class SemesterListComponent implements OnInit {
   selectedHocKi: string = "";
   students: StudentWithGrades[] = [];
   loading: boolean = false;
-  error: string = "";
+  error: string = ""; // Vẫn giữ thuộc tính này nếu bạn có chỗ hiển thị lỗi trên UI, nhưng sẽ không gán trực tiếp lỗi từ API vào nữa.
   maLops: string[] = [];
   semesters: Semester[] = [];
   isHistoryModalVisible: boolean = false;
-  historyContent: string = '';
-  parsedHistory: { timestamp: string, change: string }[] = [];
+  historyContent: string = "";
+  parsedHistory: { timestamp: string; change: string }[] = [];
 
   constructor(
     private semesterService: SemesterService,
     private studentService: StudentService,
     private teacherService: TeacherService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadSemesters();
@@ -44,7 +44,8 @@ export class SemesterListComponent implements OnInit {
       },
       error: (error) => {
         console.error("Lỗi khi tải học kỳ", error);
-        this.error = "Lỗi khi tải học kỳ.";
+        alert("Có lỗi xảy ra khi tải danh sách học kỳ. Vui lòng thử lại sau."); // Thay đổi ở đây
+        // this.error = "Lỗi khi tải học kỳ."; // Có thể bỏ dòng này nếu không dùng để hiển thị lỗi
       },
     });
   }
@@ -57,10 +58,12 @@ export class SemesterListComponent implements OnInit {
         next: (data) => {
           this.maLops = data.map((clazz: any) => clazz.maLop);
           this.loading = false;
+          // alert("Đã tải danh sách lớp học thành công."); // Có thể thêm thông báo thành công nếu cần
         },
         error: (error) => {
           console.error("Lỗi khi tải danh sách lớp", error);
-          this.error = "Lỗi khi tải danh sách lớp.";
+          alert("Có lỗi xảy ra khi tải danh sách lớp học. Vui lòng thử lại."); // Thay đổi ở đây
+          // this.error = "Lỗi khi tải danh sách lớp."; // Có thể bỏ dòng này
           this.loading = false;
         },
       });
@@ -79,10 +82,12 @@ export class SemesterListComponent implements OnInit {
           next: (data: StudentWithGrades[]) => {
             this.students = data;
             this.loading = false;
+            // alert("Đã tải danh sách sinh viên và điểm thành công."); // Có thể thêm thông báo thành công
           },
           error: (error) => {
             console.error("Lỗi khi tải danh sách sinh viên và điểm", error);
-            this.error = "Lỗi khi tải danh sách sinh viên và điểm.";
+            alert("Có lỗi xảy ra khi tải danh sách sinh viên và điểm. Vui lòng thử lại."); // Thay đổi ở đây
+            // this.error = "Lỗi khi tải danh sách sinh viên và điểm."; // Có thể bỏ dòng này
             this.loading = false;
           },
         });
@@ -96,10 +101,17 @@ export class SemesterListComponent implements OnInit {
       this.loading = true;
       let successCount = 0;
       const totalStudents = this.students.length;
+      let hasError = false; // Biến để theo dõi có lỗi trong quá trình lưu hay không
+
+      if (totalStudents === 0) { // Xử lý trường hợp không có sinh viên để lưu
+        alert("Không có sinh viên nào để lưu điểm.");
+        this.loading = false;
+        return;
+      }
 
       this.students.forEach((student) => {
-        const gkiToSend = typeof student.diemGk === 'number' ? student.diemGk : -1;
-        const ckiToSend = typeof student.diemCk === 'number' ? student.diemCk : -1;
+        const gkiToSend = typeof student.diemGk === "number" ? student.diemGk : -1;
+        const ckiToSend = typeof student.diemCk === "number" ? student.diemCk : -1;
 
         const gradeRequest: Grade = {
           mssv: student.mssv,
@@ -114,14 +126,18 @@ export class SemesterListComponent implements OnInit {
             successCount++;
             if (successCount === totalStudents) {
               this.loading = false;
-              alert("Đã lưu điểm thành công cho các sinh viên đã nhập.");
+              if (!hasError) { // Chỉ hiển thị thông báo thành công nếu không có lỗi nào xảy ra
+                alert("Đã lưu điểm thành công cho tất cả sinh viên đã nhập.");
+              }
               this.loadStudentsByClazz();
             }
           },
           error: (error) => {
             console.error("Lỗi khi lưu điểm cho sinh viên:", student.name, error);
-            this.error = "Lỗi khi lưu điểm.";
+            hasError = true; // Đặt biến lỗi thành true
             this.loading = false;
+            alert(`Có lỗi xảy ra khi lưu điểm cho sinh viên ${student.name}. Vui lòng kiểm tra lại.`); // Thông báo lỗi cụ thể
+            // this.error = "Lỗi khi lưu điểm."; // Có thể bỏ dòng này
           },
         });
       });
@@ -142,10 +158,10 @@ export class SemesterListComponent implements OnInit {
       return true;
     }
     for (const student of this.students) {
-      if (student.diemGk !== undefined && student.diemGk !== null && student.diemGk >= 0 && student.diemGk <= 10) {
-        return false;
-      }
-      if (student.diemCk !== undefined && student.diemCk !== null && student.diemCk >= 0 && student.diemCk <= 10) {
+      if (
+        (student.diemGk !== undefined && student.diemGk !== null && student.diemGk >= 0 && student.diemGk <= 10) ||
+        (student.diemCk !== undefined && student.diemCk !== null && student.diemCk >= 0 && student.diemCk <= 10)
+      ) {
         return false;
       }
     }
@@ -153,7 +169,7 @@ export class SemesterListComponent implements OnInit {
   }
 
   showHistory(history: string | undefined): void {
-    this.historyContent = history || '';
+    this.historyContent = history || "";
     this.parsedHistory = this.parseHistoryString(this.historyContent);
     this.isHistoryModalVisible = true;
   }
@@ -162,16 +178,16 @@ export class SemesterListComponent implements OnInit {
     this.isHistoryModalVisible = false;
   }
 
-  parseHistoryString(historyString: string): { timestamp: string, change: string }[] {
+  parseHistoryString(historyString: string): { timestamp: string; change: string }[] {
     if (!historyString) {
       return [];
     }
-    const logs: { timestamp: string, change: string }[] = [];
-    const lines = historyString.trim().split('\n');
+    const logs: { timestamp: string; change: string }[] = [];
+    const lines = historyString.trim().split("\n");
     let previousGk: number | null = null;
     let previousCk: number | null = null;
 
-    lines.forEach(line => {
+    lines.forEach((line) => {
       const match = line.match(/\[(.*?)\] GK: (.*?) -> (.*?), CK: (.*?) -> (.*?)/);
       if (match) {
         const timestamp = match[1];
@@ -194,7 +210,7 @@ export class SemesterListComponent implements OnInit {
         }
 
         if (changeDescriptionParts.length > 0) {
-          logs.push({ timestamp: timestamp, change: changeDescriptionParts.join(', ') });
+          logs.push({ timestamp: timestamp, change: changeDescriptionParts.join(", ") });
         }
 
         previousGk = newGk;

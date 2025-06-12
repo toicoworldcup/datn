@@ -1,9 +1,9 @@
-<div class="container mt-4">
-  <h2>Quản lý Điểm Danh</h2>
+<div class="container-fluid mt-4">
+  <h2 style="text-align: center">Điểm danh</h2>
 
   <div class="mb-3">
     <label for="hocKi" class="form-label">Chọn Học Kỳ:</label>
-    <select class="form-select" id="hocKi" [(ngModel)]="selectedHocKi" (change)="loadClazzesBySemester()">
+    <select class="form-select" id="hocKi"    style="width: auto;"  [(ngModel)]="selectedHocKi" (change)="loadClazzesBySemester()">
       <option value="">-- Chọn học kỳ --</option>
       <option *ngFor="let hk of semesters" [value]="hk.name">{{ hk.name }}</option>
     </select>
@@ -11,7 +11,7 @@
 
   <div class="mb-3">
     <label for="maLop" class="form-label">Chọn Mã Lớp:</label>
-    <select class="form-select" id="maLop" [(ngModel)]="selectedMaLop" (change)="loadStudentsForBothViews()">
+    <select class="form-select" id="maLop" [(ngModel)]="selectedMaLop"    style="width: auto;" (change)="loadStudentsForBothViews()">
       <option value="">-- Chọn lớp --</option>
       <option *ngFor="let ml of maLops" [value]="ml">{{ ml }}</option>
     </select>
@@ -72,8 +72,7 @@
             <td>{{ studentInfo.student.name }}</td>
             <td *ngFor="let date of detailedAttendanceColumns">
               <span>
-                {{ studentInfo.attendanceStatus[formatDate(date)] === 'DU' ? 'Đủ' :
-                  (studentInfo.attendanceStatus[formatDate(date)] === 'VANG' ? 'Vắng' : '') }}
+                {{ studentInfo.attendanceStatus[formatDate(date)] === 'VANG' ? 'Vắng' : '' }}
               </span>
             </td>
             <td>{{ studentInfo.student.absentCount !== -1 ? studentInfo.student.absentCount : 'Đang tải...' }}</td>

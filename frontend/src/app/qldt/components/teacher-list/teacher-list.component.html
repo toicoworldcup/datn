@@ -1,30 +1,19 @@
 <div class="container-fluid mt-4 px-4 custom-content-container">
   <div class="container-fluid mt-3 px-3">
     <div class="text-center">
-      <h2 class="title-heading">Danh sách Giáo viên</h2>
+      <h2 class="title-heading">Danh sách giáo viên</h2>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12 d-flex justify-content-start mb-3">
-      <button
-        class="btn btn-info me-2"
-        style="width: 200px"
-        (click)="toggleAddTeacherModal()"
-      >
-        <i class="fa fa-user-plus me-1"></i> Thêm giáo viên</button
-      ><button
-        class="btn btn-info me-2"
-        style="width: 150px"
-        (click)="toggleSearch()"
-      >
+      <button class="btn btn-info me-2" style="width: auto" (click)="toggleAddTeacherModal()">
+        <i class="fa fa-user-plus me-1"></i> Thêm
+      </button>
+      <button class="btn btn-info me-2" style="width: 150px" (click)="toggleSearch()">
         <i class="fa fa-search me-1"></i> Tìm kiếm
       </button>
-      <button
-        class="btn btn-success"
-        style="width: 150px"
-        (click)="toggleFileUploadModal()"
-      >
+      <button class="btn btn-success" style="width: 150px" (click)="toggleFileUploadModal()">
         <i class="fa fa-upload me-1"></i> Import
       </button>
     </div>
@@ -37,30 +26,34 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Tìm kiếm Giáo Viên</h5>
+            <h5 class="modal-title w-100 text-center">Tìm kiếm Giáo Viên</h5>
             <button type="button" class="close" (click)="toggleSearch()">
               ×
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
-              <label for="maGvInput" class="form-label bold-label"
-                >Tìm theo Mã giáo viên</label
-              >
-              <div class="input2-group">
-                <input
-                  id="maGvInput"
-                  type="text"
-                  class="form-control"
-                  placeholder="Nhập mã giáo viên"
-                  [(ngModel)]="maGvSearch"
-                />
-                <button
-                  class="btn btn-primary btn-sm-search"
-                  (click)="searchTeacher()"
+            <div class="d-flex justify-content-center">
+              <div class="form-group" style="width: auto;">
+                <label for="maGvInput" class="form-label" style="text-align: center; display: block;"
+                  ></label
                 >
-                  <i class="fa fa-search"></i> Tìm
-                </button>
+                <div class="input2-group" style="display: inline-flex; gap: 5px;">
+                  <input
+                    id="maGvInput"
+                    type="text"
+                    class="form-control"
+                    placeholder="Nhập mã giáo viên"
+                    [(ngModel)]="maGvSearch"
+                    style="flex-grow: 1;"
+                  />
+                  <button
+                    class="btn btn-primary btn-sm-search"
+                    (click)="searchTeacher()"
+                    style="flex-shrink: 0;"
+                  >
+                    <i class="fa fa-search"></i> Tìm
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -149,8 +142,14 @@
           <td>{{ t.cccd }}</td>
           <td>
             <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editTeacher(t)"
+            >
+              Sửa
+            </button>
+            <button
               class="btn btn-danger btn-sm"
-              (click)="deleteTeacher(t.maGv)"
+              (click)="deleteTeacher(t.id)"
             >
               Xóa
             </button>
@@ -186,84 +185,84 @@
       <div class="modal-body">
         <form (ngSubmit)="addTeacher()">
           <div class="form-group">
-            <label for="maGv">Mã Giáo Viên</label>
+            <label for="newMaGv">Mã Giáo Viên</label>
             <input
-              id="maGv"
+              id="newMaGv"
               class="form-control"
               [(ngModel)]="newTeacher.maGv"
-              name="maGv"
+              name="newMaGv"
               required
             />
           </div>
           <div class="form-group">
-            <label for="name">Tên</label>
+            <label for="newName">Tên</label>
             <input
-              id="name"
+              id="newName"
               class="form-control"
               [(ngModel)]="newTeacher.name"
-              name="name"
+              name="newName"
               required
             />
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="newEmail">Email</label>
             <input
-              id="email"
+              id="newEmail"
               class="form-control"
               [(ngModel)]="newTeacher.email"
-              name="email"
+              name="newEmail"
               required
               type="email"
             />
           </div>
           <div class="form-group">
-            <label for="phoneNumber">SĐT</label>
+            <label for="newPhoneNumber">SĐT</label>
             <input
-              id="phoneNumber"
+              id="newPhoneNumber"
               class="form-control"
-              [(ngModel)]="newTeacher.phoneNumber"
-              name="phoneNumber"
+              [(ngModel)]="newTeacher.phone"
+              name="newPhoneNumber"
               required
             />
           </div>
           <div class="form-group">
-            <label for="dateOfBirth">Ngày sinh</label>
+            <label for="newDateOfBirth">Ngày sinh</label>
             <input
-              id="dateOfBirth"
+              id="newDateOfBirth"
               class="form-control"
               [(ngModel)]="newTeacher.dateOfBirth"
-              name="dateOfBirth"
+              name="newDateOfBirth"
               required
               type="date"
             />
           </div>
           <div class="form-group">
-            <label for="address">Địa chỉ</label>
+            <label for="newAddress">Địa chỉ</label>
             <input
-              id="address"
+              id="newAddress"
               class="form-control"
               [(ngModel)]="newTeacher.address"
-              name="address"
+              name="newAddress"
               required
             />
           </div>
           <div class="form-group">
-            <label for="departmentName">Khoa</label>
+            <label for="newDepartmentName">Khoa</label>
             <input
-              id="departmentName"
+              id="newDepartmentName"
               class="form-control"
               [(ngModel)]="newTeacher.departmentName"
-              name="departmentName"
+              name="newDepartmentName"
               required
             />
           </div>
           <div class="form-group">
-            <label for="gender">Giới tính</label>
+            <label for="newGender">Giới tính</label>
             <select
-              id="gender"
+              id="newGender"
               class="form-control"
               [(ngModel)]="newTeacher.gender"
-              name="gender"
+              name="newGender"
               required
             >
               <option value="Nam">Nam</option>
@@ -271,18 +270,141 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="cccd">CCCD</label>
+            <label for="newCccd">CCCD</label>
             <input
-              id="cccd"
+              id="newCccd"
               class="form-control"
               [(ngModel)]="newTeacher.cccd"
-              name="cccd"
+              name="newCccd"
               required
             />
           </div>
           <div class="form-group text-center mt-3">
             <button type="submit" class="btn btn-success">
               Thêm giáo viên
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal show d-block"
+  tabindex="-1"
+  *ngIf="isEditTeacherModalVisible"
+  style="background: rgba(0, 0, 0, 0.4)"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Sửa Thông Tin Giáo Viên</h5>
+        <button type="button" class="close" (click)="toggleEditTeacherModal()">
+          ×
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateTeacher()">
+          <div class="form-group">
+            <label for="editMaGv">Mã Giáo Viên</label>
+            <input
+              id="editMaGv"
+              class="form-control"
+              [(ngModel)]="editedTeacher.maGv"
+              name="editMaGv"
+              required
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label for="editName">Tên</label>
+            <input
+              id="editName"
+              class="form-control"
+              [(ngModel)]="editedTeacher.name"
+              name="editName"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editEmail">Email</label>
+            <input
+              id="editEmail"
+              class="form-control"
+              [(ngModel)]="editedTeacher.email"
+              name="editEmail"
+              required
+              type="email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="editPhoneNumber">SĐT</label>
+            <input
+              id="editPhoneNumber"
+              class="form-control"
+              [(ngModel)]="editedTeacher.phone"
+              name="editPhoneNumber"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editDateOfBirth">Ngày sinh</label>
+            <input
+              id="editDateOfBirth"
+              class="form-control"
+              [(ngModel)]="editedTeacher.dateOfBirth"
+              name="editDateOfBirth"
+              required
+              type="date"
+            />
+          </div>
+          <div class="form-group">
+            <label for="editAddress">Địa chỉ</label>
+            <input
+              id="editAddress"
+              class="form-control"
+              [(ngModel)]="editedTeacher.address"
+              name="editAddress"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editDepartmentName">Khoa</label>
+            <input
+              id="editDepartmentName"
+              class="form-control"
+              [(ngModel)]="editedTeacher.departmentName"
+              name="editDepartmentName"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editGender">Giới tính</label>
+            <select
+              id="editGender"
+              class="form-control"
+              [(ngModel)]="editedTeacher.gender"
+              name="editGender"
+              required
+            >
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editCccd">CCCD</label>
+            <input
+              id="editCccd"
+              class="form-control"
+              [(ngModel)]="editedTeacher.cccd"
+              name="editCccd"
+              required
+            />
+          </div>
+          <div class="form-group text-center mt-3">
+            <button type="submit" class="btn btn-success">
+              Cập nhật giáo viên
             </button>
           </div>
         </form>

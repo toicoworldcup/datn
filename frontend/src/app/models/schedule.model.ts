@@ -4,5 +4,6 @@ export interface Schedule {
   timeSlot: string;
   dayOfWeek: string;
   semesterName: string;
+  nameCourse: string;
   // ... các thuộc tính khác nếu có
 }

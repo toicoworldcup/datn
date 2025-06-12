@@ -44,24 +44,34 @@ public class TeacherService {
         return teacherRepo.save(teacher);
     }
 
-    public Teacher updateTeacher(int id, Teacher updatedTeacher) {
+    public Teacher updateTeacher(int id, Teacher updatedTeacherData, String departmentName) {
         Optional<Teacher> optionalTeacher = teacherRepo.findById(id);
         if (optionalTeacher.isPresent()) {
             Teacher existingTeacher = optionalTeacher.get();
-            existingTeacher.setPhoneNumber(updatedTeacher.getPhoneNumber());
-            existingTeacher.setName(updatedTeacher.getName());
-            existingTeacher.setEmail(updatedTeacher.getEmail());
-            existingTeacher.setMaGv(updatedTeacher.getMaGv());
-            existingTeacher.setCccd(updatedTeacher.getCccd());
-            existingTeacher.setDateOfBirth(updatedTeacher.getDateOfBirth());
-            existingTeacher.setAddress(updatedTeacher.getAddress());
-            existingTeacher.setGender(updatedTeacher.getGender());
-            if (updatedTeacher.getDepartment() != null && updatedTeacher.getDepartment().getId() != 0) {
-                existingTeacher.setDepartment(departmentRepo.findById(updatedTeacher.getDepartment().getId())
-                        .orElseThrow(() -> new RuntimeException("Department not found")));
-            } else if (updatedTeacher.getDepartment() == null) {
+
+            // Cập nhật các trường thông tin cơ bản
+            existingTeacher.setPhoneNumber(updatedTeacherData.getPhoneNumber());
+            existingTeacher.setName(updatedTeacherData.getName());
+            existingTeacher.setEmail(updatedTeacherData.getEmail());
+            existingTeacher.setMaGv(updatedTeacherData.getMaGv());
+            existingTeacher.setCccd(updatedTeacherData.getCccd());
+            existingTeacher.setDateOfBirth(updatedTeacherData.getDateOfBirth());
+            existingTeacher.setAddress(updatedTeacherData.getAddress());
+            existingTeacher.setGender(updatedTeacherData.getGender());
+
+            // --- Sửa đổi phần xử lý Department ---
+            if (departmentName != null && !departmentName.trim().isEmpty()) {
+                // Sử dụng .orElseThrow() để trích xuất Department từ Optional
+                // hoặc ném lỗi nếu không tìm thấy
+                Department department = departmentRepo.findByName(departmentName)
+                        .orElseThrow(() -> new RuntimeException("Department with name '" + departmentName + "' not found."));
+                existingTeacher.setDepartment(department);
+            } else {
+                // Nếu departmentName rỗng hoặc null, đặt Department của giáo viên về null
                 existingTeacher.setDepartment(null);
             }
+            // ------------------------------------
+
             return teacherRepo.save(existingTeacher);
         } else {
             throw new RuntimeException("Không tìm thấy giáo viên với ID: " + id);

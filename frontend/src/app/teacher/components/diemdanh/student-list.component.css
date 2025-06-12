@@ -11,26 +11,6 @@
   margin-top: 20px; /* Thêm khoảng cách phía trên */
 }
 
-h2 {
-  font-size: 2.5rem; /* Giảm kích thước font */
-  background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
-  color: #2c3e50;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 15px;
-  padding: 15px 25px;
-  display: inline-block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  letter-spacing: 1px;
-  text-align: center;
-  transition: transform 0.3s ease;
-  margin-bottom: 20px; /* Thêm khoảng cách phía dưới tiêu đề chính */
-}
-
-h2:hover {
-  transform: scale(1.05);
-}
 
 h3 {
   color: #2c3e50;

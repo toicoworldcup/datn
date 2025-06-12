@@ -1,10 +1,19 @@
-<h2>Thời Khóa Biểu Của Giáo Viên</h2>
+<h2 style="text-align: center">Thời khóa biểu</h2>
 
 <div class="mb-3">
   <label for="semester" class="form-label">Chọn học kỳ:</label>
-  <select id="semester" class="form-select" [(ngModel)]="selectedSemester" (change)="loadSchedule()">
+  <select
+    id="semester"
+    class="form-select"
+    [(ngModel)]="selectedSemester"
+    (change)="loadSchedule()"
+    style="width: auto"
+  >
+    >
     <option value="">-- Chọn học kỳ --</option>
-    <option *ngFor="let semester of semesters" [value]="semester.name">{{ semester.name }}</option>
+    <option *ngFor="let semester of semesters" [value]="semester.name">
+      {{ semester.name }}
+    </option>
   </select>
 </div>
 
@@ -14,27 +23,42 @@
 <div *ngIf="schedule.length > 0 && !loading && !error" class="table-responsive">
   <table class="table table-bordered table-striped">
     <thead class="thead-light">
-  <tr>
-    <th>Thứ</th>
-    <th>Tiết</th>
-    <th>Mã Lớp</th>
-    <th>Phòng Học</th>
-  </tr>
- </thead>
+      <tr>
+        <th>Thứ</th>
+        <th>Tiết</th>
+        <th>Mã Lớp</th>
+        <th>Tên học phần</th>
+        <th>Phòng Học</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr *ngFor="let item of schedule | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+      <tr
+        *ngFor="
+          let item of schedule
+            | paginate : { itemsPerPage: itemsPerPage, currentPage: p };
+          let i = index
+        "
+      >
         <td>{{ formatDayOfWeek(item.dayOfWeek) }}</td>
         <td>{{ item.timeSlot }}</td>
         <td>{{ item.clazzName }}</td>
+        <td>{{ item.nameCourse }}</td>
         <td>{{ item.roomName }}</td>
       </tr>
     </tbody>
   </table>
   <div class="d-flex justify-content-center mt-3">
-    <pagination-controls (pageChange)="p = $event" previousLabel="Trước" nextLabel="Sau"></pagination-controls>
+    <pagination-controls
+      (pageChange)="p = $event"
+      previousLabel="Trước"
+      nextLabel="Sau"
+    ></pagination-controls>
   </div>
 </div>
 
-<div *ngIf="schedule.length === 0 && !loading && !error && selectedSemester" class="alert alert-warning">
+<div
+  *ngIf="schedule.length === 0 && !loading && !error && selectedSemester"
+  class="alert alert-warning"
+>
   Không có lịch học cho học kỳ này.
 </div>

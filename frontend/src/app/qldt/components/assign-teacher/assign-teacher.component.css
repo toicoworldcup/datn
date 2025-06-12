@@ -43,29 +43,6 @@
   display: table-row !important; /* Đảm bảo hiển thị như hàng bảng */
 }
 
-/* Cải thiện tiêu đề với màu nhẹ hơn */
-h2 {
-  font-size: 2.5rem; /* Giảm kích thước font */
-  background: linear-gradient(135deg, #a8d0e6, #b0e0e6);
-  color: #2c3e50 !important;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 15px;
-  padding: 15px 25px;
-  display: inline-block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  letter-spacing: 1px;
-  text-align: center;
-  transition: transform 0.3s ease;
-  margin-bottom: 20px; /* Thêm margin dưới tiêu đề */
-  width: 100%; /* Để tiêu đề chiếm hết chiều rộng */
-}
-
-/* Hiệu ứng hover cho tiêu đề */
-h2:hover {
-  transform: scale(1.05);
-}
 
 .custom-content-container {
   background-color: #ededea; /* màu nền nhẹ */

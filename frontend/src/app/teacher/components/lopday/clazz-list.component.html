@@ -1,5 +1,5 @@
 <div class="container-fluid mt-4">
-  <h2>Danh Sách Lớp Học</h2>
+  <h2 style="text-align: center">Danh sách lớp dạy</h2>
 
   <div class="row mb-3">
     <div class="col-md-4">
@@ -9,7 +9,7 @@
         id="semesterSelect"
         [(ngModel)]="selectedSemester"
         (change)="loadClasses()"
-      >
+        style="width: auto;" >
         <option value="">-- Chọn học kỳ --</option>
         <option *ngFor="let semester of semesters" [value]="semester.name">
           {{ semester.name }}

@@ -34,4 +34,6 @@ public interface ClazzRepo extends JpaRepository<Clazz, Integer> {
             @Param("khoa") String khoa,
             @Param("hocKi") String hocKi
     );
+    List<Clazz> findBySemester_Name(String hocki);
+
 }

@@ -61,7 +61,8 @@ public class GradeController {
                                     grade.getClazz() != null ? grade.getClazz().getMaLop() : null,
                                     grade.getSemester() != null ? grade.getSemester().getName() : null,
                                     grade.getStudent() != null ? grade.getStudent().getMssv() : null,
-                                    grade.getHistory()); // Bao gồm history
+                                    grade.getHistory(), // Bao gồm history,
+                            grade.getClazz().getCourse().getName());
                         }
                         return convertToDTO(grade); // Sử dụng convertToDTO để bao gồm history
                     })
@@ -128,6 +129,24 @@ public class GradeController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + e.getMessage());
+        }
+    }
+    @PreAuthorize("hasRole('STUDENT')") // Chỉ sinh viên mới được truy cập API này
+    @GetMapping("/me/gpa-by-semester/{semesterName}") // Đổi path để rõ ràng hơn
+    public ResponseEntity<?> getMySemesterGPA(
+            Authentication authentication, // Lấy thông tin xác thực của người dùng
+            @PathVariable("semesterName") String semesterName) { // Lấy tên học kỳ từ path variable
+        try {
+            String username = authentication.getName(); // Lấy username của người dùng đang đăng nhập
+            Student student = studentRepo.findByUser_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
+
+            double gpa = gradeService.calculateSemesterGPA(student.getMssv(), semesterName);
+            return ResponseEntity.ok(gpa);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi tính GPA: " + e.getMessage());
         }
     }
 
@@ -224,7 +243,8 @@ public class GradeController {
                 grade.getClazz() != null ? grade.getClazz().getMaLop() : null,
                 grade.getSemester() != null ? grade.getSemester().getName() : null,
                 grade.getStudent() != null ? grade.getStudent().getMssv() : null,
-                grade.getHistory() // Thêm history vào DTO
+                grade.getHistory() ,
+                grade.getClazz().getCourse().getName()
         );
     }
 }

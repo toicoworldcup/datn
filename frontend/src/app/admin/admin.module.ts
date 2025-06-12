@@ -11,7 +11,6 @@ import { CourseListComponent } from "./components/course-list/course-list.compon
 import { ClazzListComponent } from "./components/clazz-list/clazz-list.component";
 import { SemesterListComponent } from "./components/semester-list/semester-list.component";
 import { AssignTeacherComponent } from "./components/assign-teacher/assign-teacher.component";
-import { CreateClazzComponent } from "./components/create-clazz/create-clazz.component";
 import { AdminComponent } from "./admin.component";
 import { HeaderComponent } from "../header/header.component";
 import { LayoutAdminComponent } from "./layout-admin/layout-admin.component";
@@ -35,7 +34,6 @@ import { ScheduleListComponent } from "./components/schedule-list/schedule-list.
     ClazzListComponent,
     SemesterListComponent,
     AssignTeacherComponent,
-    CreateClazzComponent,
     AdminComponent,
     HeaderComponent, // LayoutAdminComponent có thể không phải là standalone
   ],

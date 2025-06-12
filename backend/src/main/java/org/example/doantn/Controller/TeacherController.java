@@ -1,5 +1,6 @@
 package org.example.doantn.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper; // <--- Cần thêm import này
 import org.example.doantn.Dto.request.TeacherRequest;
 import org.example.doantn.Dto.response.ClazzDTO;
 import org.example.doantn.Dto.response.ScheduleDTO;
@@ -37,6 +38,10 @@ public class TeacherController {
 
     @Autowired
     private ScheduleService scheduleService;
+
+    @Autowired // <--- Inject ObjectMapper vào Controller
+    private ObjectMapper objectMapper;
+
 
     //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @GetMapping
@@ -81,14 +86,38 @@ public class TeacherController {
         }
     }
 
-    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<TeacherDTO> updateTeacher(@PathVariable int id, @RequestBody Teacher updatedTeacher) {
-        Teacher teacher = teacherService.updateTeacher(id, updatedTeacher);
-        return ResponseEntity.ok(convertToDTO(teacher));
+    // Thay đổi tham số @RequestBody từ Teacher thành Map<String, Object>
+    public ResponseEntity<TeacherDTO> updateTeacher(@PathVariable int id, @RequestBody Map<String, Object> payload) {
+        try {
+            // 1. Trích xuất tên khoa từ payload
+            String departmentName = (String) payload.get("departmentName");
+
+            // 2. Loại bỏ trường "department" (object) và "departmentName" (string) khỏi payload
+            // để ObjectMapper có thể ánh xạ phần còn lại vào Teacher entity mà không bị lỗi.
+            payload.remove("department"); // Xóa trường Department object nếu có
+            payload.remove("departmentName"); // Xóa trường departmentName string
+
+            // 3. Chuyển đổi phần còn lại của payload thành đối tượng Teacher
+            Teacher updatedTeacherData = objectMapper.convertValue(payload, Teacher.class);
+
+            // 4. Gọi service và truyền cả Teacher entity (với dữ liệu cơ bản) và tên khoa
+            Teacher updatedAndSavedTeacher = teacherService.updateTeacher(id, updatedTeacherData, departmentName);
+
+            // 5. Chuyển đổi kết quả sang DTO và trả về
+            return ResponseEntity.ok(convertToDTO(updatedAndSavedTeacher));
+
+        } catch (RuntimeException e) {
+            // Xử lý các lỗi nghiệp vụ, ví dụ: "Department not found" từ Service
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // Xử lý các lỗi hệ thống không mong muốn
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    //@PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTeacher(@PathVariable int id) {
         teacherService.deleteTeacher(id);
@@ -163,7 +192,8 @@ public class TeacherController {
                         schedule.getRoom().getName(),
                         schedule.getTimeSlot().getName(),
                         schedule.getDayOfWeek(),
-                        schedule.getSemester().getName()
+                        schedule.getSemester().getName(),
+                        schedule.getClazz().getCourse().getName()
                 ))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(scheduleDTOs);
@@ -209,16 +239,13 @@ public class TeacherController {
     }
 
 
-
-
-
-
-
     private TeacherDTO convertToDTO(Teacher teacher) {
         return new TeacherDTO(
+                teacher.getId(),
                 teacher.getAddress(),
                 teacher.getCccd(),
                 teacher.getDateOfBirth(),
+                // Đảm bảo rằng getDepartment() trả về Department object và bạn có thể gọi getName()
                 teacher.getDepartment() != null ? teacher.getDepartment().getName() : null,
                 teacher.getEmail(),
                 teacher.getGender(),
@@ -237,8 +264,14 @@ public class TeacherController {
         teacher.setDateOfBirth(request.getDateOfBirth());
         teacher.setAddress(request.getAddress());
         teacher.setGender(request.getGender());
-        if (request.getDepartmentName() != null) {
-            departmentRepo.findByName(request.getDepartmentName()).ifPresent(teacher::setDepartment);
+        // Khi tạo mới, tìm Department bằng tên từ request
+        if (request.getDepartmentName() != null && !request.getDepartmentName().trim().isEmpty()) {
+            departmentRepo.findByName(request.getDepartmentName())
+                    .ifPresent(teacher::setDepartment);
+            // Hoặc nếu bạn muốn báo lỗi khi không tìm thấy:
+            // .orElseThrow(() -> new IllegalArgumentException("Department not found: " + request.getDepartmentName()));
+        } else {
+            teacher.setDepartment(null);
         }
         return teacher;
     }

@@ -5,4 +5,6 @@ export interface Grade {
   gki: number | null;
   cki: number | null;
   history?: string; // Thêm thuộc tính history (optional)
+    nameCourse?: string; // Thêm thuộc tính nameCourse (optional)
+
 }

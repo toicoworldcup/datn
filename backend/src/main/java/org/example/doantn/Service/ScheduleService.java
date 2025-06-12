@@ -28,7 +28,7 @@ public class ScheduleService {
     private SemesterRepo semesterRepo;
 
     private final Random random = new Random();
-    private final String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    private final String[] daysOfWeek = {"Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu ", "Thứ bảy ", "Chủ nhật"};
 
     public List<Schedule> getScheduleByMaLop(String maLop) {
         return scheduleRepo.findByClazz_MaLop(maLop);

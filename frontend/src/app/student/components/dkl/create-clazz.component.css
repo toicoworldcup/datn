@@ -1,74 +1,263 @@
-.container {
-  padding: 20px;
+/* Styling cho container chính */
+.container-fluid {
+    padding: 20px;
 }
 
-h2 {
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
+h2, h3 {
+    color: #333;
+    margin-bottom: 20px;
 }
 
-label {
-  font-weight: bold;
-  margin-right: 10px;
+/* Nút "Đăng ký" */
+.register-button {
+    background-color: #007bff; /* Màu xanh dương của Bootstrap Primary */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+    display: flex; /* Để icon và text canh giữa */
+    align-items: center;
+    justify-content: center;
 }
 
-select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  width: auto;
-  max-width: 200px; /* Điều chỉnh giá trị này nếu cần */
-  height: auto;
+.register-button:hover {
+    background-color: #0056b3;
 }
 
-.mt-3 {
-  margin-top: 1rem !important;
+.register-button i {
+    margin-right: 8px; /* Khoảng cách giữa icon và text */
 }
 
-input.form-control-sm {
-  max-width: 200px; /* Áp dụng max-width tương tự cho input */
+/* Thông báo (Alerts) */
+.alert {
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Dropdown chọn học kỳ (ngoài bảng) */
+select.form-control.form-control-sm {
+    width: auto; /* Tùy chỉnh độ rộng cho dropdown */
+    display: inline-block; /* Để nằm cùng dòng với label nếu muốn */
+    margin-left: 10px; /* Khoảng cách với label */
+    padding: .25rem .5rem; /* Padding nhỏ hơn cho sm */
+    font-size: .875rem; /* Font size nhỏ hơn cho sm */
+    line-height: 1.5;
+    border-radius: .2rem;
+    height: calc(1.5em + .5rem + 2px); /* Chiều cao cố định */
+}
+
+/* Bảng */
 .table-responsive {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
+    margin-top: 20px;
+    overflow-x: auto; /* Đảm bảo bảng cuộn nếu nội dung quá rộng */
 }
 
 .table {
-  width: 80%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  border: 1px solid #000;
-  border-radius: 8px;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse; /* Đảm bảo các đường viền liền mạch */
 }
 
 .table th,
 .table td {
-  border: 1px solid #000;
-  padding: 8px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
 }
 
-.table th {
-  background-color: #72d2e1;
-  font-weight: bold;
-  color: black;
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa; /* Màu nền cho header */
+    color: #495057; /* Màu chữ cho header */
 }
 
-.table th:first-child,
-.table td:first-child {
-  text-align: left;
+.table tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05); /* Màu nền xen kẽ cho hàng */
 }
 
-.error {
-  color: red;
-  margin-top: 10px;
-  text-align: center;
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+    border-bottom-width: 2px;
+}
+
+/* Checkbox trong bảng */
+.table td input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    vertical-align: middle; /* Canh giữa với text */
+}
+
+/* Nút hủy lớp đã chọn */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Modal */
+.modal.show {
+    display: block; /* Buộc modal hiển thị */
+    background: rgba(0, 0, 0, 0.5); /* Nền mờ cho modal */
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+    max-width: 500px; /* Điều chỉnh độ rộng modal */
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 3.5rem);
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
+}
+
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+.modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: calc(0.3rem - 1px);
+    border-bottom-left-radius: calc(0.3rem - 1px);
+}
+
+.modal-footer > * {
+    margin: 0.25rem; /* Khoảng cách giữa các nút trong footer */
+}
+
+.modal .close {
+    padding: 1rem 1rem;
+    margin: -1rem -1rem -1rem auto;
+    background-color: transparent;
+    border: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    opacity: 0.5;
+}
+
+.modal .close:hover {
+    color: #000;
+    opacity: 0.75;
+}
+
+/* Form controls trong modal */
+.modal-body .form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.modal-body .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modal-body .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 10px;
+    }
+
+    .register-button {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .table-responsive {
+        margin-top: 15px;
+    }
+
+    .modal-dialog {
+        max-width: 95%;
+    }
 }

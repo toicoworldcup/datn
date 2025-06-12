@@ -51,10 +51,8 @@ export class ClazzService {
     return this.http.post(`${this.baseUrl}/assign-teachers`, assignments);
   }
 
-  generateClazzesForCTDTCodeAndKhoa(ctdtCode: string, khoa: string, hocKi: string): Observable<string> {
-    return this.http.post(`${this.baseUrl}/generate-by-ctdt-khoa/${ctdtCode}/${khoa}/${hocKi}`, null, {
-      responseType: 'text'
-    });
+  generateClazzes(ctdtCode: string, khoa: string, hocKi: string): Observable<Clazz[]> {
+    return this.http.post<Clazz[]>(`${this.baseUrl}/generate-by-ctdt-khoa/${ctdtCode}/${khoa}/${hocKi}`, null);
   }
 
 
@@ -77,6 +75,20 @@ export class ClazzService {
   }
   searchClazzes2(ctdtCode: string, khoa: string, hocKi: string): Observable<Clazz[]> {
     return this.http.get<Clazz[]>(`${this.baseUrl}/search/${ctdtCode}/${khoa}/${hocKi}`);
+  }
+  getClazzesBySemesterName(semesterName: string): Observable<Clazz[]> {
+    return this.http.get<Clazz[]>(`${this.baseUrl}/by-semester-name/${semesterName}`);
+  }
+  // Gọi đến endpoint PUT /clazzes/{clazzId}/update-exam-date
+  updateClazzExamDate(clazzId: number, newExamDate: string | null): Observable<Clazz> {
+    let params = new HttpParams();
+    if (newExamDate !== null && newExamDate !== '') {
+      params = params.append('lichThi', newExamDate);
+    } else if (newExamDate === '') { // Nếu muốn xóa lịch thi, gửi chuỗi rỗng
+      params = params.append('lichThi', '');
+    }
+    // Tham số thứ hai là `null` vì dữ liệu được gửi qua query parameters, không phải request body
+    return this.http.put<Clazz>(`${this.baseUrl}/${clazzId}/update-exam-date`, null, { params: params });
   }
   // GET /clazzes/unassigned
   getUnassignedClazzes(ctdtCode: string | null, khoa: string | null, hocKi: string | null): Observable<Clazz[]> {

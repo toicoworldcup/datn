@@ -3,5 +3,7 @@ export interface DkhpDTO {
   mssv: string;
   maHocPhan: string;
   semesterName: string;
+  tinchi: number;
+  nameCourse: string;
   // Thêm các thuộc tính khác nếu cần
 }

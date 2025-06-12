@@ -1,3 +1,5 @@
+// src/app/cth/cth.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { CTDTService } from '../../../services/ctdt.service';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +19,9 @@ export class CthComponent implements OnInit {
   // Modal visibility flags
   isCreateCtdtModalVisible: boolean = false;
   isImportExcelModalVisible: boolean = false;
+  // BẮT ĐẦU THAY ĐỔI: Thêm biến mới cho modal tìm kiếm
+  isSearchCriteriaModalVisible: boolean = false; // Biến điều khiển hiển thị modal tìm kiếm
+  // KẾT THÚC THAY ĐỔI
 
   // Dữ liệu tạo mới CTĐT
   newCtdtName: string = '';
@@ -45,7 +50,9 @@ export class CthComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCTDTs();
-    this.searchCourses(); // Tải học phần ban đầu (có thể điều chỉnh logic này)
+    // GIỮ NGUYÊN searchCourses() ở ngOnInit() nếu bạn muốn bảng hiển thị dữ liệu mặc định ban đầu
+    // Nếu bạn muốn bảng trống và chỉ hiển thị sau khi người dùng tìm kiếm qua modal, thì hãy comment/xóa dòng này.
+    this.searchCourses();
   }
 
   loadCTDTs() {
@@ -60,7 +67,7 @@ export class CthComponent implements OnInit {
     });
   }
 
-  // Các hàm điều khiển hiển thị modal
+  // Các hàm điều khiển hiển thị modal (GIỮ NGUYÊN)
   openCreateCtdtModal(): void {
     this.isCreateCtdtModalVisible = true;
     this.createCtdtMessage = '';
@@ -81,6 +88,29 @@ export class CthComponent implements OnInit {
     this.isImportExcelModalVisible = false;
   }
 
+  // BẮT ĐẦU THAY ĐỔI: Thêm phương thức mới cho modal tìm kiếm
+  openSearchCriteriaModal(): void {
+    this.isSearchCriteriaModalVisible = true;
+    this.searchError = ''; // Xóa thông báo lỗi cũ khi mở modal
+    // Có thể giữ nguyên giá trị ctdtCodeSearchFilter và khoaSearchFilter để người dùng không phải nhập lại
+    // Nếu bạn muốn các ô input trong modal luôn trống khi mở:
+    // this.ctdtCodeSearchFilter = '';
+    // this.khoaSearchFilter = '';
+  }
+
+  closeSearchCriteriaModal(): void {
+    this.isSearchCriteriaModalVisible = false;
+  }
+
+  // Phương thức để gọi searchCourses() và đóng modal sau khi tìm kiếm
+  performSearchAndCloseModal(): void {
+    // Gọi phương thức searchCourses() hiện có của bạn
+    this.searchCourses();
+    // Đóng modal sau khi tìm kiếm
+    this.closeSearchCriteriaModal();
+  }
+  // KẾT THÚC THAY ĐỔI
+
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
@@ -95,10 +125,13 @@ export class CthComponent implements OnInit {
           this.selectedFile = null;
           this.ctdtCodeExcel = '';
           this.khoaExcel = '';
+          // Có thể gọi searchCourses() ở đây để làm mới bảng sau khi import
+          this.searchCourses();
+          this.closeImportExcelModal();
         },
         error: (error) => {
           console.error('Lỗi tải lên file', error);
-          this.uploadError = 'Lỗi tải lên file: ' + (error.error.message || error.message);
+          this.uploadError = 'Lỗi tải lên file: ' + (error.error?.message || error.message);
           this.uploadMessage = '';
         }
       });
@@ -123,11 +156,12 @@ export class CthComponent implements OnInit {
           this.newCtdtMaCt = '';
           this.newCtdtKhoa = '';
           this.closeCreateCtdtModal();
+          this.loadCTDTs(); // Tải lại danh sách CTĐT sau khi tạo mới (nếu cần)
           this.searchCourses(); // Tải lại danh sách học phần sau khi tạo CTĐT mới (nếu cần)
         },
         error: (error) => {
           console.error('Lỗi khi tạo mới CTĐT', error);
-          this.createCtdtError = 'Lỗi tạo mới CTĐT: ' + (error.error.message || error.message);
+          this.createCtdtError = 'Lỗi tạo mới CTĐT: ' + (error.error?.message || error.message);
           this.createCtdtMessage = '';
         }
       });
@@ -137,6 +171,7 @@ export class CthComponent implements OnInit {
     }
   }
 
+  // PHƯƠNG THỨC NÀY ĐƯỢC GIỮ NGUYÊN, KHÔNG THAY ĐỔI NỘI DUNG
   searchCourses(): void {
     if (this.ctdtCodeSearchFilter && this.khoaSearchFilter) {
       this.searchError = '';
@@ -144,16 +179,22 @@ export class CthComponent implements OnInit {
         next: (courses: CthDTO[]) => {
           this.courses = courses;
           this.filteredCourses = [...courses]; // Copy để không ảnh hưởng đến mảng gốc
+          this.p = 1; // Reset về trang đầu tiên
         },
         error: (error) => {
           console.error('Lỗi khi tải học phần', error);
-          this.searchError = 'Lỗi khi tải học phần: ' + (error.error.message || error.message);
+          this.searchError = 'Lỗi khi tải học phần: ' + (error.error?.message || error.message);
           this.courses = [];
           this.filteredCourses = [];
         }
       });
     } else {
-      this.filteredCourses = []; // Hoặc có thể tải tất cả nếu không có filter
+      // BẮT ĐẦU THAY ĐỔI: Thêm điều kiện để xử lý khi filter rỗng (ví dụ, khi mở modal mà không nhập gì)
+      // Nếu không có filter, bạn có thể quyết định hiển thị tất cả hoặc không hiển thị gì.
+      // Với yêu cầu "đừng thay đổi phương thức", chúng ta sẽ giữ nguyên hành vi cũ là không hiển thị gì.
+      this.searchError = 'Vui lòng nhập Mã CTĐT và Khóa để tìm kiếm.'; // Thêm lỗi nếu rỗng
+      this.filteredCourses = [];
+      // KẾT THÚC THAY ĐỔI
     }
   }
 }

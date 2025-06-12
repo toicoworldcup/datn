@@ -1,14 +1,13 @@
 package org.example.doantn.Service;
 
 import org.example.doantn.Entity.*;
-import org.example.doantn.Repository.ClazzRepo;
-import org.example.doantn.Repository.GradeRepo;
-import org.example.doantn.Repository.SemesterRepo;
-import org.example.doantn.Repository.StudentRepo;
+import org.example.doantn.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +21,8 @@ public class GradeService {
     private StudentRepo studentRepo;
     @Autowired
     private ClazzRepo clazzRepo;
+    @Autowired
+    private DangkilopRepo dangkilopRepo;
 
     public List<Grade> getAllGradeRepos() {
         return gradeRepo.findAll();
@@ -115,15 +116,102 @@ public class GradeService {
         }
     }
 
+
     private String convertScoreToLetter(double score) {
-        if (score >= 9.0) return "A+";
+        if (score >= 9.2) return "A+";
         if (score >= 8.5) return "A";
-        if (score >= 8.0) return "B+";
+        if (score >= 7.7) return "B+";
         if (score >= 7.0) return "B";
-        if (score >= 6.5) return "C+";
+        if (score >= 6.2) return "C+";
         if (score >= 5.5) return "C";
-        if (score >= 5.0) return "D+";
+        if (score >= 4.7) return "D+";
         if (score >= 4.0) return "D";
         return "F";
     }
+
+    // Phương thức mới để chuyển đổi điểm chữ sang điểm GPA dựa trên bảng quy đổi đã cung cấp
+    private double convertLetterToGpaPoint(String letter) {
+        switch (letter) {
+            case "A+": return 4.0;
+            case "A": return 3.7;
+            case "B+": return 3.5;
+            case "B": return 3.0;
+            case "C+": return 2.5;
+            case "C": return 2.0;
+            case "D+": return 1.5;
+            case "D": return 1.0;
+            case "F": return 0.0;
+            default: return 0.0; // Trường hợp không xác định, mặc định là 0
+        }
+    }
+    public double calculateSemesterGPA(String mssv, String semesterName) {
+        // Bước 1: Tìm sinh viên và học kỳ
+        Student student = studentRepo.findByMssv(mssv)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với mssv: " + mssv));
+        Semester semester = semesterRepo.findByName(semesterName)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy học kỳ với tên: " + semesterName));
+
+        // Bước 2: Lấy tất cả các đăng ký lớp của sinh viên trong học kỳ này
+        List<Dangkilop> dangkilops = dangkilopRepo.findByStudentAndSemester(student, semester);
+
+        if (dangkilops.isEmpty()) {
+            return 0.0; // Không có lớp nào được đăng ký cho sinh viên này trong học kỳ này
+        }
+
+        // Thay đổi từ double sang BigDecimal để tính toán chính xác
+        BigDecimal totalWeightedGradePoints = BigDecimal.ZERO;
+        BigDecimal totalCredits = BigDecimal.ZERO;
+
+        // Bước 3: Duyệt qua từng đăng ký lớp
+        for (Dangkilop dkLop : dangkilops) {
+            Clazz clazz = dkLop.getClazz();
+            if (clazz == null || clazz.getCourse() == null) {
+                System.err.println("Cảnh báo: Thông tin lớp hoặc học phần bị thiếu cho đăng ký lớp ID: " + dkLop.getId());
+                continue; // Bỏ qua nếu không có thông tin cần thiết
+            }
+
+            Course course = clazz.getCourse();
+            // Lấy số tín chỉ, chuyển sang BigDecimal
+            BigDecimal credits = new BigDecimal(course.getTinChi());
+
+            // Bước 4: Tìm điểm tương ứng (Grade) cho đăng ký lớp này
+            Optional<Grade> optionalGrade = gradeRepo.findByStudentAndClazzAndSemester(student, clazz, semester);
+
+            if (optionalGrade.isPresent()) {
+                Grade grade = optionalGrade.get();
+
+                // Bước 5: Tính điểm cuối cùng và điểm chữ cho điểm này
+                // Tạo một đối tượng tạm thời mô phỏng Dangkihocphan để sử dụng calculateFinalGradeAndLetter
+                Dangkihocphan tempDkhp = new Dangkihocphan();
+                tempDkhp.setGki(grade.getDiemGk());
+                tempDkhp.setCki(grade.getDiemCk());
+                tempDkhp.setCourse(course); // Thiết lập khóa học để có tỷ lệ điểm
+
+                // Gọi lại phương thức calculateFinalGradeAndLetter để tính toán
+                calculateFinalGradeAndLetter(tempDkhp);
+
+                if (tempDkhp.getGradeLetter() != null) {
+                    // Chuyển đổi gradePoint từ double sang BigDecimal
+                    BigDecimal gradePoint = new BigDecimal(convertLetterToGpaPoint(tempDkhp.getGradeLetter()));
+
+                    totalWeightedGradePoints = totalWeightedGradePoints.add(gradePoint.multiply(credits));
+                    totalCredits = totalCredits.add(credits);
+                } else {
+                    System.err.println("Cảnh báo: Không thể tính điểm chữ cho điểm của sinh viên " + mssv + ", lớp " + clazz.getMaLop());
+                }
+            } else {
+                System.out.println("Thông báo: Không tìm thấy điểm cho lớp " + clazz.getMaLop() + " của sinh viên " + mssv + " trong học kỳ " + semesterName);
+            }
+        }
+
+        if (totalCredits.compareTo(BigDecimal.ZERO) == 0) {
+            return 0.0; // Tránh chia cho số 0 nếu không có tín chỉ nào hợp lệ
+        }
+
+        // Bước 6: Tính toán và làm tròn GPA
+        // Chia với 3 chữ số thập phân, làm tròn HALF_UP (làm tròn lên nếu số sau là 5 trở lên)
+        BigDecimal gpa = totalWeightedGradePoints.divide(totalCredits, 3, RoundingMode.HALF_UP);
+
+        return gpa.doubleValue();}
+
 }

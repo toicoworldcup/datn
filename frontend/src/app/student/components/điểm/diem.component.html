@@ -1,15 +1,13 @@
-<div class="container">
-  <h2>Xem Điểm Theo Học Kỳ</h2>
+<div class="container-fluid">
+  <h2>Kết quả học tập</h2>
 
-  <div>
-    <label for="semester">Chọn học kỳ:</label>
-    <select id="semester" [(ngModel)]="selectedSemester">
+  <div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 15px;">
+    <label for="semester" style="margin-bottom: 5px;">Chọn học kỳ:</label>
+    <select id="semester" [(ngModel)]="selectedSemester" (change)="loadGrades()">
       <option value="">-- Chọn học kỳ --</option>
       <option *ngFor="let hk of hocKyOptions" [value]="hk.name">{{ hk.name }}</option>
     </select>
-    <button (click)="loadGrades()">Xem Điểm</button>
   </div>
-
   <div *ngIf="errorMessage" style="color: red;">
     {{ errorMessage }}
   </div>
@@ -22,6 +20,7 @@
             <th>Mã Lớp</th>
             <th>Điểm GK</th>
             <th>Điểm CK</th>
+            <th>Tên học phần</th>
           </tr>
         </thead>
         <tbody>
@@ -29,16 +28,22 @@
             <td>{{ grade.maLop }}</td>
             <td>{{ grade.gki === -1 || grade.gki === 'Chưa có' ? 'Chưa có' : grade.gki }}</td>
             <td>{{ grade.cki === -1 || grade.cki === 'Chưa có' ? 'Chưa có' : grade.cki }}</td>
+            <td>{{grade.nameCourse}}</td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <div *ngIf="selectedSemester && (gpaSemester !== null)" style="text-align: left; font-weight: bold; margin-top: 15px;">
+        GPA kì {{ selectedSemester }} là {{ gpaSemester }}
+    </div>
+
     <div *ngIf="grades.length === 0 && !errorMessage && selectedSemester">
       Không có điểm nào trong học kỳ này.
     </div>
   </div>
 
-  <div *ngIf="hocKyOptions.length === 0 && !errorMessage">
+  <div *ngIf="hocKyOptions.length === 0 && !errorMessage && !isDataLoaded">
     Đang tải danh sách học kỳ...
   </div>
 </div>

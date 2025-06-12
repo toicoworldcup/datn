@@ -19,7 +19,7 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     @PostMapping("/generate/{semesterName}")
     public ResponseEntity<List<ScheduleDTO>> generateSchedule(@PathVariable String semesterName) {
         try {
@@ -29,7 +29,8 @@ public class ScheduleController {
                     schedule.getRoom().getName(),
                     schedule.getTimeSlot().getName(),
                     schedule.getDayOfWeek(),
-                    schedule.getSemester().getName()
+                    schedule.getSemester().getName(),
+                    schedule.getClazz().getCourse().getName()
             )).collect(Collectors.toList());
             return ResponseEntity.ok(scheduleDTOs);
         } catch (RuntimeException e) {
@@ -38,7 +39,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/semester/{semesterName}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     public ResponseEntity<List<ScheduleDTO>> getScheduleBySemester(@PathVariable String semesterName) {
         List<Schedule> schedules = scheduleService.getScheduleBySemesterName(semesterName);
         List<ScheduleDTO> scheduleDTOs = schedules.stream().map(schedule -> new ScheduleDTO(
@@ -46,19 +47,20 @@ public class ScheduleController {
                 schedule.getRoom().getName(),
                 schedule.getTimeSlot().getName(),
                 schedule.getDayOfWeek(),
-                schedule.getSemester().getName()
+                schedule.getSemester().getName(),
+                schedule.getClazz().getCourse().getName()
         )).collect(Collectors.toList());
         return ResponseEntity.ok(scheduleDTOs);
     }
 
     @GetMapping("/{malop}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     public ResponseEntity<List<Schedule>> getScheduleByClazz(@PathVariable String malop) {
         List<Schedule> schedules = scheduleService.getScheduleByMaLop(malop);
         return ResponseEntity.ok(schedules);
     }
     @GetMapping("/class/{maLop}/semester/{semesterName}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     public ResponseEntity<List<ScheduleDTO>> getScheduleByClazzAndSemester(
             @PathVariable String maLop,
             @PathVariable String semesterName) {
@@ -68,7 +70,8 @@ public class ScheduleController {
                 schedule.getRoom().getName(),
                 schedule.getTimeSlot().getName(),
                 schedule.getDayOfWeek(),
-                schedule.getSemester().getName()
+                schedule.getSemester().getName(),
+                schedule.getClazz().getCourse().getName()
         )).collect(Collectors.toList());
         return ResponseEntity.ok(scheduleDTOs);
     }
