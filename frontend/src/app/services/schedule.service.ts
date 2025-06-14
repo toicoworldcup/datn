@@ -8,8 +8,7 @@ import { Schedule } from '../models/schedule.model'; // Import model
   providedIn: 'root'
 })
 export class ScheduleService {
-  private baseUrl = 'http://14.225.204.150:8080/schedule'; // Điều chỉnh URL nếu cần
-
+private baseUrl = 'http://localhost:8080/schedule'; // Điều chỉnh URL nếu cần
   constructor(private http: HttpClient) { }
 
   generateSchedule(semesterName: string): Observable<Schedule[]> { // Sử dụng Schedule model

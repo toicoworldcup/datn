@@ -33,7 +33,7 @@ export interface TeacherUpdatePayload {
   providedIn: "root",
 })
 export class TeacherService {
-  private apiUrl = "http://14.225.204.150:8080/teachers"; // Đảm bảo đúng IP và Port của Backend
+  private apiUrl = "http://localhost:8080/teachers"; // Đảm bảo đúng IP và Port của Backend
 
   constructor(private http: HttpClient) {}
 

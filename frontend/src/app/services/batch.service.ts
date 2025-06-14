@@ -7,8 +7,7 @@ import { Batch } from '../models/batch.model';
   providedIn: 'root'
 })
 export class BatchService {
-  private baseUrl = 'http://14.225.204.150:8080/batches'; // Điều chỉnh URL API của bạn
-
+private baseUrl = 'http://localhost:8080/batches'; // Điều chỉnh URL API của bạn
   constructor(private http: HttpClient) { }
 
   // GET /batches

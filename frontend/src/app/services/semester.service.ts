@@ -8,8 +8,7 @@ import { Semester } from "../models/semester.model";
   providedIn: "root",
 })
 export class SemesterService {
-  private baseUrl = "http://14.225.204.150:8080/semesters";
-
+private baseUrl = "http://localhost:8080/semesters";
   constructor(private http: HttpClient) {}
 
   // GET /semesters

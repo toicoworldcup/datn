@@ -8,8 +8,7 @@ import { Teacher } from '../models/teacher.model';
 })
 export class AssignmentService {
 
-  private baseUrl = 'http://14.225.204.150:8080/clazzes'; // Cập nhật URL tùy backend
-
+private baseUrl = 'http://localhost:8080/clazzes'; // Cập nhật URL tùy backend
   constructor(private http: HttpClient) {}
 
   // POST /clazzes/malop/{maLop}/semester/{hocKi}/assign-teacher/teacher/{maGv}

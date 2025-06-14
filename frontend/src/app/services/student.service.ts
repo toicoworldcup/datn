@@ -31,12 +31,12 @@ interface ChangePasswordRequest {
   providedIn: "root",
 })
 export class StudentService {
-   private apiUrl = "http://14.225.204.150:8080/students";
-  private apiUrl2 = "http://14.225.204.150:8080/api/studentinfo";
-  private apiUrl3 = "http://14.225.204.150:8080/dangkilop";
-  private apiUrlDkhp = "http://14.225.204.150:8080/dangkihocphan";
-  private clazzesUrl = "http://14.225.204.150:8080/clazzes";
-  private gradesUrl = "http://14.225.204.150:8080/grades";
+   private apiUrl = "http://localhost:8080/students";
+private apiUrl2 = "http://localhost:8080/api/studentinfo";
+private apiUrl3 = "http://localhost:8080/dangkilop";
+private apiUrlDkhp = "http://localhost:8080/dangkihocphan";
+private clazzesUrl = "http://localhost:8080/clazzes";
+private gradesUrl = "http://localhost:8080/grades";
 
   constructor(private http: HttpClient) {}
 

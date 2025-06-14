@@ -9,8 +9,7 @@ import { UpdateRequestList } from '../models/UpdateRequestList.model';
   providedIn: 'root'
 })
 export class DangKiLopService {
-  private baseUrl = 'http://14.225.204.150:8080/dangkilop';
-
+private baseUrl = 'http://localhost:8080/dangkilop';
   constructor(private http: HttpClient) { }
 
   getAllDangKiLopBySemester(semester: string): Observable<DklDTO[]> {
