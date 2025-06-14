@@ -2,7 +2,7 @@ package org.example.doantn.Service;
 
 import jakarta.transaction.Transactional;
 import org.example.doantn.Entity.*;
-import org.example.doantn.Import.TeacherImport;
+import org.example.doantn.Service.Import.TeacherImport;
 import org.example.doantn.Repository.DepartmentRepo;
 import org.example.doantn.Repository.TeacherRepo;
 import org.example.doantn.Repository.UserRepo;

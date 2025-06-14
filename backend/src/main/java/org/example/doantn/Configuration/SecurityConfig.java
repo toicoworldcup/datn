@@ -1,4 +1,4 @@
-package org.example.doantn.Security;
+package org.example.doantn.Configuration;
 import org.example.doantn.Repository.UserRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -4,7 +4,7 @@ import org.example.doantn.Dto.request.AuthRequest;
 import org.example.doantn.Dto.request.RegisterRequest;
 import org.example.doantn.Entity.User;
 import org.example.doantn.Repository.UserRepo;
-import org.example.doantn.Security.JwtUtil;
+import org.example.doantn.Configuration.JwtUtil;
 import org.example.doantn.Service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,4 +1,4 @@
-package org.example.doantn.Security;
+package org.example.doantn.Configuration;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

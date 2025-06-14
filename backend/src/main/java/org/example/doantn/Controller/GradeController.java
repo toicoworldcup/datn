@@ -37,7 +37,7 @@ public class GradeController {
     public ResponseEntity<List<GradeDTO>> getAllGrades() {
         List<GradeDTO> gradeDTOs = gradeService.getAllGradeRepos()
                 .stream()
-                .map(this::convertToDTO) // Sử dụng convertToDTO để bao gồm history
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(gradeDTOs);
@@ -52,7 +52,6 @@ public class GradeController {
             String username = authentication.getName();
             Student student = studentRepo.findByUser_Username(username)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
-
             List<GradeDTO> gradeDTOs = gradeService.getGradesByStudentAndSemester(student.getMssv(), semesterName)
                     .stream()
                     .map(grade -> {
@@ -61,10 +60,10 @@ public class GradeController {
                                     grade.getClazz() != null ? grade.getClazz().getMaLop() : null,
                                     grade.getSemester() != null ? grade.getSemester().getName() : null,
                                     grade.getStudent() != null ? grade.getStudent().getMssv() : null,
-                                    grade.getHistory(), // Bao gồm history,
+                                    grade.getHistory(),
                             grade.getClazz().getCourse().getName());
                         }
-                        return convertToDTO(grade); // Sử dụng convertToDTO để bao gồm history
+                        return convertToDTO(grade);
                     })
                     .collect(Collectors.toList());
 
@@ -91,7 +90,7 @@ public class GradeController {
 
         List<GradeDTO> gradeDTOs = gradeService.getGradeByMssvAndSemester(student.getMssv(), semester)
                 .stream()
-                .map(this::convertToDTO) // Sử dụng convertToDTO để bao gồm history
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(gradeDTOs);
@@ -131,6 +130,7 @@ public class GradeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống: " + e.getMessage());
         }
     }
+
     @PreAuthorize("hasRole('STUDENT')") // Chỉ sinh viên mới được truy cập API này
     @GetMapping("/me/gpa-by-semester/{semesterName}") // Đổi path để rõ ràng hơn
     public ResponseEntity<?> getMySemesterGPA(

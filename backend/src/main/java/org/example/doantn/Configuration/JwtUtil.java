@@ -1,4 +1,4 @@
-package org.example.doantn.Security;
+package org.example.doantn.Configuration;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

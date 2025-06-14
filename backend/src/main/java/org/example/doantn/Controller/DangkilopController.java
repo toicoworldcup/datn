@@ -76,16 +76,12 @@ public class DangkilopController {
             Clazz clazzToRegister = clazzRepo.findByMaLopAndSemester_Name(request.getMaLop(), request.getSemesterName())
                     .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy lớp " + request.getMaLop() + " trong học kỳ " + request.getSemesterName()));
 
-            // Lấy danh sách học phần mà sinh viên đã đăng ký trong học kỳ này
             List<Dangkihocphan> registeredDkhp = dangkihocphanRepo.findByStudent_MssvAndSemesterName(student.getMssv(), request.getSemesterName());
             List<String> registeredCourseCodes = registeredDkhp.stream()
                     .map(dkhp -> dkhp.getCourse().getMaHocPhan())
                     .toList();
 
-            // Kiểm tra xem lớp thuộc học phần nào
             if (clazzToRegister.getCourse() == null || !registeredCourseCodes.contains(clazzToRegister.getCourse().getMaHocPhan())) {
-                // Học phần chưa được đăng ký, tạo yêu cầu đặc biệt
-                // Kiểm tra xung đột lịch trước khi tạo yêu cầu đặc biệt
                 if (dangkilopService.isScheduleConflict(student.getMssv(), clazzToRegister.getMaLop(), semester.getName())) {
                     return ResponseEntity.badRequest().body(new HashMap<String, String>() {{
                         put("message", "Lớp học này bị trùng lịch với thời khóa biểu của bạn.");
@@ -171,9 +167,7 @@ public class DangkilopController {
         );
     }
 
-    // API cho QLĐT quản lý yêu cầu đặc biệt
-
-    // Lấy danh sách các yêu cầu đang chờ duyệt (sử dụng DTO)
+    // Lấy danh sách các yêu cầu đang chờ duyệt
     @PreAuthorize("hasRole('QLDT')")
     @GetMapping("/special-requests/pending")
     public ResponseEntity<List<SpecialClassRequestDTO>> getPendingSpecialRequests() {
@@ -197,6 +191,7 @@ public class DangkilopController {
     public ResponseEntity<String> rejectSpecialRequest(@PathVariable Integer requestId) {
         return updateSpecialRequestStatus(requestId, "REJECTED");
     }
+
     @PreAuthorize("hasRole('QLDT')")
     @PostMapping("/special-requests/approve-multiple")
     public ResponseEntity<String> approveMultipleSpecialRequests(@RequestBody UpdateRequestList requestList) {
@@ -235,6 +230,7 @@ public class DangkilopController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi xóa các lớp đã chọn: " + e.getMessage());
         }
     }
+
     @PreAuthorize("hasRole('QLDT')")
     @PostMapping("/special-requests/reject-multiple")
     public ResponseEntity<String> rejectMultipleSpecialRequests(@RequestBody UpdateRequestList requestList) {
@@ -260,9 +256,7 @@ public class DangkilopController {
         request.setStatus(status);
         specialClassRequestRepo.save(request);
 
-        // Nếu được duyệt, tạo bản ghi Dangkilop và tăng số lượng sinh viên
         if (status.equals("APPROVED")) {
-            // Lấy thông tin cần thiết từ request
             Student student = request.getStudent();
             Clazz clazz = request.getClazz();
             Semester semester = request.getSemester();

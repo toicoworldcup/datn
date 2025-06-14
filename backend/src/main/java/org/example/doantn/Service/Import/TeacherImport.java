@@ -19,13 +19,10 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class StudentImport {
+public class TeacherImport {
 
     @Autowired
-    private StudentRepo studentRepo;
-
-    @Autowired
-    private BatchRepo batchRepo;
+    private TeacherRepo teacherRepo;
 
     @Autowired
     private DepartmentRepo departmentRepo;
@@ -41,10 +38,8 @@ public class StudentImport {
 
     @Autowired
     private EmailService emailService;
-    @Autowired
-    private CtdtRepo ctdtRepo;
 
-    public void importStudentsFromExcel(MultipartFile file) {
+    public void importTeachersFromExcel(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream();
              Workbook workbook = new XSSFWorkbook(inputStream)) {
 
@@ -52,60 +47,41 @@ public class StudentImport {
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue;
 
-                Student student = new Student();
-                student.setName(getCellValue(row.getCell(0)));
-                String mssv = getCellValue(row.getCell(1));
-                String email = getCellValue(row.getCell(2));
-                student.setMssv(mssv);
-                student.setEmail(email);
-                student.setGender(getCellValue(row.getCell(3)));
-                student.setPhone(getCellValue(row.getCell(5)));
-                student.setCccd(getCellValue(row.getCell(4)));
-                student.setDateOfBirth(parseDateCell(row.getCell(6)));
-                student.setAddress(getCellValue(row.getCell(7)));
-                String batchName = getCellValue(row.getCell(8));
-                if (batchName != null) {
-                    Optional<Batch> batchOptional = batchRepo.findByName(batchName);
-                    if (batchOptional.isPresent()) {
-                        student.setBatch(batchOptional.get());
-                    } else {
-                        throw new IllegalArgumentException("Batch ID " + batchName + " không tồn tại.");
-                    }
-                }
+                Teacher teacher = new Teacher();
+                teacher.setName(getCellValue(row.getCell(0))); // name
+                teacher.setMaGv(getCellValue(row.getCell(1))); // ma_gv
+                teacher.setEmail(getCellValue(row.getCell(2))); // email
+                teacher.setPhoneNumber(getCellValue(row.getCell(3))); // phoneNumber
+                teacher.setCccd(getCellValue(row.getCell(4))); // cccd
+                teacher.setGender(getCellValue(row.getCell(5))); // gender
+                teacher.setDateOfBirth(parseDateCell(row.getCell(6))); // dob
+                teacher.setAddress(getCellValue(row.getCell(7))); // address
 
                 // Department
-                String departName = getCellValue(row.getCell(9));
+                String departName = getCellValue(row.getCell(8));
                 if (departName != null) {
                     Optional<Department> deptOptional = departmentRepo.findByName(departName);
                     if (deptOptional.isPresent()) {
-                        student.setDepartment(deptOptional.get());
+                        teacher.setDepartment(deptOptional.get());
                     } else {
-                        throw new IllegalArgumentException("Department ID " + departName + " không tồn tại.");
-                    }
-                }
-                String ctdt = getCellValue(row.getCell(10));
-                if(ctdt != null) {
-                    Optional<Ctdt> ctdtOptional = ctdtRepo.findByName(ctdt);
-                    if (ctdtOptional.isPresent()) {
-                        student.setCtdt(ctdtOptional.get());
-                    } else {
-                        throw new IllegalArgumentException("Ctdt ID " + ctdt + " không tồn tại.");
+                        throw new IllegalArgumentException("Department name '" + departName + "' không tồn tại.");
                     }
                 }
 
                 String rawPassword = generateRandomPassword();
                 String encodedPassword = passwordEncoder.encode(rawPassword);
 
-                RoleType studentRole = roleRepo.findByName("STUDENT")
-                        .orElseThrow(() -> new RuntimeException("Không tìm thấy ROLE_STUDENT"));
-                User user = new User(mssv, encodedPassword, studentRole);
+                RoleType teacherRole = roleRepo.findByName("TEACHER")
+                        .orElseThrow(() -> new RuntimeException("Không tìm thấy ROLE_TEACHER"));
+                User user = new User(teacher.getMaGv(), encodedPassword, teacherRole);
                 userRepo.save(user);
-                student.setUser(user);
-                studentRepo.save(student);
-                emailService.sendCredentials(email, mssv, rawPassword);
+                teacher.setUser(user);
+                teacherRepo.save(teacher);
+                emailService.sendCredentials(teacher.getEmail(), teacher.getMaGv(), rawPassword);
             }
 
-            System.out.println(" Import sinh viên và tạo tài khoản thành công!");
+            System.out.println("Import giáo viên và tạo tài khoản thành công!");
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi đọc file Excel: " + e.getMessage());
@@ -129,11 +105,6 @@ public class StudentImport {
         }
         Date date = cell.getDateCellValue();
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    private Integer parseIntegerCell(Cell cell) {
-        if (cell == null || cell.getCellType() != CellType.NUMERIC) return null;
-        return (int) cell.getNumericCellValue();
     }
 
     private String generateRandomPassword() {
