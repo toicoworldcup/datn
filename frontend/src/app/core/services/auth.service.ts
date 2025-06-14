@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common'; // Thêm isPlatformBrowser
 })
 export class AuthService {
 
-  private apiUrl = 'http://14.225.204.150:8080/api/auth/login'; 
+  private apiUrl = 'http://localhost:8080/api/auth/login'; 
 
   private isBrowser: boolean; // Thêm biến để kiểm tra môi trường
 
