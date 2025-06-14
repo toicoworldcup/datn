@@ -1,0 +1,94 @@
+/* src/app/admin/components/schedule-list/schedule-list.component.css */
+.container-fluid {
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+.alert {
+    margin-bottom: 1rem;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.table {
+    margin-bottom: 20px;
+}
+
+.schedule-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    width: 100%; /* Giữ nguyên nếu bạn muốn nút này chiếm 100% của cột chứa nó */
+}
+
+.form-select {
+    max-width: 200px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.col-md-4 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.col-md-6 {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+}
+.mr-2{
+    margin-right: 10px;
+}
+.pl-2{
+    padding-left: 10px;
+}
+
+/* ========================================= */
+/* CÁC THAY ĐỔI VÀ BỔ SUNG CHO MODAL */
+/* ========================================= */
+
+/* Điều chỉnh chiều rộng của modal tìm kiếm */
+/* Đảm bảo class `modal-search-sm` đã được thêm vào `<div class="modal-dialog">` trong HTML */
+.modal-search-sm {
+    max-width: 30% !important; /* Chiều rộng tối đa là 30% màn hình */
+}
+
+/* Responsive cho modal trên màn hình nhỏ hơn */
+@media (max-width: 768px) {
+    .modal-search-sm {
+        max-width: 90% !important; /* Cho phép rộng hơn trên các thiết bị nhỏ */
+    }
+}
+
+/* Style cho input field trong modal (Mã lớp) */
+/* Cần đảm bảo input có `class="form-control me-2"` và được bọc trong `d-flex` */
+.modal-body .form-control {
+    /* Đảm bảo nó co giãn trong flex container nhưng không vượt quá kích thước hợp lý */
+    flex-grow: 1; /* Cho phép input mở rộng để chiếm không gian */
+    width: auto; /* Mặc định là auto, nhưng đảm bảo không có giá trị cố định */
+    min-width: 100px; /* Đặt chiều rộng tối thiểu để input không bị quá nhỏ */
+}
+
+/* Nếu bạn muốn nút "Tìm kiếm" trong modal có độ rộng tự động và không bị tràn */
+.modal-body .btn-primary {
+    flex-shrink: 0; /* Ngăn nút co lại */
+    /* width: auto; */ /* Thường là mặc định cho button, không cần thiết trừ khi bị ghi đè */
+}
+
+/* Các style Bootstrap mặc định cho modal-dialog-centered, modal-content, v.v. đã có */
+/* Đảm bảo Bootstrap CSS được import đúng cách trong dự án của bạn */
