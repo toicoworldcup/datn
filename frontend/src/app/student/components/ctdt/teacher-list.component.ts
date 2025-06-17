@@ -24,10 +24,17 @@ export class TeacherListComponent implements OnInit {
   graduationLoading: boolean = false;
   graduationError: string = "";
 
+  // --- NEW PROPERTIES FOR CPA ---
+  cpa: number | null = null; // Variable to store CPA value
+  cpaLoading: boolean = false; // To track CPA loading state
+  cpaError: string = ""; // To store CPA error messages
+  // --- END NEW PROPERTIES ---
+
   constructor(private studentService: StudentService) {}
 
   ngOnInit(): void {
     this.loadAllCourses();
+    this.loadCPA(); // <--- Call the new method to load CPA
   }
 
   loadAllCourses(): void {
@@ -51,9 +58,27 @@ export class TeacherListComponent implements OnInit {
     });
   }
 
+  // --- NEW METHOD TO LOAD CPA ---
+  loadCPA(): void {
+    this.cpaLoading = true;
+    this.cpaError = "";
+    this.studentService.getCPA().subscribe({
+      next: (cpaValue) => {
+        this.cpa = cpaValue;
+        this.cpaLoading = false;
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải CPA:', err); // Log the full error for debugging
+        this.cpaError = "Không thể tải CPA. Vui lòng thử lại.";
+        this.cpaLoading = false;
+      }
+    });
+  }
+  // --- END NEW METHOD ---
+
   openGraduationModal(): void {
     this.showGraduationModal = true;
-    this.xetTotNghiep(); // Gọi API khi mở modal
+    this.xetTotNghiep(); // Call API when opening modal
   }
 
   closeGraduationModal(): void {

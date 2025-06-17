@@ -14,8 +14,8 @@ export interface AssignmentRequest {
   providedIn: "root",
 })
 export class ClazzService {
- private baseUrl = "http://localhost:8080/clazzes";
-private baseUrl2 = "http://localhost:8080/courses";
+ private baseUrl = "http://167.71.206.103:8080/clazzes";
+private baseUrl2 = "http://167.71.206.103:8080/courses";
 
   constructor(private http: HttpClient) {}
 

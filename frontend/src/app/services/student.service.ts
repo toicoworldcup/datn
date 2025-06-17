@@ -31,12 +31,12 @@ interface ChangePasswordRequest {
   providedIn: "root",
 })
 export class StudentService {
-   private apiUrl = "http://localhost:8080/students";
-private apiUrl2 = "http://localhost:8080/api/studentinfo";
-private apiUrl3 = "http://localhost:8080/dangkilop";
-private apiUrlDkhp = "http://localhost:8080/dangkihocphan";
-private clazzesUrl = "http://localhost:8080/clazzes";
-private gradesUrl = "http://localhost:8080/grades";
+   private apiUrl = "http://167.71.206.103:8080/students";
+private apiUrl2 = "http://167.71.206.103:8080/api/studentinfo";
+private apiUrl3 = "http://167.71.206.103:8080/dangkilop";
+private apiUrlDkhp = "http://167.71.206.103:8080/dangkihocphan";
+private clazzesUrl = "http://167.71.206.103:8080/clazzes";
+private gradesUrl = "http://167.71.206.103:8080/grades";
 
   constructor(private http: HttpClient) {}
 
@@ -226,5 +226,8 @@ private gradesUrl = "http://localhost:8080/grades";
   getGPABySemester(semesterName: string): Observable<number | string> {
     // API URL được lấy từ hình ảnh bạn cung cấp
     return this.http.get<number | string>(`${this.gradesUrl}/me/gpa-by-semester/${semesterName}`);
+  }
+  getCPA(): Observable<number> {
+    return this.http.get<number>(`${this.gradesUrl}/me/cpa`);
   }
 }

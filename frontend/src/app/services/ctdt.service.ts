@@ -9,7 +9,7 @@ import { Ctdt } from '../models/ctdt.model'; // Import model CTDT
   providedIn: 'root',
 })
 export class CTDTService {
-private apiUrl = 'http://localhost:8080/Ctdt'; // Adjust the API endpoint if needed
+private apiUrl = 'http://167.71.206.103:8080/Ctdt'; // Adjust the API endpoint if needed
   constructor(private http: HttpClient) {}
 
   getAllCTDTs(): Observable<Ctdt[]> {

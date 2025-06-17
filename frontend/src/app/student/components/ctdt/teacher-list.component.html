@@ -1,5 +1,16 @@
 <h2>Chương trình đào tạo</h2>
 
+<div class="cpa-display mb-3">
+  <ng-container *ngIf="cpaLoading">
+    <p>Đang tải CPA...</p>
+  </ng-container>
+  <ng-container *ngIf="cpaError">
+    <p class="text-danger">{{ cpaError }}</p>
+  </ng-container>
+  <ng-container *ngIf="cpa !== null && !cpaLoading && cpaError === ''">
+    <p><strong>CPA hiện tại:</strong> <span class="cpa-value">{{ cpa | number:'1.2-2' }}</span></p>
+    </ng-container>
+</div>
 <button class="btn btn-primary" (click)="openGraduationModal()">
   <i class="fa fa-graduation-cap me-1"></i> Xét tốt nghiệp
 </button>

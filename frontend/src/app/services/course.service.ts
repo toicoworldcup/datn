@@ -7,7 +7,7 @@ import { Course } from "../models/course.model";
   providedIn: "root",
 })
 export class CourseService {
-private apiUrl = "http://localhost:8080/courses"; // Địa chỉ API của bạn
+private apiUrl = "http://167.71.206.103:8080/courses"; // Địa chỉ API của bạn
   constructor(private http: HttpClient) {}
 
   // Lấy tất cả các khóa học
