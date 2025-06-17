@@ -150,6 +150,32 @@ public class GradeController {
         }
     }
 
+
+    @PreAuthorize("hasRole('STUDENT')") // Đảm bảo chỉ sinh viên mới có thể truy cập
+    @GetMapping("/me/cpa") // Đường dẫn API: /grades/me/cpa
+    public ResponseEntity<?> getMyCPA(Authentication authentication) {
+        try {
+            String username = authentication.getName(); // Lấy username của người dùng đang đăng nhập
+
+            // Tìm sinh viên dựa trên username
+            // Đảm bảo StudentRepo có phương thức findByUser_Username
+            Student student = studentRepo.findByUser_Username(username)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với username: " + username));
+
+            // Gọi GradeService để tính CPA cho sinh viên này
+            double cpa = gradeService.calculateStudentCPA(student.getMssv());
+
+            // Trả về CPA
+            return ResponseEntity.ok(cpa);
+        } catch (RuntimeException e) {
+            // Xử lý các lỗi như không tìm thấy sinh viên
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            // Xử lý các lỗi hệ thống khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi tính CPA: " + e.getMessage());
+        }
+    }
+
     private void updateStudentCourseGrade(Grade grade) {
         if (grade == null || grade.getStudent() == null || grade.getClazz() == null || grade.getClazz().getCourse() == null) {
             return;

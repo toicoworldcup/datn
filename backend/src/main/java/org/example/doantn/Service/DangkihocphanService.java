@@ -11,7 +11,7 @@ import org.example.doantn.Repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,5 +86,35 @@ public class DangkihocphanService {
                 .filter(dkhp -> dkhp.getGki() != null || dkhp.getCki() != null) // Chỉ lấy những học phần đã có điểm
                 .map(dkhp -> dkhp.getCourse().getMaHocPhan()) // Chuyển thành danh sách mã học phần
                 .collect(Collectors.toList());
+    }
+    public List<Map<String, Object>> getAccumulatedGrades(String mssv) { // Tên phương thức đã đổi
+        Student student = studentRepo.findByMssv(mssv)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên với MSSV: " + mssv));
+
+        List<Dangkihocphan> allStudentEnrollments = dangkihocphanRepo.findByStudent_Mssv(mssv);
+
+        List<Map<String, Object>> cumulativeCourseResults = new ArrayList<>();
+
+        Map<String, Optional<Dangkihocphan>> latestEnrollmentsByCourse = allStudentEnrollments.stream()
+                .filter(dkhp -> dkhp.getFinalGrade() != null)
+                .collect(Collectors.groupingBy(
+                        dkhp -> dkhp.getCourse().getMaHocPhan(),
+                        Collectors.maxBy(Comparator.comparing(dkhp -> dkhp.getSemester().getName()))
+                ));
+
+        for (Map.Entry<String, Optional<Dangkihocphan>> entry : latestEnrollmentsByCourse.entrySet()) {
+            if (entry.getValue().isPresent()) {
+                Dangkihocphan dkhp = entry.getValue().get();
+                Map<String, Object> courseResult = new HashMap<>();
+                courseResult.put("maHocPhan", dkhp.getCourse().getMaHocPhan());
+                courseResult.put("tenMonHoc", dkhp.getCourse().getName());
+                courseResult.put("soTinChi", dkhp.getCourse().getTinChi());
+                courseResult.put("finalGrade", dkhp.getFinalGrade());
+                courseResult.put("gradeLetter", dkhp.getGradeLetter());
+
+                cumulativeCourseResults.add(courseResult);
+            }
+        }
+        return cumulativeCourseResults;
     }
 }

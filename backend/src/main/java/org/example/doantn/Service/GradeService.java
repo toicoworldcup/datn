@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,6 +24,8 @@ public class GradeService {
     private ClazzRepo clazzRepo;
     @Autowired
     private DangkilopRepo dangkilopRepo;
+    @Autowired
+    private DangkihocphanService dangkihocphanService;
 
     public List<Grade> getAllGradeRepos() {
         return gradeRepo.findAll();
@@ -213,5 +216,47 @@ public class GradeService {
         BigDecimal gpa = totalWeightedGradePoints.divide(totalCredits, 3, RoundingMode.HALF_UP);
 
         return gpa.doubleValue();}
+
+    public double calculateStudentCPA(String mssv) {
+        // Bước 1: Lấy danh sách các môn học đã hoàn thành với điểm số và tín chỉ.
+        // DangkihocphanService đã xử lý việc chọn bản ghi mới nhất/có điểm cuối cùng.
+        List<Map<String, Object>> accumulatedCourseResults = dangkihocphanService.getAccumulatedGrades(mssv);
+
+        if (accumulatedCourseResults.isEmpty()) {
+            return 0.0; // Chưa có học phần nào có điểm để tính CPA
+        }
+
+        BigDecimal totalWeightedGradePoints = BigDecimal.ZERO;
+        BigDecimal totalCredits = BigDecimal.ZERO;
+
+        // Bước 2: Duyệt qua từng kết quả học phần và tính toán
+        for (Map<String, Object> result : accumulatedCourseResults) {
+            Double finalGrade = (Double) result.get("finalGrade");
+            Integer credits = (Integer) result.get("soTinChi");
+
+            // Chỉ tính những môn có điểm cuối cùng và số tín chỉ hợp lệ
+            if (finalGrade != null && credits != null && credits > 0) {
+                // Sử dụng hàm convertScoreToLetter rồi mới convertLetterToGpaPoint
+                // (vì getAccumulatedGrades trả về finalGrade, không phải gradeLetter)
+                String gradeLetter = convertScoreToLetter(finalGrade);
+                BigDecimal gradePoint = new BigDecimal(convertLetterToGpaPoint(gradeLetter));
+                BigDecimal courseCredits = new BigDecimal(credits);
+
+                totalWeightedGradePoints = totalWeightedGradePoints.add(gradePoint.multiply(courseCredits));
+                totalCredits = totalCredits.add(courseCredits);
+            }
+        }
+
+        if (totalCredits.compareTo(BigDecimal.ZERO) == 0) {
+            return 0.0; // Tránh chia cho 0 nếu không có tín chỉ nào được tính
+        }
+
+        // Bước 3: Tính toán và làm tròn CPA
+        // Chia với 3 chữ số thập phân, làm tròn HALF_UP
+        BigDecimal cpa = totalWeightedGradePoints.divide(totalCredits, 3, RoundingMode.HALF_UP);
+
+        return cpa.doubleValue();
+    }
+
 
 }

@@ -6,11 +6,9 @@ import org.example.doantn.Entity.Course;
 import org.example.doantn.Entity.Dangkihocphan;
 import org.example.doantn.Entity.Semester;
 import org.example.doantn.Entity.Student;
-import org.example.doantn.Repository.CourseRepo;
-import org.example.doantn.Repository.DangkihocphanRepo;
-import org.example.doantn.Repository.SemesterRepo;
-import org.example.doantn.Repository.StudentRepo;
+import org.example.doantn.Repository.*;
 import org.example.doantn.Service.DangkihocphanService;
+import org.example.doantn.Service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +27,9 @@ public class DangkihocphanController {
     private DangkihocphanService dangkihocphanService;
     @Autowired
     private DangkihocphanRepo dangkihocphanRepo;
+
+    @Autowired
+    private GradeService gradeService;
 
     @Autowired
     private StudentRepo studentRepo;
@@ -240,6 +241,8 @@ public class DangkihocphanController {
 
         return ResponseEntity.ok(missingCourses);
     }
+
+
 
 
     private Dangkihocphan convertToEntity(DkhpRequest request, String username) {

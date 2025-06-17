@@ -33,19 +33,19 @@ public class SemesterController {
         return ResponseEntity.ok(semesterService.getSemesterByName(name));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     @PostMapping
     public ResponseEntity<Semester> createSemester(@RequestBody Semester semester) {
         return ResponseEntity.ok(semesterService.createSemester(semester));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     @PutMapping("/{name}/open")
     public ResponseEntity<Semester> openRegistration(@PathVariable String name) {
         return ResponseEntity.ok(semesterService.updateSemesterStatus(name, true));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('QLDT')")
     @PutMapping("/{name}/close")
     public ResponseEntity<Semester> closeRegistration(@PathVariable String name) {
         return ResponseEntity.ok(semesterService.updateSemesterStatus(name, false));

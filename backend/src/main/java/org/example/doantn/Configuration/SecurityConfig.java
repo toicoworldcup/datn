@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:4200"); // Địa chỉ frontend
+        configuration.addAllowedOrigin("*"); // Địa chỉ frontend
         configuration.addAllowedMethod("*"); // Cho phép tất cả phương thức HTTP
         configuration.addAllowedHeader("*"); // Cho phép tất cả header
         configuration.setAllowCredentials(true); // Cho phép cookies
