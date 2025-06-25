@@ -8,7 +8,7 @@ import { Attendance } from '../models/attendance.model';
   providedIn: 'root'
 })
 export class AttendanceService {
-private apiUrl = 'hhttp://167.71.206.103:8080/attendance';
+private apiUrl = 'http://167.71.206.103:8080/attendance';
   constructor(private http: HttpClient) { }
 
   getAllAttendances(): Observable<Attendance[]> {
